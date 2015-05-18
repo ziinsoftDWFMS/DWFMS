@@ -14,6 +14,8 @@
 		698E293C1B0627530004DD66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 698E293B1B0627530004DD66 /* Images.xcassets */; };
 		698E293F1B0627530004DD66 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698E293D1B0627530004DD66 /* LaunchScreen.xib */; };
 		698E294B1B0627530004DD66 /* DWFMSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E294A1B0627530004DD66 /* DWFMSTests.m */; };
+		69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E0554D1B096F140024287C /* GlobalDataManager.m */; };
+		69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6DB401B08BCBF002CF1E6 /* GlobalData.m */; };
 		69EBCF531B06ECA60057F530 /* CallServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EBCF521B06ECA60057F530 /* CallServer.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +43,10 @@
 		698E29441B0627530004DD66 /* DWFMSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DWFMSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		698E29491B0627530004DD66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		698E294A1B0627530004DD66 /* DWFMSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DWFMSTests.m; sourceTree = "<group>"; };
+		69E0554C1B096F140024287C /* GlobalDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalDataManager.h; sourceTree = "<group>"; };
+		69E0554D1B096F140024287C /* GlobalDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalDataManager.m; sourceTree = "<group>"; };
+		69E6DB3F1B08BCBF002CF1E6 /* GlobalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalData.h; sourceTree = "<group>"; };
+		69E6DB401B08BCBF002CF1E6 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
 		69EBCF511B06ECA60057F530 /* CallServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallServer.h; sourceTree = "<group>"; };
 		69EBCF521B06ECA60057F530 /* CallServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +100,10 @@
 				698E292E1B0627530004DD66 /* Supporting Files */,
 				69EBCF511B06ECA60057F530 /* CallServer.h */,
 				69EBCF521B06ECA60057F530 /* CallServer.m */,
+				69E6DB3F1B08BCBF002CF1E6 /* GlobalData.h */,
+				69E6DB401B08BCBF002CF1E6 /* GlobalData.m */,
+				69E0554C1B096F140024287C /* GlobalDataManager.h */,
+				69E0554D1B096F140024287C /* GlobalDataManager.m */,
 			);
 			path = DWFMS;
 			sourceTree = "<group>";
@@ -226,7 +236,9 @@
 			files = (
 				698E29371B0627530004DD66 /* ViewController.m in Sources */,
 				698E29341B0627530004DD66 /* AppDelegate.m in Sources */,
+				69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */,
 				69EBCF531B06ECA60057F530 /* CallServer.m in Sources */,
+				69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */,
 				698E29311B0627530004DD66 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
