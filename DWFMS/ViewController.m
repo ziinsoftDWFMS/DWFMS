@@ -131,7 +131,8 @@
     //callUrl=callUrl+"?HP_TEL="+PhoneNumber+"&GCM_ID="+gcmid+"&DEVICE_FLAG=A";
     
    
-    
+    //QR Scan Call
+    //[self performSegueWithIdentifier:@"callQRScan" sender:self];
     
     
    
