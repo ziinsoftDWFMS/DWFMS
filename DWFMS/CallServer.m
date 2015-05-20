@@ -8,6 +8,7 @@
 
 #import "CallServer.h"
 #import "GlobalDataManager.h"
+#import "GlobalData.h"
 
 @implementation CallServer
 
@@ -61,11 +62,9 @@
 
 - (NSString *)stringWithUrl:(NSString *)url VAL:(NSMutableDictionary*)param
 {
-    GlobalData *goldata = [GlobalDataManager getgData];
+   
     
-    NSLog(@"stringWithUrl %@",[goldata compCd]);
-    
-    NSString *serverUrl = [NSString stringWithFormat:@"http://211.253.9.3:8080/%@",url] ;
+    NSString *serverUrl = [NSString stringWithFormat:@"%@/%@",ServerIp,url] ;
     
     NSLog(@"callserver %@",serverUrl);
     
