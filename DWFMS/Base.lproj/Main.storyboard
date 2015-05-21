@@ -9,7 +9,6 @@
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0ud-Mg-LTa"/>
@@ -34,9 +33,10 @@
                     </view>
                     <connections>
                         <outlet property="webView" destination="guR-sw-pqW" id="mrS-zC-JgC"/>
-                        <segue destination="s8p-pg-VRg" kind="show" id="nDG-75-bCQ"/>
+                        <segue destination="s8p-pg-VRg" kind="show" identifier="callQRScan" id="nDG-75-bCQ"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="440" y="288"/>
         </scene>
@@ -52,12 +52,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uxi-1v-g4w" customClass="ZIINQRCodeReaderView">
-                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uxi-1v-g4w" customClass="ZIINQRCodeReaderView">
+                                <rect key="frame" x="0.0" y="28" width="600" height="583"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Uxi-1v-g4w" secondAttribute="trailing" constant="-16" id="5Hj-yU-FCm"/>
+                            <constraint firstItem="Uxi-1v-g4w" firstAttribute="leading" secondItem="Aga-Qa-y2M" secondAttribute="leadingMargin" constant="-16" id="9zN-Ca-41p"/>
+                            <constraint firstItem="Uxi-1v-g4w" firstAttribute="top" secondItem="ltz-tH-I05" secondAttribute="bottom" constant="8" id="V6t-yj-cS9"/>
+                            <constraint firstItem="xzD-3S-0Et" firstAttribute="top" secondItem="Uxi-1v-g4w" secondAttribute="bottom" constant="70" id="x6L-Bo-mpl"/>
+                        </constraints>
                     </view>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="show" identifier="callMain" id="6ml-xd-ZbZ"/>
@@ -65,7 +71,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cq8-Nq-a6x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1078" y="288"/>
+            <point key="canvasLocation" x="1408" y="304"/>
         </scene>
     </scenes>
 </document>

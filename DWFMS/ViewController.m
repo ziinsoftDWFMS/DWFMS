@@ -131,8 +131,6 @@
     //callUrl=callUrl+"?HP_TEL="+PhoneNumber+"&GCM_ID="+gcmid+"&DEVICE_FLAG=A";
     
    
-    //QR Scan Call
-    //[self performSegueWithIdentifier:@"callQRScan" sender:self];
     
     
    
@@ -193,11 +191,16 @@
 //WebView 시작시 실행
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"START LOAD");
+    
+
 }
 
 //WebView 종료 시행
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"FNISH LOAD");
+    //QR Scan Call
+    NSLog(@"QR START");
+    [self performSegueWithIdentifier:@"callQRScan" sender:self];
 }
 
 //script => app funtion
@@ -286,6 +289,10 @@
       NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
 
+    
+    
+    
+    
 }
 
 @end

@@ -17,6 +17,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    //Main UI Call
+    //NSLog(@"Main Call START");
+    //[self performSegueWithIdentifier:@"callMain" sender:self];
 }
 
 - (void)didReceiveMemoryWarning {

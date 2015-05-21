@@ -1,14 +1,7 @@
-//
-//  SKYQRCodeReaderView.m
-//  QRCodeSacn
-//
-//  Created by sky on 15/4/29.
-//  Copyright (c) 2015年 bluesky. All rights reserved.
-//
-
 #import "ZIINQRCodeReaderView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import "ViewController.h"
 
 @interface ZIINQRCodeReaderView()<AVCaptureMetadataOutputObjectsDelegate>
 
@@ -168,7 +161,7 @@
     if (metadataObjects.count > 0) {
         //[session stopRunning];
         AVMetadataMachineReadableCodeObject * metadataObject = metadataObjects.firstObject ;
-        //输出扫描字符串
+
         self.scannedValue = metadataObject.stringValue;
         
         NSLog(@"capture output ===>   %@",metadataObject.stringValue);
@@ -178,6 +171,11 @@
         }
         [self stopScanning];
         //----------------------------------- audio add, scan result return, navigate
+        
+        
+        
+        
+        
         
         //-----------------------------------
     }

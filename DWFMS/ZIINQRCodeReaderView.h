@@ -1,11 +1,3 @@
-//
-//  SKYQRCodeReaderView.h
-//  QRCodeSacn
-//
-//  Created by sky on 15/4/29.
-//  Copyright (c) 2015년 bluesky. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @class ZIINQRCodeReaderView;
