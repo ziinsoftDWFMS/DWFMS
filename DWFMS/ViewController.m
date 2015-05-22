@@ -156,7 +156,11 @@
         {
             
             [self login:[decoded substringFromIndex:([type length]+7)]];
+        } else if ([@"QRun" isEqual:type]) {
+            NSLog(@"QR START");
+            [self performSegueWithIdentifier:@"callQRScan" sender:self];
         }
+            
     }
 
     
@@ -199,8 +203,8 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"FNISH LOAD");
     //QR Scan Call
-    NSLog(@"QR START");
-    [self performSegueWithIdentifier:@"callQRScan" sender:self];
+    //NSLog(@"QR START");
+    //[self performSegueWithIdentifier:@"callQRScan" sender:self];
 }
 
 //script => app funtion
