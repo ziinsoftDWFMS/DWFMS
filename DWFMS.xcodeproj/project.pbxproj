@@ -15,8 +15,13 @@
 		698E293F1B0627530004DD66 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698E293D1B0627530004DD66 /* LaunchScreen.xib */; };
 		698E294B1B0627530004DD66 /* DWFMSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E294A1B0627530004DD66 /* DWFMSTests.m */; };
 		69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E0554D1B096F140024287C /* GlobalDataManager.m */; };
+		69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E547EE1B0C3FB5002F7A9C /* Commonutil.m */; };
 		69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6DB401B08BCBF002CF1E6 /* GlobalData.m */; };
 		69EBCF531B06ECA60057F530 /* CallServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EBCF521B06ECA60057F530 /* CallServer.m */; };
+		BA842D771B0C7FF600DE86A3 /* Icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA842D761B0C7FF600DE86A3 /* Icon.jpg */; };
+		BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */; };
+		BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */; };
+		BA842D801B0C840700DE86A3 /* QRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7F1B0C840700DE86A3 /* QRViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,10 +50,18 @@
 		698E294A1B0627530004DD66 /* DWFMSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DWFMSTests.m; sourceTree = "<group>"; };
 		69E0554C1B096F140024287C /* GlobalDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalDataManager.h; sourceTree = "<group>"; };
 		69E0554D1B096F140024287C /* GlobalDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalDataManager.m; sourceTree = "<group>"; };
+		69E547ED1B0C3FB5002F7A9C /* Commonutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Commonutil.h; sourceTree = "<group>"; };
+		69E547EE1B0C3FB5002F7A9C /* Commonutil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Commonutil.m; sourceTree = "<group>"; };
 		69E6DB3F1B08BCBF002CF1E6 /* GlobalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalData.h; sourceTree = "<group>"; };
 		69E6DB401B08BCBF002CF1E6 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
 		69EBCF511B06ECA60057F530 /* CallServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallServer.h; sourceTree = "<group>"; };
 		69EBCF521B06ECA60057F530 /* CallServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallServer.m; sourceTree = "<group>"; };
+		BA842D761B0C7FF600DE86A3 /* Icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Icon.jpg; sourceTree = "<group>"; };
+		BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QRCodeScanLine@2x.png"; sourceTree = "<group>"; };
+		BA842D7A1B0C820A00DE86A3 /* ZIINQRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZIINQRCodeReaderView.h; sourceTree = "<group>"; };
+		BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZIINQRCodeReaderView.m; sourceTree = "<group>"; };
+		BA842D7E1B0C83E000DE86A3 /* QRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRViewController.h; sourceTree = "<group>"; };
+		BA842D7F1B0C840700DE86A3 /* QRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +103,8 @@
 		698E292D1B0627530004DD66 /* DWFMS */ = {
 			isa = PBXGroup;
 			children = (
+				BA842D781B0C81E100DE86A3 /* ZIINQRCodeReadView */,
+				BA842D751B0C7FC600DE86A3 /* image */,
 				698E29321B0627530004DD66 /* AppDelegate.h */,
 				698E29331B0627530004DD66 /* AppDelegate.m */,
 				698E29351B0627530004DD66 /* ViewController.h */,
@@ -104,6 +119,10 @@
 				69E6DB401B08BCBF002CF1E6 /* GlobalData.m */,
 				69E0554C1B096F140024287C /* GlobalDataManager.h */,
 				69E0554D1B096F140024287C /* GlobalDataManager.m */,
+				69E547ED1B0C3FB5002F7A9C /* Commonutil.h */,
+				69E547EE1B0C3FB5002F7A9C /* Commonutil.m */,
+				BA842D7E1B0C83E000DE86A3 /* QRViewController.h */,
+				BA842D7F1B0C840700DE86A3 /* QRViewController.m */,
 			);
 			path = DWFMS;
 			sourceTree = "<group>";
@@ -132,6 +151,24 @@
 				698E29491B0627530004DD66 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BA842D751B0C7FC600DE86A3 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				BA842D761B0C7FF600DE86A3 /* Icon.jpg */,
+			);
+			name = image;
+			sourceTree = "<group>";
+		};
+		BA842D781B0C81E100DE86A3 /* ZIINQRCodeReadView */ = {
+			isa = PBXGroup;
+			children = (
+				BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */,
+				BA842D7A1B0C820A00DE86A3 /* ZIINQRCodeReaderView.h */,
+				BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */,
+			);
+			name = ZIINQRCodeReadView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +252,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				698E293A1B0627530004DD66 /* Main.storyboard in Resources */,
+				BA842D771B0C7FF600DE86A3 /* Icon.jpg in Resources */,
+				BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */,
 				698E293F1B0627530004DD66 /* LaunchScreen.xib in Resources */,
 				698E293C1B0627530004DD66 /* Images.xcassets in Resources */,
 			);
@@ -239,7 +278,10 @@
 				69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */,
 				69EBCF531B06ECA60057F530 /* CallServer.m in Sources */,
 				69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */,
+				69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */,
+				BA842D801B0C840700DE86A3 /* QRViewController.m in Sources */,
 				698E29311B0627530004DD66 /* main.m in Sources */,
+				BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

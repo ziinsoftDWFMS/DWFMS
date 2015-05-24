@@ -14,6 +14,12 @@ static GlobalData *gData;
 @interface GlobalDataManager : NSObject
 
 
-+ (GlobalData*) getgData ;
 
+
++ (GlobalData*) getgData ;
++ (void) initgData:(NSDictionary *)data ;
++ (void) initAuth:(NSArray *)data ;
++ (void) setTime:(NSDictionary *)data ;
++ (NSMutableDictionary *) getAllData;
++ (NSString * ) getAuth;
 @end

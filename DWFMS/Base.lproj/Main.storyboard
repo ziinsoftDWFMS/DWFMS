@@ -1,37 +1,77 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0ud-Mg-LTa"/>
+                        <viewControllerLayoutGuide type="bottom" id="zjI-k9-pZM"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" id="guR-sw-pqW">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guR-sw-pqW">
+                                <rect key="frame" x="0.0" y="73" width="600" height="527"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="guR-sw-pqW" secondAttribute="trailing" constant="-16" id="9m1-Yj-R7c"/>
+                            <constraint firstItem="guR-sw-pqW" firstAttribute="top" secondItem="0ud-Mg-LTa" secondAttribute="bottom" constant="53" id="MhN-ZC-Bon"/>
+                            <constraint firstItem="zjI-k9-pZM" firstAttribute="top" secondItem="guR-sw-pqW" secondAttribute="bottom" constant="8" id="X8P-cS-GKm"/>
+                            <constraint firstItem="guR-sw-pqW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="ZhG-we-Ovk"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="webView" destination="guR-sw-pqW" id="mrS-zC-JgC"/>
+                        <segue destination="s8p-pg-VRg" kind="show" identifier="callQRScan" id="nDG-75-bCQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234.66666666666666" y="273.58666666666664"/>
+            <point key="canvasLocation" x="440" y="288"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="9EO-ib-Mjv">
+            <objects>
+                <viewController id="s8p-pg-VRg" customClass="QRViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ltz-tH-I05"/>
+                        <viewControllerLayoutGuide type="bottom" id="xzD-3S-0Et"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Aga-Qa-y2M">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uxi-1v-g4w" customClass="ZIINQRCodeReaderView">
+                                <rect key="frame" x="0.0" y="28" width="600" height="583"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Uxi-1v-g4w" secondAttribute="trailing" constant="-16" id="5Hj-yU-FCm"/>
+                            <constraint firstItem="Uxi-1v-g4w" firstAttribute="leading" secondItem="Aga-Qa-y2M" secondAttribute="leadingMargin" constant="-16" id="9zN-Ca-41p"/>
+                            <constraint firstItem="Uxi-1v-g4w" firstAttribute="top" secondItem="ltz-tH-I05" secondAttribute="bottom" constant="8" id="V6t-yj-cS9"/>
+                            <constraint firstItem="xzD-3S-0Et" firstAttribute="top" secondItem="Uxi-1v-g4w" secondAttribute="bottom" constant="70" id="x6L-Bo-mpl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="show" identifier="callMain" id="6ml-xd-ZbZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cq8-Nq-a6x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1408" y="304"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
