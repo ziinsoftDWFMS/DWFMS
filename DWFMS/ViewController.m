@@ -158,6 +158,10 @@
             
             [self login:[decoded substringFromIndex:([type length]+7)]];
         }
+        
+        if([@"login" isEqual:type]){
+            
+        }
     }
 
     

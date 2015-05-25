@@ -17,16 +17,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-//    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-//        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
-//        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-//        [[UIApplication sharedApplication] registerForRemoteNotifications];
-//        NSLog(@"%@",@"등록완료");
-//    } else {
-//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-//        NSLog(@"%@",@"등록완료");
-//    }
-    
+        if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        NSLog(@"%@",@"1등록완료");
+    } else {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+        NSLog(@"%@",@"2등록완료");
+    }
+
 
     return YES;
 }
@@ -36,21 +36,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     
     NSLog(@"My token is: %@", deviceToken);
-    NSMutableString *deviceId = [NSMutableString string];
-    const unsigned char* ptr = (const unsigned char*) [deviceToken bytes];
-    
-    for(int i = 0 ; i < 32 ; i++)
-    {
-        [deviceId appendFormat:@"%02x", ptr[i]];
-    }
-    
-    NSLog(@"APNS Device Token: %@", deviceId);
-    // deviceTok = deviceId;
-    
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    app.DEVICE_TOK = deviceId;
-    
-    NSLog(@"APNS Device Tok: %@", app.DEVICE_TOK);
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
