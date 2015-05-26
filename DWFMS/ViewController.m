@@ -11,6 +11,8 @@
 #import "GlobalData.h"
 #import "GlobalDataManager.h"
 #import "Commonutil.h"
+#import "AppDelegate.h"
+
 @interface ViewController ()
 
 @end
@@ -20,6 +22,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
+    [ad setMain:self];
+    
+    
     [self.webView setDelegate:self];
     
     CallServer *res = [CallServer alloc];
@@ -291,4 +298,30 @@
 
 }
 
+-(void) callImge:(NSString*) data{
+    NSLog(@"callimge??");
+    NSArray* list = [data componentsSeparatedByString:@"&"];
+    
+    
+    NSMutableDictionary * temp =[[NSMutableDictionary alloc] init];
+    
+    for(int i =0;i<[list count];i++){
+        NSArray* listTemp =   [[list objectAtIndex:i] componentsSeparatedByString:@"="];
+        [temp setValue:[listTemp objectAtIndex:1] forKey:[listTemp objectAtIndex:0]];
+        
+        NSLog(@" key %@  value %@ ",[listTemp objectAtIndex:0],[listTemp objectAtIndex:1]);
+    }
+    [[GlobalDataManager getgData]setCameraData:temp];
+    
+    [self performSegueWithIdentifier:@"CameraCall" sender:self];
+}
+
+- (IBAction)callcameratest:(id)sender {
+    //type=AS_IMG&num=1&key=test1"
+    [self callImge:(@"type=AS_IMG&num=1&key=test1")];
+}
+
+- (void) setimage:(NSString*) path num:(NSString*)num{
+    NSLog(@"ddd path %@ num %@",path,num);
+}
 @end

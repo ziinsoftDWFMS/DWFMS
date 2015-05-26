@@ -18,6 +18,8 @@
 		69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E547EE1B0C3FB5002F7A9C /* Commonutil.m */; };
 		69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6DB401B08BCBF002CF1E6 /* GlobalData.m */; };
 		69EBCF531B06ECA60057F530 /* CallServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EBCF521B06ECA60057F530 /* CallServer.m */; };
+		69F39B341B14113D000C0CDF /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69F39B331B14113D000C0CDF /* CameraViewController.m */; };
+		69F39B371B144C93000C0CDF /* DwfmsSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 69F39B361B144C93000C0CDF /* DwfmsSegue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,10 @@
 		69E6DB401B08BCBF002CF1E6 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
 		69EBCF511B06ECA60057F530 /* CallServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallServer.h; sourceTree = "<group>"; };
 		69EBCF521B06ECA60057F530 /* CallServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallServer.m; sourceTree = "<group>"; };
+		69F39B321B14113D000C0CDF /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		69F39B331B14113D000C0CDF /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		69F39B351B144C93000C0CDF /* DwfmsSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwfmsSegue.h; sourceTree = "<group>"; };
+		69F39B361B144C93000C0CDF /* DwfmsSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwfmsSegue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				698E29321B0627530004DD66 /* AppDelegate.h */,
+				69F39B321B14113D000C0CDF /* CameraViewController.h */,
+				69F39B331B14113D000C0CDF /* CameraViewController.m */,
 				698E29331B0627530004DD66 /* AppDelegate.m */,
 				698E29351B0627530004DD66 /* ViewController.h */,
 				698E29361B0627530004DD66 /* ViewController.m */,
@@ -109,6 +117,8 @@
 				69E0554D1B096F140024287C /* GlobalDataManager.m */,
 				69E547ED1B0C3FB5002F7A9C /* Commonutil.h */,
 				69E547EE1B0C3FB5002F7A9C /* Commonutil.m */,
+				69F39B351B144C93000C0CDF /* DwfmsSegue.h */,
+				69F39B361B144C93000C0CDF /* DwfmsSegue.m */,
 			);
 			path = DWFMS;
 			sourceTree = "<group>";
@@ -188,6 +198,7 @@
 				TargetAttributes = {
 					698E292A1B0627530004DD66 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 4P28E7RU57;
 					};
 					698E29431B0627530004DD66 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -240,6 +251,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				698E29371B0627530004DD66 /* ViewController.m in Sources */,
+				69F39B371B144C93000C0CDF /* DwfmsSegue.m in Sources */,
+				69F39B341B14113D000C0CDF /* CameraViewController.m in Sources */,
 				698E29341B0627530004DD66 /* AppDelegate.m in Sources */,
 				69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */,
 				69EBCF531B06ECA60057F530 /* CallServer.m in Sources */,
@@ -371,10 +384,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DWFMS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -382,10 +398,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DWFMS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
