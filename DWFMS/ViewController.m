@@ -202,9 +202,6 @@
 //WebView 종료 시행
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"FNISH LOAD");
-    //QR Scan Call
-    //NSLog(@"QR START");
-    //[self performSegueWithIdentifier:@"callQRScan" sender:self];
 }
 
 //script => app funtion
@@ -298,5 +295,10 @@
     
     
 }
-
+//QR View 닫은 후 실행될 Method
+- (IBAction) exitQRViewController:(UIStoryboardSegue *) segue
+{
+    NSLog(@"exit QR ViewController ~~~~~~~");
+    
+}
 @end

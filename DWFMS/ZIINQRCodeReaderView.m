@@ -52,7 +52,7 @@
     //출력 값
     AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
     
-    //设置代理 在主线程里刷新
+    //
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     
     self.session = [[AVCaptureSession alloc] init];
@@ -63,7 +63,7 @@
         NSLog(@"Error: %@", error);
     [self.session addOutput:metadataOutput];
     
-    //设置扫码支持的编码格式(如下设置条形码和二维码兼容)
+    //
     metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
     AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
     previewLayer.frame = self.layer.bounds;
@@ -120,13 +120,13 @@
     return _imgLine;
 }
 
-//刷新扫描条位置
+//
 - (void)handleDisplayLink:(CADisplayLink *)displayLink
 {
     [self scanAnimate];
 }
 
-//扫描条动画
+//
 - (void)scanAnimate
 {
     self.imgLine.frame = CGRectMake(self.innerViewRect.origin.x, self.innerViewRect.origin.y, CGRectGetWidth(self.innerViewRect), 10);
@@ -171,10 +171,10 @@
         }
         [self stopScanning];
         //----------------------------------- audio add, scan result return, navigate
+        //exit(1);
+        [self performSegueWithIdentifier:@"callMain" sender:self];
         
-        
-        
-        
+        //[self performSegueWithIdentifier:@"callQRScan" sender:self];
         
         
         //-----------------------------------
