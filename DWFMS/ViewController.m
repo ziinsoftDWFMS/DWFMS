@@ -166,8 +166,8 @@
             [self login:[decoded substringFromIndex:([type length]+7)]];
         }
         
-        if([@"login" isEqual:type]){
-            
+        if([@"callImge" isEqual:type]){
+            [self callImge:[decoded substringFromIndex:([type length]+7)]];
         }
     }
 
@@ -292,7 +292,7 @@
     NSString *decoded = [escaped stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"decoded string :\n%@", decoded);
     
-    NSString *scriptString = [NSString stringWithFormat:@"welcome('%@');",escaped];
+    NSString *scriptString = [NSString stringWithFormat:@"welcome('%@');",decoded];
       NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
 
@@ -316,12 +316,13 @@
     [self performSegueWithIdentifier:@"CameraCall" sender:self];
 }
 
-- (IBAction)callcameratest:(id)sender {
-    //type=AS_IMG&num=1&key=test1"
-    [self callImge:(@"type=AS_IMG&num=1&key=test1")];
-}
+
 
 - (void) setimage:(NSString*) path num:(NSString*)num{
     NSLog(@"ddd path %@ num %@",path,num);
+    
+    NSString *scriptString = [NSString stringWithFormat:@"setimge('%@','%@');",path,num];
+    NSLog(@"scriptString => %@", scriptString);
+    [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
 }
 @end

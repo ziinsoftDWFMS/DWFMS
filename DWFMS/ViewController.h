@@ -11,7 +11,7 @@
 @interface ViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-- (IBAction)callcameratest:(id)sender;
+
 - (void) setimage:(NSString*) path num:(NSString*)num;
 
 @end

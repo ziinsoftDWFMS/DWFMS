@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -14,34 +14,31 @@
                         <viewControllerLayoutGuide type="bottom" id="SBH-re-URd"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guR-sw-pqW">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guR-sw-pqW">
+                                <rect key="frame" x="0.0" y="20" width="608" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ryD-KV-zb7">
-                                <rect key="frame" x="137" y="464" width="46" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="callcameratest:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="RoM-b8-POS"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="guR-sw-pqW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="9sg-M9-guw"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="guR-sw-pqW" secondAttribute="trailing" constant="-24" id="Daa-gV-zEW"/>
+                            <constraint firstItem="guR-sw-pqW" firstAttribute="top" secondItem="Kck-zn-Q0i" secondAttribute="bottom" id="Kyx-Hc-Y1g"/>
+                            <constraint firstItem="SBH-re-URd" firstAttribute="top" secondItem="guR-sw-pqW" secondAttribute="bottom" constant="32" id="d6T-yK-dBv"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="CKK-yE-n7t"/>
                     <connections>
                         <outlet property="webView" destination="guR-sw-pqW" id="mrS-zC-JgC"/>
-                        <segue destination="TnJ-He-yk1" kind="modal" identifier="CameraCall" id="JHv-js-pPW"/>
+                        <segue destination="TnJ-He-yk1" kind="presentation" identifier="CameraCall" id="JHv-js-pPW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234" y="272.99999999999994"/>
+            <point key="canvasLocation" x="438" y="288"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="6r8-dm-Wmm">
@@ -52,14 +49,20 @@
                         <viewControllerLayoutGuide type="bottom" id="SgC-kC-1OD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Trc-Ov-bBi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ws6-Ry-GjA">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ws6-Ry-GjA">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ws6-Ry-GjA" secondAttribute="trailing" constant="-16" id="Hyt-Mh-Iqd"/>
+                            <constraint firstItem="Ws6-Ry-GjA" firstAttribute="leading" secondItem="Trc-Ov-bBi" secondAttribute="leadingMargin" constant="-16" id="IDz-qG-1r3"/>
+                            <constraint firstItem="SgC-kC-1OD" firstAttribute="top" secondItem="Ws6-Ry-GjA" secondAttribute="bottom" constant="32" id="cAO-yv-eZv"/>
+                            <constraint firstItem="Ws6-Ry-GjA" firstAttribute="top" secondItem="IXC-9F-j3o" secondAttribute="bottom" id="rx1-Ny-0ly"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ebP-Za-agW"/>
                     <connections>
@@ -68,12 +71,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NK4-Im-fw6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="682" y="272.99999999999994"/>
+            <point key="canvasLocation" x="1278" y="288"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
