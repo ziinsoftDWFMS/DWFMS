@@ -23,6 +23,17 @@
     NSLog(@"??callcamera1");
     NSMutableDictionary * cData =  [[GlobalDataManager getgData]cameraData] ;
     makeFilename =[NSString stringWithFormat:@"%@_%@.jpg",[cData valueForKey:@"key"],[cData valueForKey:@"num"]];
+    
+    NSString * searchWord = @"-";
+    NSString * replaceWord = @"";
+    makeFilename =  [makeFilename stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    searchWord = @":";
+    replaceWord = @"";
+    makeFilename =  [makeFilename stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    searchWord = @" ";
+    replaceWord = @"";
+    makeFilename =  [makeFilename stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    
     NSLog(@"filename %@",makeFilename);
 //    filepath = [NSString stringWithFormat:@"resources/App_Company/%@/%@.jpg",[[GlobalDataManager getgData] compCd],[cData valueForKey:@"type"],filename];
      filepath = [NSString stringWithFormat:@"/resources/App_Company/%@/%@/",@"DW000",[cData valueForKey:@"type"]];
@@ -68,6 +79,7 @@
             [self presentModalViewController:imagepickerController animated:YES];
         }
         else if(buttonIndex == 1){
+            getImage =YES;
             [imagepickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
             
             [self presentModalViewController:imagepickerController animated:YES];
@@ -106,12 +118,12 @@
     
     NSLog(@"?? size? %d ",dataObj.length);
      NSLog(@" 22 %@ ",(getImage ? @"YES" : @"NO"));
+    [self dismissModalViewControllerAnimated:YES];
     if(!getImage){
         getImage = YES;
          NSLog(@" 33 %@ ",(getImage ? @"YES" : @"NO"));
         
         
-        [self dismissModalViewControllerAnimated:YES];
         UIActionSheet *isSave = [[UIActionSheet alloc]
                                       initWithTitle:nil
                                       delegate:self
@@ -120,7 +132,9 @@
                                       otherButtonTitles:@"사진 저장", nil];
         [isSave showInView:self.view];
     }
-    
+    else{
+        [self fileUp];
+    }
     
 }
 
