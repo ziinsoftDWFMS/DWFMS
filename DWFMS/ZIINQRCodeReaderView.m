@@ -40,6 +40,7 @@
 
 - (void)setUp
 {
+    /*
     self.autoStart = YES;
     
     //비디오 장치 설정
@@ -73,6 +74,8 @@
     if (self.isAutoStartEnabled){
         [self startScanning];
     }
+     */
+    
 }
 
 
@@ -129,10 +132,12 @@
 //
 - (void)scanAnimate
 {
+    /*
     self.imgLine.frame = CGRectMake(self.innerViewRect.origin.x, self.innerViewRect.origin.y, CGRectGetWidth(self.innerViewRect), 10);
     [UIView animateWithDuration:2 animations:^{
         _imgLine.frame = CGRectMake(_imgLine.frame.origin.x, _imgLine.frame.origin.y + self.innerViewRect.size.height - 6, _imgLine.frame.size.width, _imgLine.frame.size.height);
     }];
+     */
 }
 
 #pragma mark - public methods
@@ -171,17 +176,65 @@
         }
         [self stopScanning];
         //----------------------------------- audio add, scan result return, navigate
-        //exit(1);
-        [self performSegueWithIdentifier:@"callMain" sender:self];
-        
-        //[self performSegueWithIdentifier:@"callQRScan" sender:self];
         
         
-        //-----------------------------------
+        
+        
+        self.hidden = YES;
+        
+                //-----------------------------------
     }
 }
 
 #pragma mark - Private Methods
+
+- (void)isHiddenCam{
+    self.autoStart = YES;
+    
+    //비디오 장치 설정
+    AVCaptureDevice *videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    //입력 값
+    NSError *error = nil;
+    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoCaptureDevice error:&error];
+    
+    //출력 값
+    AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    
+    //
+    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    
+    self.session = [[AVCaptureSession alloc] init];
+    
+    if(videoInput)
+        [self.session addInput:videoInput];
+    else
+        NSLog(@"Error: %@", error);
+    [self.session addOutput:metadataOutput];
+    
+    //
+    metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
+    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    
+    previewLayer.frame = self.layer.bounds;
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.layer addSublayer:previewLayer];
+    
+    if ([videoCaptureDevice respondsToSelector:@selector(setVideoZoomFactor:)]) {
+        NSLog(@"Error: %@", @"1");
+        if ([ videoCaptureDevice lockForConfiguration:nil]) {
+            NSLog(@"Error: %@", @"2");
+            float zoomFactor = videoCaptureDevice.activeFormat.videoZoomFactorUpscaleThreshold;
+            [videoCaptureDevice setVideoZoomFactor:1.0];
+            [videoCaptureDevice unlockForConfiguration];
+        }
+    }
+    
+    if (self.isAutoStartEnabled){
+        [self startScanning];
+    }
+
+}
+
 
 //SCAN 레이어 내부 설정
 - (void)addOverlay

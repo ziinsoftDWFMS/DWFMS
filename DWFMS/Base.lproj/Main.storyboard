@@ -19,19 +19,28 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guR-sw-pqW">
-                                <rect key="frame" x="0.0" y="73" width="600" height="527"/>
+                                <rect key="frame" x="0.0" y="60" width="600" height="540"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
+                            <view hidden="YES" contentMode="scaleToFill" restorationIdentifier="qrview" translatesAutoresizingMaskIntoConstraints="NO" id="a3b-0M-AXJ" customClass="ZIINQRCodeReaderView">
+                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="guR-sw-pqW" secondAttribute="trailing" constant="-16" id="9m1-Yj-R7c"/>
+                            <constraint firstItem="zjI-k9-pZM" firstAttribute="top" secondItem="a3b-0M-AXJ" secondAttribute="bottom" id="DSi-B0-sLN"/>
+                            <constraint firstItem="a3b-0M-AXJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="JbI-7E-cEl"/>
                             <constraint firstItem="guR-sw-pqW" firstAttribute="top" secondItem="0ud-Mg-LTa" secondAttribute="bottom" constant="53" id="MhN-ZC-Bon"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="a3b-0M-AXJ" secondAttribute="trailing" constant="-16" id="OX8-bO-ph1"/>
+                            <constraint firstItem="a3b-0M-AXJ" firstAttribute="top" secondItem="0ud-Mg-LTa" secondAttribute="bottom" constant="8" id="TUo-zA-8wo"/>
                             <constraint firstItem="zjI-k9-pZM" firstAttribute="top" secondItem="guR-sw-pqW" secondAttribute="bottom" constant="8" id="X8P-cS-GKm"/>
                             <constraint firstItem="guR-sw-pqW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="ZhG-we-Ovk"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="qrView" destination="a3b-0M-AXJ" id="lAq-3x-M1z"/>
                         <outlet property="webView" destination="guR-sw-pqW" id="mrS-zC-JgC"/>
                         <segue destination="s8p-pg-VRg" kind="show" identifier="callQRScan" id="nDG-75-bCQ"/>
                     </connections>

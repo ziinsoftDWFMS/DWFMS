@@ -11,6 +11,7 @@
 #import "GlobalData.h"
 #import "GlobalDataManager.h"
 #import "Commonutil.h"
+#import "ZIINQRCodeReaderView.h"
 @interface ViewController ()
 
 @end
@@ -158,7 +159,12 @@
             [self login:[decoded substringFromIndex:([type length]+7)]];
         } else if ([@"QRun" isEqual:type]) {
             NSLog(@"QR START");
-            [self performSegueWithIdentifier:@"callQRScan" sender:self];
+            
+            
+            _qrView.hidden = NO;
+            _qrView.isHiddenCam;
+            NSLog(@"QR end");
+            //[self performSegueWithIdentifier:@"callQRScan" sender:self];
         }
             
     }

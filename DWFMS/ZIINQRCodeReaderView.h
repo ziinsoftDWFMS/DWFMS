@@ -28,7 +28,7 @@
  *  스캔 수동호출 시작
  */
 - (void)startScanning;
-
+- (void)isHiddenCam;
 /**
  *  끝
  */
