@@ -18,6 +18,8 @@
 		69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E547EE1B0C3FB5002F7A9C /* Commonutil.m */; };
 		69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6DB401B08BCBF002CF1E6 /* GlobalData.m */; };
 		69EBCF531B06ECA60057F530 /* CallServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EBCF521B06ECA60057F530 /* CallServer.m */; };
+		BA006A781B16C783000D939B /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A771B16C783000D939B /* CameraViewController.m */; };
+		BA006A7B1B16D4C2000D939B /* DwfmsSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */; };
 		BA842D771B0C7FF600DE86A3 /* Icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA842D761B0C7FF600DE86A3 /* Icon.jpg */; };
 		BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */; };
 		BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */; };
@@ -56,6 +58,10 @@
 		69E6DB401B08BCBF002CF1E6 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
 		69EBCF511B06ECA60057F530 /* CallServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallServer.h; sourceTree = "<group>"; };
 		69EBCF521B06ECA60057F530 /* CallServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallServer.m; sourceTree = "<group>"; };
+		BA006A761B16C779000D939B /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		BA006A771B16C783000D939B /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		BA006A791B16D4BA000D939B /* DwfmsSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwfmsSegue.h; sourceTree = "<group>"; };
+		BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwfmsSegue.m; sourceTree = "<group>"; };
 		BA842D761B0C7FF600DE86A3 /* Icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Icon.jpg; sourceTree = "<group>"; };
 		BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QRCodeScanLine@2x.png"; sourceTree = "<group>"; };
 		BA842D7A1B0C820A00DE86A3 /* ZIINQRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZIINQRCodeReaderView.h; sourceTree = "<group>"; };
@@ -103,6 +109,10 @@
 		698E292D1B0627530004DD66 /* DWFMS */ = {
 			isa = PBXGroup;
 			children = (
+				BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */,
+				BA006A791B16D4BA000D939B /* DwfmsSegue.h */,
+				BA006A771B16C783000D939B /* CameraViewController.m */,
+				BA006A761B16C779000D939B /* CameraViewController.h */,
 				BA842D781B0C81E100DE86A3 /* ZIINQRCodeReadView */,
 				BA842D751B0C7FC600DE86A3 /* image */,
 				698E29321B0627530004DD66 /* AppDelegate.h */,
@@ -276,9 +286,11 @@
 			files = (
 				698E29371B0627530004DD66 /* ViewController.m in Sources */,
 				698E29341B0627530004DD66 /* AppDelegate.m in Sources */,
+				BA006A7B1B16D4C2000D939B /* DwfmsSegue.m in Sources */,
 				69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */,
 				69EBCF531B06ECA60057F530 /* CallServer.m in Sources */,
 				69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */,
+				BA006A781B16C783000D939B /* CameraViewController.m in Sources */,
 				69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */,
 				BA842D801B0C840700DE86A3 /* QRViewController.m in Sources */,
 				698E29311B0627530004DD66 /* main.m in Sources */,

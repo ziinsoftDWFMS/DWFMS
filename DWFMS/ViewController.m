@@ -12,6 +12,8 @@
 #import "GlobalDataManager.h"
 #import "Commonutil.h"
 #import "ZIINQRCodeReaderView.h"
+#import "AppDelegate.h"
+
 @interface ViewController ()
 
 @end
@@ -21,6 +23,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
+    [ad setMain:self];
+    
+    
     [self.webView setDelegate:self];
     
     CallServer *res = [CallServer alloc];
@@ -157,6 +164,7 @@
         {
             
             [self login:[decoded substringFromIndex:([type length]+7)]];
+            
         } else if ([@"QRun" isEqual:type]) {
             NSLog(@"QR START");
             
@@ -165,6 +173,8 @@
             _qrView.isHiddenCam;
             NSLog(@"QR end");
             //[self performSegueWithIdentifier:@"callQRScan" sender:self];
+        } else if([@"callImge" isEqual:type]){
+            [self callImge:[decoded substringFromIndex:([type length]+7)]];
         }
             
     }
@@ -295,12 +305,38 @@
     NSString *scriptString = [NSString stringWithFormat:@"welcome('%@');",escaped];
       NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
-
-    
-    
-    
     
 }
+
+-(void) callImge:(NSString*) data{
+    NSLog(@"callimge??");
+    NSArray* list = [data componentsSeparatedByString:@"&"];
+    
+    
+    NSMutableDictionary * temp =[[NSMutableDictionary alloc] init];
+    
+    for(int i =0;i<[list count];i++){
+        NSArray* listTemp =   [[list objectAtIndex:i] componentsSeparatedByString:@"="];
+        [temp setValue:[listTemp objectAtIndex:1] forKey:[listTemp objectAtIndex:0]];
+        
+        NSLog(@" key %@  value %@ ",[listTemp objectAtIndex:0],[listTemp objectAtIndex:1]);
+    }
+    [[GlobalDataManager getgData]setCameraData:temp];
+    
+    [self performSegueWithIdentifier:@"CameraCall" sender:self];
+}
+
+
+
+- (void) setimage:(NSString*) path num:(NSString*)num{
+    NSLog(@"ddd path %@ num %@",path,num);
+    
+    NSString *scriptString = [NSString stringWithFormat:@"setimge('%@','%@');",path,num];
+    NSLog(@"scriptString => %@", scriptString);
+    [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
+}
+
+
 //QR View 닫은 후 실행될 Method
 - (IBAction) exitQRViewController:(UIStoryboardSegue *) segue
 {

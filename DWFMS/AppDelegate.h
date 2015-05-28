@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import "ViewController.h"
+#import "CameraViewController.h"
+
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     NSString *DEVICE_TOK;
@@ -25,6 +29,8 @@
 @property (strong, nonatomic) NSString *EMC_MSG;
 @property (strong, nonatomic) NSString *CODE;
 
+@property (weak, nonatomic) ViewController * main;
+@property (weak, nonatomic) CameraViewController * camera;
 
 
 @end

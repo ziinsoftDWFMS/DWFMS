@@ -49,4 +49,6 @@
 @property(strong,nonatomic) NSString *outTime;
 @property(strong,nonatomic) NSArray *auth;
 
+
+@property(strong,nonatomic) NSMutableDictionary * cameraData;
 @end
