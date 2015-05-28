@@ -2,6 +2,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
+#import "AppDelegate.h"
 
 @interface ZIINQRCodeReaderView()<AVCaptureMetadataOutputObjectsDelegate>
 
@@ -182,13 +183,17 @@
         
         self.hidden = YES;
         
-                //-----------------------------------
+        //-----------------------------------
+        AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
+        NSLog(@" appdeligate %@",ad);
+        [[ad main] setQRcode:self.scannedValue];
     }
 }
 
 #pragma mark - Private Methods
 
 - (void)isHiddenCam{
+    
     self.autoStart = YES;
     
     //비디오 장치 설정

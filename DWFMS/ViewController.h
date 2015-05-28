@@ -14,6 +14,6 @@
 @property (weak, nonatomic) IBOutlet ZIINQRCodeReaderView *qrView;
 
 - (void) setimage:(NSString*) path num:(NSString*)num;
-
+- (void) setQRcode:(NSString*) data ;
 @end
 

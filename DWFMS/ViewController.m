@@ -27,7 +27,7 @@
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
     
-    
+    NSLog(@" appdeligate %@",ad);
     [self.webView setDelegate:self];
     
     CallServer *res = [CallServer alloc];
@@ -302,7 +302,7 @@
     NSString *decoded = [escaped stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"decoded string :\n%@", decoded);
     
-    NSString *scriptString = [NSString stringWithFormat:@"welcome('%@');",escaped];
+    NSString *scriptString = [NSString stringWithFormat:@"welcome(%@);",decoded];
       NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
     
@@ -342,5 +342,9 @@
 {
     NSLog(@"exit QR ViewController ~~~~~~~");
     
+}
+
+- (void) setQRcode:(NSString*) data {
+    NSLog(@"????? setQRcode data: %@",data);
 }
 @end
