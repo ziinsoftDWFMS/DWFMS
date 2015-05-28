@@ -18,10 +18,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="skk-fd-omx" colorLabel="IBBuiltInLabel-Red">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <color key="barTintColor" red="0.22657736936754497" green="0.22283909072461877" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="textShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <offsetWrapper key="textShadowOffset" horizontal="100" vertical="0.0"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="UBIS Master" id="6Qo-hd-tO8"/>
+                                </items>
+                            </navigationBar>
                             <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guR-sw-pqW">
-                                <rect key="frame" x="0.0" y="60" width="600" height="540"/>
+                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="43" verticalHuggingPriority="43" horizontalCompressionResistancePriority="43" verticalCompressionResistancePriority="43" fixedFrame="YES" image="Icon.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7eI-Hh-yrZ">
+                                <rect key="frame" x="5" y="32" width="37" height="37"/>
+                            </imageView>
                             <view hidden="YES" contentMode="scaleToFill" restorationIdentifier="qrview" translatesAutoresizingMaskIntoConstraints="NO" id="a3b-0M-AXJ" customClass="ZIINQRCodeReaderView">
                                 <rect key="frame" x="0.0" y="28" width="600" height="572"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,8 +50,11 @@
                             <constraint firstItem="guR-sw-pqW" firstAttribute="top" secondItem="0ud-Mg-LTa" secondAttribute="bottom" constant="53" id="MhN-ZC-Bon"/>
                             <constraint firstAttribute="trailingMargin" secondItem="a3b-0M-AXJ" secondAttribute="trailing" constant="-16" id="OX8-bO-ph1"/>
                             <constraint firstItem="a3b-0M-AXJ" firstAttribute="top" secondItem="0ud-Mg-LTa" secondAttribute="bottom" constant="8" id="TUo-zA-8wo"/>
-                            <constraint firstItem="zjI-k9-pZM" firstAttribute="top" secondItem="guR-sw-pqW" secondAttribute="bottom" constant="8" id="X8P-cS-GKm"/>
+                            <constraint firstItem="zjI-k9-pZM" firstAttribute="top" secondItem="guR-sw-pqW" secondAttribute="bottom" id="X8P-cS-GKm"/>
                             <constraint firstItem="guR-sw-pqW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="ZhG-we-Ovk"/>
+                            <constraint firstItem="skk-fd-omx" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="hP3-Xr-29g"/>
+                            <constraint firstItem="skk-fd-omx" firstAttribute="top" secondItem="0ud-Mg-LTa" secondAttribute="bottom" constant="8" id="l3k-fT-Ild"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="skk-fd-omx" secondAttribute="trailing" constant="-16" id="uzm-0x-59N"/>
                         </constraints>
                     </view>
                     <connections>
@@ -83,4 +101,7 @@
             <point key="canvasLocation" x="1226" y="-1024"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Icon.jpg" width="175" height="175"/>
+    </resources>
 </document>

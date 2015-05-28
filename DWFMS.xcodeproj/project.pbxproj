@@ -23,7 +23,6 @@
 		BA842D771B0C7FF600DE86A3 /* Icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA842D761B0C7FF600DE86A3 /* Icon.jpg */; };
 		BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */; };
 		BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */; };
-		BA842D801B0C840700DE86A3 /* QRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7F1B0C840700DE86A3 /* QRViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,8 +65,6 @@
 		BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QRCodeScanLine@2x.png"; sourceTree = "<group>"; };
 		BA842D7A1B0C820A00DE86A3 /* ZIINQRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZIINQRCodeReaderView.h; sourceTree = "<group>"; };
 		BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZIINQRCodeReaderView.m; sourceTree = "<group>"; };
-		BA842D7E1B0C83E000DE86A3 /* QRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRViewController.h; sourceTree = "<group>"; };
-		BA842D7F1B0C840700DE86A3 /* QRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +128,6 @@
 				69E0554D1B096F140024287C /* GlobalDataManager.m */,
 				69E547ED1B0C3FB5002F7A9C /* Commonutil.h */,
 				69E547EE1B0C3FB5002F7A9C /* Commonutil.m */,
-				BA842D7E1B0C83E000DE86A3 /* QRViewController.h */,
-				BA842D7F1B0C840700DE86A3 /* QRViewController.m */,
 			);
 			path = DWFMS;
 			sourceTree = "<group>";
@@ -292,7 +287,6 @@
 				69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */,
 				BA006A781B16C783000D939B /* CameraViewController.m in Sources */,
 				69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */,
-				BA842D801B0C840700DE86A3 /* QRViewController.m in Sources */,
 				698E29311B0627530004DD66 /* main.m in Sources */,
 				BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */,
 			);
