@@ -38,7 +38,7 @@
    
 //    NSArray *auth;
 }
-
++(NSString*) getServerIp;
 @property(strong,nonatomic) NSString *compCd;
 @property(strong,nonatomic) NSString *empNo;
 @property(strong,nonatomic) NSString *empNm;

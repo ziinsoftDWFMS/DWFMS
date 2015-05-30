@@ -267,8 +267,8 @@
     }
    
     
-    [param setObject:@"박종훈" forKey:@"EMPNM"];
-   
+    [param setObject:[[GlobalDataManager getgData] empNm] forKey:@"EMPNM"];
+   [param setObject:@"auth" forKey:@"AUTH"];
     
 //     NSString *jsonInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"saltfactory",@"name",@"saltfactory@gmail.com",@"e-mail", nil];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:&error];
@@ -345,6 +345,85 @@
 }
 
 - (void) setQRcode:(NSString*) data {
+//    request_contents.put("SERIAL_NO", SERIAL_NO);
+//    request_contents.put("url", "getQRJobTpy.do");
     NSLog(@"????? setQRcode data: %@",data);
+    
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+    [param setValue:data forKey:@"SERIAL_NO"];
+    
+    //deviceId
+    
+    //R 수신
+    CallServer *res = [CallServer alloc];
+    NSString* str = [res stringWithUrl:@"getQRJobTpy.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(@"?? %@",str);
+    
+    if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
+    {
+        if(     [@"Y"isEqual:[jsonInfo valueForKey:@"result"] ] )
+        {
+            NSDictionary *resdata = [jsonInfo valueForKey:(@"data")];
+            if(     [@"01"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
+            {
+                [self callPatrol:resdata];
+                 
+            }
+            
+            
+        }
+        
+    }
+    
 }
+
+-(void) callPatrol:(NSMutableDictionary * ) param{
+    CallServer *res = [CallServer alloc];
+    NSString* str = [res stringWithUrl:@"PSTag.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(@"?? %@",str);
+    
+    if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
+    {
+        NSArray * temparray = [jsonInfo valueForKey:(@"data")];
+        NSDictionary *resdata = [temparray objectAtIndex:0];
+
+        //mWebView.loadUrl(GlobalData.getServerIp()+"/patrolService.do?LOC_ID="+psdata.getString("PAT_LOC_ID")+"&PAT_CHECK_DT="+psdata.getString("sh_PAT_CHECK_DT")+"#detail");
+        NSLog([resdata valueForKey:@"sh_PAT_CHECK_DT"]);
+        NSMutableDictionary * tempParam = [[NSMutableDictionary alloc] init];
+        [tempParam setValue:[resdata valueForKey:@"sh_PAT_CHECK_DT"] forKey:@"PAT_CHECK_DT"];
+        [tempParam setValue:[resdata valueForKey:@"PAT_LOC_ID"] forKey:@"LOC_ID"];
+        
+        
+        
+                
+        NSString *urlParam=[Commonutil serializeJson:tempParam];
+        NSLog(@"??????? %@",urlParam);
+        NSString *server = [GlobalData getServerIp];
+        NSString *pageUrl = @"/patrolService.do#detail";
+        NSString *callurl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+        NSURL *url=[NSURL URLWithString:callurlpL?];
+        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+        [requestURL setHTTPMethod:@"POST"];
+        [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
+        [self.webView loadRequest:requestURL];
+         NSLog(@"???????");
+
+        
+      
+        
+    }
+    
+    //
+}
+
+
 @end

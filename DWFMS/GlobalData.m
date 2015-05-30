@@ -11,5 +11,7 @@
 @implementation GlobalData
 
 //@synthesize compCd;
-
++(NSString*) getServerIp{
+    return ServerIp;
+}
 @end

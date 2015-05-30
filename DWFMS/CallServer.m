@@ -96,6 +96,8 @@
                                     returningResponse:&response
                                                 error:&error];
     
+    
+    NSLog(@"error :%@",error);
     // Construct a String around the Data from the response
     return [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
 }
