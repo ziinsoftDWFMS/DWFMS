@@ -369,11 +369,35 @@
         if(     [@"Y"isEqual:[jsonInfo valueForKey:@"result"] ] )
         {
             NSDictionary *resdata = [jsonInfo valueForKey:(@"data")];
+            
+            if(  !   [[[GlobalDataManager getgData] compCd ]isEqual:[resdata valueForKey:@"COMP_CD"] ] )
+            {
+                //다른 사업장 업무입니다.
+                return;
+            }
+            
             if(     [@"01"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
-                [self callPatrol:resdata];
-                 
+                 [self callPatrol:resdata];
             }
+            
+            if( [@"02"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
+            {
+                [self setInOutCommitInfo:resdata];
+                
+            }
+            
+            if( [@"03"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
+            {
+                
+                [self setInOutCommitInfo:resdata];
+            }
+            if( [@"04"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
+            {
+                
+                [self callChkWork:resdata];
+            }
+            
             
             
         }
@@ -391,6 +415,14 @@
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     NSLog(@"?? %@",str);
     
+    NSArray * authlist = [[GlobalDataManager getgData] auth];
+  
+    
+      NSLog(@" ?? %@ ",(  [authlist containsObject:@"fms653"] ? @"YES" : @"NO"));
+    if(![authlist containsObject:@"fms653"]){
+        //권한이 없습니다.
+        return;
+    }
     if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
     {
         NSArray * temparray = [jsonInfo valueForKey:(@"data")];
@@ -410,7 +442,7 @@
         NSString *server = [GlobalData getServerIp];
         NSString *pageUrl = @"/patrolService.do#detail";
         NSString *callurl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
-        NSURL *url=[NSURL URLWithString:callurlpL?];
+        NSURL *url=[NSURL URLWithString:callurl];
         NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
         [requestURL setHTTPMethod:@"POST"];
         [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
@@ -424,6 +456,65 @@
     
     //
 }
-
+-(void) setInOutCommitInfo :(NSMutableDictionary * ) param{
+ //
+    CallServer *res = [CallServer alloc];
+    NSString* str = [res stringWithUrl:@"setInOutCommitInfo.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(@"?? %@",str);
+}
+-(void) callChkWork:(NSMutableDictionary * ) param{
+    CallServer *res = [CallServer alloc];
+    NSString* str = [res stringWithUrl:@"CHKWORKTag.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(@"?? %@",str);
+    
+    NSArray * authlist = [[GlobalDataManager getgData] auth];
+    
+    
+    NSLog(@" ?? %@ ",(  [authlist containsObject:@"fms653"] ? @"YES" : @"NO"));
+    if(![authlist containsObject:@"fms113"]){
+        //권한이 없습니다.
+        return;
+    }
+    if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
+    {
+        NSArray * temparray = [jsonInfo valueForKey:(@"data")];
+        NSDictionary *resdata = [temparray objectAtIndex:0];
+        
+        //mWebView.loadUrl(GlobalData.getServerIp()+"/patrolService.do?LOC_ID="+psdata.getString("PAT_LOC_ID")+"&PAT_CHECK_DT="+psdata.getString("sh_PAT_CHECK_DT")+"#detail");
+        NSLog([resdata valueForKey:@"sh_PAT_CHECK_DT"]);
+        NSMutableDictionary * tempParam = [[NSMutableDictionary alloc] init];
+        [tempParam setValue:[resdata valueForKey:@"sh_PAT_CHECK_DT"] forKey:@"PAT_CHECK_DT"];
+        [tempParam setValue:[resdata valueForKey:@"PAT_LOC_ID"] forKey:@"LOC_ID"];
+        
+        
+        
+        
+        NSString *urlParam=[Commonutil serializeJson:tempParam];
+        NSLog(@"??????? %@",urlParam);
+        NSString *server = [GlobalData getServerIp];
+        NSString *pageUrl = @"/chkWorkService.do#detail";
+        NSString *callurl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+        NSURL *url=[NSURL URLWithString:callurl];
+        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+        [requestURL setHTTPMethod:@"POST"];
+        [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
+        [self.webView loadRequest:requestURL];
+        NSLog(@"???????");
+        
+        
+        
+        
+    }
+    
+    //
+}
 
 @end
