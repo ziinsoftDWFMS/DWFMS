@@ -58,12 +58,13 @@
          [global setOutTime:@"-"];
     }
     
-    if([keys containsObject:@"tdayoin"]){
-        [global setInTime:[data valueForKey:@"tdayoin"]];
+    if([keys containsObject:@"tdayin"]){
+        
+        [global setInTime:[data valueForKey:@"tdayin"]];
     }else{
         
         if(![keys containsObject:@"ydayout"] && [keys containsObject:@"ydayin"]){
-            [global setInTime:[data valueForKey:@"ydayoin"]];
+            [global setInTime:[data valueForKey:@"ydayin"]];
         }else{
              [global setInTime:@"-"];
         }

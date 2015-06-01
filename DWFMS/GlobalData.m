@@ -14,4 +14,8 @@
 +(NSString*) getServerIp{
     return ServerIp;
 }
+
++(NSString*) getHomedir{
+    return homedir;
+}
 @end

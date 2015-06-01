@@ -117,7 +117,7 @@
     [requestURL setHTTPMethod:@"POST"];
     [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
     [self.webView loadRequest:requestURL];
-    NSLog(@"???????");
+    NSLog(@"??????? urlParam %@",urlParam);
 
 
 
@@ -224,87 +224,58 @@
 -(void) login:(NSString*) data{
     NSError *error;
     
-    
+    NSLog(@"?logindata %@",data);
     NSData *sessionjsonData = [data dataUsingEncoding:NSUTF8StringEncoding];
    
     NSDictionary *sessionjsonInfo = [NSJSONSerialization JSONObjectWithData:sessionjsonData options:kNilOptions error:&error];
     
-    
-    
-    NSDictionary *sessiondata = [sessionjsonInfo valueForKey:(@"data")];
-    [GlobalDataManager initgData:(sessiondata)];
-    NSArray * timelist = [sessionjsonInfo objectForKey:@"inout"];
-    [GlobalDataManager setTime:[timelist objectAtIndex:0]];
-    NSArray * authlist = [sessionjsonInfo objectForKey:@"auth"];
-    [GlobalDataManager initAuth:authlist];
-    
-    NSString * text =@"본 어플리케이션은 원할한 서비스를\n제공하기 위해 휴대전화번호등의 개인정보를 사용합니다.\n[개인정보보호법]에 의거해 개인정보 사용에 대한 \n사용자의 동의를 필요로 합니다.\n개인정보 사용에 동의하시겠습니까?\n";
-    if(![@"Y" isEqualToString:[sessiondata valueForKey:@"INFO_YN"]])
+    if(     [@"s"isEqual:[sessionjsonInfo valueForKey:@"rv"] ] )
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:text delegate:self
-                                              cancelButtonTitle:@"취소"
-                                              otherButtonTitles:@"동의", nil];
-        [alert show];
-    }
-    
-    
-    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
-    if([@"" isEqualToString:[[GlobalDataManager getgData] inTime]])
-    {
-        [param setObject:@"-" forKey:@"INTIME"];
+        if(     [@"Y"isEqual:[sessionjsonInfo valueForKey:@"result"] ] )
+        {
+            NSDictionary *sessiondata = [sessionjsonInfo valueForKey:(@"data")];
+            [GlobalDataManager initgData:(sessiondata)];
+            NSArray * timelist = [sessionjsonInfo objectForKey:@"inout"];
+            [GlobalDataManager setTime:[timelist objectAtIndex:0]];
+            NSArray * authlist = [sessionjsonInfo objectForKey:@"auth"];
+            [GlobalDataManager initAuth:authlist];
+            
+            NSString * text =@"본 어플리케이션은 원할한 서비스를\n제공하기 위해 휴대전화번호등의 개인정보를 사용합니다.\n[개인정보보호법]에 의거해 개인정보 사용에 대한 \n사용자의 동의를 필요로 합니다.\n개인정보 사용에 동의하시겠습니까?\n";
+            if(![@"Y" isEqualToString:[sessiondata valueForKey:@"INFO_YN"]])
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:text delegate:self
+                                                      cancelButtonTitle:@"취소"
+                                                      otherButtonTitles:@"동의", nil];
+                [alert show];
+            }
+            
+            
+            NSString *server = @"http://211.253.9.3:8080/";
+            NSString *pageUrl = @"DWFMS";
+            NSString *callUrl = @"";
+            
+            
+  
+            
+            
+            
+           
+          
+            callUrl = [NSString stringWithFormat:@"%@%@#home",server,pageUrl];
+            
+            NSURL *url=[NSURL URLWithString:callUrl];
+            NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+                        [self.webView loadRequest:requestURL];
+            
+        }else{
+            
+        }
     }else{
         
-        [param setObject:[[GlobalDataManager getgData] inTime]  forKey:@"INTIME"];
     }
     
-    if([@"" isEqualToString:[[GlobalDataManager getgData] outTime]])
-    {
-        [param setObject:@"-" forKey:@"OUTTIME"];
-    }else{
-        [param setObject:[[GlobalDataManager getgData] outTime]  forKey:@"OUTTIME"];
-       
-    }
-   
     
-    [param setObject:[[GlobalDataManager getgData] empNm] forKey:@"EMPNM"];
-   [param setObject:@"auth" forKey:@"AUTH"];
-    
-//     NSString *jsonInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"saltfactory",@"name",@"saltfactory@gmail.com",@"e-mail", nil];
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    if (error) {
-        NSLog(@"error : %@", error.localizedDescription);
-        return;
-    }
-    
-    NSString* searchWord = @"\"";
-    NSString* replaceWord = @"";
-//   jsonString =  [jsonString stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
-    
-   
-
-    jsonString =  [jsonString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-     NSLog(@"jsonString => %@", jsonString);
-    
-    NSString *escaped = [jsonString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"escaped string :\n%@", escaped);
-    
-    searchWord = @"%20";
-    replaceWord = @"";
-    escaped =  [escaped stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
-    searchWord = @"%0A";
-    replaceWord = @"";
-    escaped =  [escaped stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
-
-    
-    NSString *decoded = [escaped stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"decoded string :\n%@", decoded);
-    
-    NSString *scriptString = [NSString stringWithFormat:@"welcome(%@);",decoded];
-      NSLog(@"scriptString => %@", scriptString);
-    [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
     
 }
 
@@ -331,7 +302,7 @@
 - (void) setimage:(NSString*) path num:(NSString*)num{
     NSLog(@"ddd path %@ num %@",path,num);
     
-    NSString *scriptString = [NSString stringWithFormat:@"setimge('%@','%@');",path,num];
+    NSString *scriptString = [NSString stringWithFormat:@"setimge('%@%@','%@');",[GlobalData getHomedir],path,num];
     NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
 }
@@ -459,7 +430,14 @@
 -(void) setInOutCommitInfo :(NSMutableDictionary * ) param{
  //
     CallServer *res = [CallServer alloc];
-    NSString* str = [res stringWithUrl:@"setInOutCommitInfo.do" VAL:param];
+    
+    
+    NSMutableDictionary *sessiondata =[GlobalDataManager getAllData];
+    
+    [sessiondata addEntriesFromDictionary:param];
+
+    NSLog(@"??? sessiondata ?? %@" ,sessiondata);
+    NSString* str = [res stringWithUrl:@"setInOutCommitInfo.do" VAL:sessiondata];
     
     NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
@@ -517,4 +495,63 @@
     //
 }
 
+-(void) callWelcome{
+    NSError *error;
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    if([@"" isEqualToString:[[GlobalDataManager getgData] inTime]])
+    {
+        [param setObject:@"-" forKey:@"INTIME"];
+    }else{
+        
+        [param setObject:[[GlobalDataManager getgData] inTime]  forKey:@"INTIME"];
+    }
+    
+    if([@"" isEqualToString:[[GlobalDataManager getgData] outTime]])
+    {
+        [param setObject:@"-" forKey:@"OUTTIME"];
+    }else{
+        [param setObject:[[GlobalDataManager getgData] outTime]  forKey:@"OUTTIME"];
+        
+    }
+    
+    
+    [param setObject:[[GlobalDataManager getgData] empNm] forKey:@"EMPNM"];
+    
+    
+    //     NSString *jsonInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"saltfactory",@"name",@"saltfactory@gmail.com",@"e-mail", nil];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    if (error) {
+        NSLog(@"error : %@", error.localizedDescription);
+        return;
+    }
+    
+    NSString* searchWord = @"\"";
+    NSString* replaceWord = @"";
+    //   jsonString =  [jsonString stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    
+    
+    
+    jsonString =  [jsonString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSLog(@"jsonString => %@", jsonString);
+    
+    NSString *escaped = [jsonString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"escaped string :\n%@", escaped);
+    
+    searchWord = @"%20";
+    replaceWord = @"";
+    escaped =  [escaped stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    searchWord = @"%0A";
+    replaceWord = @"";
+    escaped =  [escaped stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    
+    
+    NSString *decoded = [escaped stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"decoded string :\n%@", decoded);
+    
+    NSString *scriptString = [NSString stringWithFormat:@"welcome(%@);",decoded];
+    NSLog(@"scriptString => %@", scriptString);
+    [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
+}
 @end

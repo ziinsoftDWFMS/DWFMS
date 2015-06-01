@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
- static NSString *homedir= @"D:/AIRapplication/";
+ static NSString *homedir= @"D:/AIRapplication";
  static NSString *ServerIp=@"http://211.253.9.3:8080";
 @interface GlobalData : NSObject{
     
@@ -39,6 +39,7 @@
 //    NSArray *auth;
 }
 +(NSString*) getServerIp;
++(NSString*) getHomedir;
 @property(strong,nonatomic) NSString *compCd;
 @property(strong,nonatomic) NSString *empNo;
 @property(strong,nonatomic) NSString *empNm;
