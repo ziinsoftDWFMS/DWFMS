@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
- static NSString *homedir= @"D:/AIRapplication";
+ static NSString *homedir= @"E:/applcation";
  static NSString *ServerIp=@"http://211.253.9.3:8080";
 @interface GlobalData : NSObject{
     
@@ -49,6 +49,7 @@
 @property(strong,nonatomic) NSString *inTime;
 @property(strong,nonatomic) NSString *outTime;
 @property(strong,nonatomic) NSArray *auth;
+@property(strong,nonatomic) NSArray *gcmId;
 
 
 @property(strong,nonatomic) NSMutableDictionary * cameraData;

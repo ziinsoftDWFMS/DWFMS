@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-
+#import "CallServer.h"
+#import "GlobalData.h"
+#import "GlobalDataManager.h"
 @interface AppDelegate ()
 
 @end
@@ -36,6 +38,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     
     NSLog(@"My token is: %@", deviceToken);
+    
+//    obj.put("GCM_ID", gcmId);
+//    obj.put("HP_TEL", mobileNo);
+//    obj.put("DEVICE_FLAG", "A");
+//    obj.put("TEST", "이인재입니다.");
+//    JSONObject resObj = new ServletRequester("registGCM.do").execute(obj).get();
+    
+
+    
     NSMutableString *deviceId = [NSMutableString string];
     const unsigned char* ptr = (const unsigned char*) [deviceToken bytes];
     
@@ -49,6 +60,26 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     app.DEVICE_TOK = deviceId;
+    
+    [[GlobalDataManager getgData] setGcmId:app.DEVICE_TOK];
+    
+    CallServer *res = [CallServer alloc];
+    UIDevice *device = [UIDevice currentDevice];
+    NSString* idForVendor = [device.identifierForVendor UUIDString];
+    
+    
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+    [param setValue:idForVendor forKey:@"HP_TEL"];
+    [param setValue:app.DEVICE_TOK forKey:@"GCM_ID"];
+    [param setObject:@"I" forKey:@"DEVICE_FLAG"];
+    [param setObject:@"TEST" forKey:@"TEST"];
+    
+    //deviceId
+    
+    //R 수신
+    
+    NSString* str = [res stringWithUrl:@"registGCM.do" VAL:param];
     
     NSLog(@"APNS Device Tok: %@", app.DEVICE_TOK);
 }

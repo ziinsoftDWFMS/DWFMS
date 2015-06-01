@@ -176,6 +176,9 @@
         } else if([@"callImge" isEqual:type]){
             [self callImge:[decoded substringFromIndex:([type length]+7)]];
         }
+        else if([@"logout" isEqual:type]){
+            [self logout];
+        }
             
     }
 
@@ -250,17 +253,31 @@
                 [alert show];
             }
             
+            NSLog(@"gcmid = %@",[[GlobalDataManager getgData] gcmId]);
+            
+            CallServer *res = [CallServer alloc];
+            UIDevice *device = [UIDevice currentDevice];
+            NSString* idForVendor = [device.identifierForVendor UUIDString];
+            
+            
+            NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+            
+            [param setValue:idForVendor forKey:@"HP_TEL"];
+            [param setValue:[[GlobalDataManager getgData] gcmId] forKey:@"GCM_ID"];
+            [param setObject:@"I" forKey:@"DEVICE_FLAG"];
+            [param setObject:@"TEST" forKey:@"TEST"];
+            
+            //deviceId
+            
+            //R 수신
+            
+            NSString* str = [res stringWithUrl:@"registGCM.do" VAL:param];
             
             NSString *server = @"http://211.253.9.3:8080/";
             NSString *pageUrl = @"DWFMS";
             NSString *callUrl = @"";
             
             
-  
-            
-            
-            
-           
           
             callUrl = [NSString stringWithFormat:@"%@%@#home",server,pageUrl];
             
@@ -300,9 +317,12 @@
 
 
 - (void) setimage:(NSString*) path num:(NSString*)num{
+//       NSString * searchWord = @"/";
+//    NSString * replaceWord = @"\\\\";
+//    path =  [path stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
     NSLog(@"ddd path %@ num %@",path,num);
-    
-    NSString *scriptString = [NSString stringWithFormat:@"setimge('%@%@','%@');",[GlobalData getHomedir],path,num];
+
+    NSString *scriptString = [NSString stringWithFormat:@"setimge('%@','%@');",path,num];
     NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
 }
@@ -553,5 +573,25 @@
     NSString *scriptString = [NSString stringWithFormat:@"welcome(%@);",decoded];
     NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
+}
+
+-(void) logout{
+    NSString *server = @"http://211.253.9.3:8080/";
+    NSString *pageUrl = @"DWFMS";
+    NSString *callUrl = @"";
+    
+    
+    
+    
+    
+    
+    
+    
+    callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+    
+    NSURL *url=[NSURL URLWithString:callUrl];
+    NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+    [self.webView loadRequest:requestURL];
+    
 }
 @end

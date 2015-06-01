@@ -33,10 +33,13 @@
     searchWord = @" ";
     replaceWord = @"";
     makeFilename =  [makeFilename stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    searchWord = @"'";
+    replaceWord = @"";
+    makeFilename =  [makeFilename stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
     
     NSLog(@"filename %@",makeFilename);
 //    filepath = [NSString stringWithFormat:@"resources/App_Company/%@/%@.jpg",[[GlobalDataManager getgData] compCd],[cData valueForKey:@"type"],filename];
-     filepath = [NSString stringWithFormat:@"/resources/App_Company/%@/%@/",@"DW000",[cData valueForKey:@"type"]];
+     filepath = [NSString stringWithFormat:@"resources/App_Company/%@/%@/",[[GlobalDataManager getgData] compCd],[cData valueForKey:@"type"]];
     num = [cData valueForKey:@"num"];
     
 }
