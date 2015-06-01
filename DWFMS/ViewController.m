@@ -193,11 +193,11 @@
             NSLog(@"reCall : call Script value : %@", scriptString);
             
             [webView stringByEvaluatingJavaScriptFromString:scriptString];
-        }
+        }else if([@"callbackwelcome"isEqual:type]) {
             
+            [self callbackwelcome];
+        }
     }
-
-    
     
     
     return YES;
@@ -473,6 +473,19 @@
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     NSLog(@"?? %@",str);
+    
+    NSString *server = @"http://211.253.9.3:8080/";
+    NSString *pageUrl = @"DWFMS";
+    NSString *callUrl = @"";
+    
+    
+    
+    callUrl = [NSString stringWithFormat:@"%@%@#home",server,pageUrl];
+    
+    NSURL *url=[NSURL URLWithString:callUrl];
+    NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+    [self.webView loadRequest:requestURL];
+    
 }
 -(void) callChkWork:(NSMutableDictionary * ) param{
     CallServer *res = [CallServer alloc];
@@ -594,14 +607,14 @@
     
     
     
-    
-    
-    
     callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
     
     NSURL *url=[NSURL URLWithString:callUrl];
     NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
     [self.webView loadRequest:requestURL];
+    
+}
+-(void)callbackwelcome{
     
 }
 @end
