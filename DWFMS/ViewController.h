@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ZIINQRCodeReaderView.h"
+
 @interface ViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;

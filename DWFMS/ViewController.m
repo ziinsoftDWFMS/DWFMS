@@ -19,6 +19,7 @@
 @end
 
 @implementation ViewController
+NSString *viewType =@"LOGOUT";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -93,7 +94,7 @@
                 [alert show];
             }
             
-           
+           viewType = @"LOGIN";
             
             
             
@@ -251,6 +252,7 @@
     {
         if(     [@"Y"isEqual:[sessionjsonInfo valueForKey:@"result"] ] )
         {
+            viewType = @"LOGIN";
             NSDictionary *sessiondata = [sessionjsonInfo valueForKey:(@"data")];
             [GlobalDataManager initgData:(sessiondata)];
             NSArray * timelist = [sessionjsonInfo objectForKey:@"inout"];
@@ -599,6 +601,7 @@
 }
 
 -(void) logout{
+    viewType = @"LOGOUT";
     NSString *server = @"http://211.253.9.3:8080/";
     NSString *pageUrl = @"DWFMS";
     NSString *callUrl = @"";
@@ -615,6 +618,62 @@
     
 }
 -(void)callbackwelcome{
+    if([viewType isEqualToString:@"LOGOUT"]){
+        return;
+    }
     
+    CallServer *res = [CallServer alloc];
+    UIDevice *device = [UIDevice currentDevice];
+    NSString* idForVendor = [device.identifierForVendor UUIDString];
+    
+    
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+    [param setValue:idForVendor forKey:@"HP_TEL"];
+    [param setValue:@"ffffffff" forKey:@"GCM_ID"];
+    [param setObject:@"I" forKey:@"DEVICE_FLAG"];
+    
+    //deviceId
+    
+    //R 수신
+    
+    NSString* str = [res stringWithUrl:@"loginByPhon.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(str);
+    
+    if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
+    {
+        if(     [@"Y"isEqual:[jsonInfo valueForKey:@"result"] ] )
+        {
+           
+            NSString * oldempon = [[GlobalDataManager getgData]empNo];
+            NSDictionary *data = [jsonInfo valueForKey:(@"data")];
+            [GlobalDataManager initgData:(data)];
+            NSArray * timelist = [jsonInfo objectForKey:@"inout"];
+            [GlobalDataManager setTime:[timelist objectAtIndex:0]];
+            NSArray * authlist = [jsonInfo objectForKey:@"auth"];
+            [GlobalDataManager initAuth:authlist];
+            
+            
+            if(![oldempon isEqualToString:[[GlobalDataManager getgData] empNo] ]){
+                [self logout];
+            }
+            else{
+                [self callWelcome];
+            }
+            
+            
+            
+            
+        }
+        else{
+            NSLog(@"다른폰에서 로그인");
+        }
+    }
 }
+
+
 @end
