@@ -117,7 +117,7 @@
     float wh = image.size.width;
     
     NSLog(@"?? hi %f  wh %f ",hi,wh);
-    NSData *dataObj = UIImageJPEGRepresentation(image, 1.0);
+    NSData *dataObj = UIImageJPEGRepresentation(image, 0.3);
     
     NSLog(@"?? size? %d ",dataObj.length);
      NSLog(@" 22 %@ ",(getImage ? @"YES" : @"NO"));
@@ -190,7 +190,7 @@
     
     // add image data
     //UIImage *imageToUpload = [UIImage imageNamed:@"/Library/Desktop Pictures/Moon.jpg"];
-    NSData *imageData = UIImageJPEGRepresentation([imageView image], 1.0f);
+    NSData *imageData = UIImageJPEGRepresentation([imageView image], 0.3);
     
     NSLog(@"image length : %lu",(unsigned long)[imageData length]);
     

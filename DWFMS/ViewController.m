@@ -160,6 +160,9 @@
         NSArray* list = [decoded componentsSeparatedByString:@":"];
         NSString *type  = [list objectAtIndex:1];
         NSLog(@"?? %@",type);
+        
+        //Webview : web call case
+        
         if([@"login" isEqual:type])
         {
             
@@ -178,6 +181,14 @@
         }
         else if([@"logout" isEqual:type]){
             [self logout];
+        } else if ([@"setSession" isEqual:type]) {
+            NSString *scriptString = [NSString stringWithFormat:@"%@;", [decoded substringFromIndex:([type length]+7)]];
+            NSLog(@"call Script value : %@", scriptString);
+            //세션 맺어주는 로직(재 로그인 로직) 삽입 후 아래 주석 풀어야 한다.
+            
+            
+            
+            //[webView stringByEvaluatingJavaScriptFromString:scriptString];
         }
             
     }
@@ -328,12 +339,6 @@
 }
 
 
-//QR View 닫은 후 실행될 Method
-- (IBAction) exitQRViewController:(UIStoryboardSegue *) segue
-{
-    NSLog(@"exit QR ViewController ~~~~~~~");
-    
-}
 
 - (void) setQRcode:(NSString*) data {
 //    request_contents.put("SERIAL_NO", SERIAL_NO);
@@ -364,6 +369,7 @@
             if(  !   [[[GlobalDataManager getgData] compCd ]isEqual:[resdata valueForKey:@"COMP_CD"] ] )
             {
                 //다른 사업장 업무입니다.
+                NSLog(@"다른사업장의 업무 입니다.");
                 return;
             }
             

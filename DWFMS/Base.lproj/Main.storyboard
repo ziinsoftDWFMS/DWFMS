@@ -31,10 +31,10 @@
                                 </items>
                             </navigationBar>
                             <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guR-sw-pqW">
-                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
+                                <rect key="frame" x="0.0" y="71" width="600" height="529"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="43" verticalHuggingPriority="43" horizontalCompressionResistancePriority="43" verticalCompressionResistancePriority="43" fixedFrame="YES" image="Icon.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7eI-Hh-yrZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="43" verticalHuggingPriority="43" horizontalCompressionResistancePriority="43" verticalCompressionResistancePriority="43" fixedFrame="YES" image="Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="7eI-Hh-yrZ">
                                 <rect key="frame" x="5" y="32" width="37" height="37"/>
                             </imageView>
                             <view hidden="YES" contentMode="scaleToFill" restorationIdentifier="qrview" translatesAutoresizingMaskIntoConstraints="NO" id="a3b-0M-AXJ" customClass="ZIINQRCodeReaderView">
@@ -102,6 +102,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Icon.jpg" width="175" height="175"/>
+        <image name="Icon.png" width="175" height="175"/>
     </resources>
 </document>
