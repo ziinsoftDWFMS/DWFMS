@@ -178,17 +178,21 @@
             //[self performSegueWithIdentifier:@"callQRScan" sender:self];
         } else if([@"callImge" isEqual:type]){
             [self callImge:[decoded substringFromIndex:([type length]+7)]];
-        }
-        else if([@"logout" isEqual:type]){
+        } else if([@"logout" isEqual:type]){
             [self logout];
         } else if ([@"setSession" isEqual:type]) {
+            NSString *scriptParameter = [NSString stringWithFormat:@"setsession('%@&reCall=%@');", [decoded substringFromIndex:([type length]+7)],[decoded substringFromIndex:([type length]+7)]];
+            NSLog(@"setSession : call Script value : %@", scriptParameter);
+            //json data return
+            
+            
+            
+            [webView stringByEvaluatingJavaScriptFromString:scriptParameter];
+        } else if ([@"reCall" isEqual:type]) {
             NSString *scriptString = [NSString stringWithFormat:@"%@;", [decoded substringFromIndex:([type length]+7)]];
-            NSLog(@"call Script value : %@", scriptString);
-            //세션 맺어주는 로직(재 로그인 로직) 삽입 후 아래 주석 풀어야 한다.
+            NSLog(@"reCall : call Script value : %@", scriptString);
             
-            
-            
-            //[webView stringByEvaluatingJavaScriptFromString:scriptString];
+            [webView stringByEvaluatingJavaScriptFromString:scriptString];
         }
             
     }
