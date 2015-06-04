@@ -29,7 +29,31 @@
         NSLog(@"%@",@"등록완료");
     }
     
-
+    if(launchOptions)
+    {
+        NSLog(@" launchOptions %@ ",launchOptions);
+        
+        
+        
+        CallServer *res = [CallServer alloc];
+        UIDevice *device = [UIDevice currentDevice];
+        NSString* idForVendor = [device.identifierForVendor UUIDString];
+        
+        
+        NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+        
+        [param setValue:idForVendor forKey:@"hp_tel"];
+        
+        //deviceId
+        
+        //R 수신
+        
+        NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
+        
+        NSLog(@"gcmmessage %@ ",str);
+        NSString *emp = [[GlobalDataManager getgData] empNo];
+        
+        
     return YES;
 }
 
@@ -92,6 +116,27 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSLog(@" recive aspn %@ ",userInfo);
+    
+    
+    
+    CallServer *res = [CallServer alloc];
+    UIDevice *device = [UIDevice currentDevice];
+    NSString* idForVendor = [device.identifierForVendor UUIDString];
+    
+    
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+    [param setValue:idForVendor forKey:@"hp_tel"];
+    
+    //deviceId
+    
+    //R 수신
+    
+    NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
+   
+    NSLog(@"gcmmessage %@ ",str);
+   
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

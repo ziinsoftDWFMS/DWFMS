@@ -25,6 +25,13 @@ NSString *viewType =@"LOGOUT";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"viewDidLoad"
+                                                   delegate:self
+                                          cancelButtonTitle:@"취소"
+                                          otherButtonTitles:@"동의", nil];
+    [alert show];
+    
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
     
@@ -609,10 +616,12 @@ NSString *viewType =@"LOGOUT";
 
 -(void) logout{
     viewType = @"LOGOUT";
+    UIDevice *device = [UIDevice currentDevice];
+    NSString* idForVendor = [device.identifierForVendor UUIDString];
     NSString *server = @"http://211.253.9.3:8080/";
     NSString *pageUrl = @"DWFMS";
     NSString *callUrl = @"";
-    
+    NSString * urlParam = [NSString stringWithFormat:@"HP_TEL=%@&GCM_ID=%@&DEVICE_FLAG=I",idForVendor,@"22222222"];
     
     
     
@@ -621,6 +630,8 @@ NSString *viewType =@"LOGOUT";
     
     NSURL *url=[NSURL URLWithString:callUrl];
     NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+    [requestURL setHTTPMethod:@"POST"];
+    [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
     [self.webView loadRequest:requestURL];
     
 }
@@ -682,6 +693,13 @@ NSString *viewType =@"LOGOUT";
     }
 }
 
+- (void) rcvAspn:(NSString*) jsonstring {
+    
+    
+    NSData *jsonData = [jsonstring dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+}
 
 @end
 @implementation UIWebView (JavaScriptAlert)

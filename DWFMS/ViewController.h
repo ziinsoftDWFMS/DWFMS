@@ -16,6 +16,7 @@
 
 - (void) setimage:(NSString*) path num:(NSString*)num;
 - (void) setQRcode:(NSString*) data ;
+- (void) rcvAspn:(NSString*) jsonstring ;
 @end
 
 @interface UIWebView(JavaScriptAlert)
