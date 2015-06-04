@@ -182,13 +182,20 @@ NSString *viewType =@"LOGOUT";
         } else if([@"logout" isEqual:type]){
             [self logout];
         } else if ([@"setSession" isEqual:type]) {
-            NSString *scriptParameter = [NSString stringWithFormat:@"setsession('%@&reCall=%@');", [decoded substringFromIndex:([type length]+7)],[decoded substringFromIndex:([type length]+7)]];
+            
+            NSMutableDictionary *reSession =[GlobalDataManager getAllData];
+            [reSession setValue:[GlobalDataManager getAuth] forKey:@"auth"];
+            [reSession setValue:[[GlobalDataManager getgData] inTime ]forKey:@"inTime"];
+            [reSession setValue:[[GlobalDataManager getgData] outTime ]forKey:@"outTime"];
+            
+            NSString *scriptParameter = [NSString stringWithFormat:@"setsession('%@&reCall=%@');", [Commonutil serializeJson:reSession],[decoded substringFromIndex:([type length]+7)]];
             NSLog(@"setSession : call Script value : %@", scriptParameter);
             //json data return
             
             
             
             [webView stringByEvaluatingJavaScriptFromString:scriptParameter];
+            
         } else if ([@"reCall" isEqual:type]) {
             NSString *scriptString = [NSString stringWithFormat:@"%@;", [decoded substringFromIndex:([type length]+7)]];
             NSLog(@"reCall : call Script value : %@", scriptString);
@@ -673,6 +680,14 @@ NSString *viewType =@"LOGOUT";
             NSLog(@"다른폰에서 로그인");
         }
     }
+}
+
+
+@end
+@implementation UIWebView (JavaScriptAlert)
+- (void)webView:(UIWebView *)sender runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(id)frame {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
+    [alert show];
 }
 
 
