@@ -691,4 +691,33 @@ NSString *viewType =@"LOGOUT";
 }
 
 
+
+static BOOL diagStat = NO;
+static NSInteger bIdx = -1;
+- (BOOL)webView:(UIWebView *)sender runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(id)frame {
+    UIAlertView *confirmDiag = [[UIAlertView alloc] initWithTitle:nil
+                                                          message:message
+                                                         delegate:self
+                                                cancelButtonTitle:@"취소"
+                                                otherButtonTitles:@"확인", nil];
+    
+    [confirmDiag show];
+    bIdx = -1;
+    
+    while (bIdx==-1) {
+        //[NSThread sleepForTimeInterval:0.2];
+        [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1f]];
+    }
+    if (bIdx == 0){
+        diagStat = NO;
+    }
+    else if (bIdx == 1) {
+        diagStat = YES;
+    }
+    return diagStat;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    bIdx = buttonIndex;
+}
 @end
