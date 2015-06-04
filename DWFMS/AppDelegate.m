@@ -51,8 +51,8 @@
         NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
         
         NSLog(@"gcmmessage %@ ",str);
-        NSString *emp = [[GlobalDataManager getgData] empNo];
-        
+
+    }
         
     return YES;
 }
@@ -135,7 +135,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
    
     NSLog(@"gcmmessage %@ ",str);
-   
+  
     
 }
 
