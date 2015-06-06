@@ -114,4 +114,17 @@
     }
     return retauth;
 }
++(BOOL) hasAuth:(NSString*) auth{
+    
+    
+    NSArray* authlist = [[self getgData] auth];
+    if( [authlist containsObject:auth])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
+
 @end

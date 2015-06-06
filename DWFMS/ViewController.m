@@ -25,12 +25,7 @@ NSString *viewType =@"LOGOUT";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"viewDidLoad"
-                                                   delegate:self
-                                          cancelButtonTitle:@"취소"
-                                          otherButtonTitles:@"동의", nil];
-    [alert show];
+
     
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
@@ -695,10 +690,87 @@ NSString *viewType =@"LOGOUT";
 
 - (void) rcvAspn:(NSString*) jsonstring {
     
-    
+    NSLog(@"nslog");
     NSData *jsonData = [jsonstring dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    
+    
+    
+    
+    if(     [@"AS"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
+    {
+        //mWebView.loadUrl(GlobalData.getServerIp()+"/DWFMSASDetail.do?JOB_CD="+gcmIntent.getStringExtra("JOB_CD")+"&GYULJAE_YN=N&sh_DEPT_CD="+ gcmIntent.getStringExtra("DEPT_CD")+"&sh_JOB_JISI_DT="+ gcmIntent.getStringExtra("JOB_JISI_DT"));
+        
+        if([GlobalDataManager hasAuth:@"fms113"]){
+            NSLog(@"권한 없음");
+            return ;
+        }
+        
+        if([ [[GlobalDataManager getgData] compCd] isEqual:[jsonInfo valueForKey:@"TASK_CD"] ]){
+            NSLog(@"로그인한 사업장이 다릅니다 ");
+            return;
+        }
+        NSString *server = [GlobalData getServerIp];
+        NSString *pageUrl = @"/DWFMSASDetail.do";
+        NSString *callUrl = @"";
+        NSString * urlParam = [NSString stringWithFormat:@"JOB_CD=%@&sh_DEPT_CD=%@&sh_JOB_JISI_DT=%@&GYULJAE_YN=N",[jsonInfo valueForKey:@"JOB_CD"],[jsonInfo valueForKey:@"DEPT_CD"],[jsonInfo valueForKey:@"JOB_JISI_DT"]];
+        
+        
+        
+        callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+        
+        NSURL *url=[NSURL URLWithString:callUrl];
+        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+        [requestURL setHTTPMethod:@"POST"];
+        [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
+        [self.webView loadRequest:requestURL];
+    }
+    
+    if(     [@"NOTIFY"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
+    {
+        
+        CallServer *res = [CallServer alloc];
+        
+        
+        NSMutableDictionary *sessiondata =[GlobalDataManager getAllData];
+        
+        [sessiondata setValue:[jsonInfo valueForKey:@"COMP_CD"] forKey:@"comp_cd"];
+        [sessiondata setValue:[[GlobalDataManager getgData] empNo] forKey:@"empno"];
+        [sessiondata setValue:[jsonInfo valueForKey:@"COMMUTE_TYPE"] forKey:@"type"];
+        
+        NSLog(@"??? sessiondata ?? %@" ,sessiondata);
+        NSString* str = [res stringWithUrl:@"confirmNoti.do" VAL:sessiondata];
+        
+        
+        if([GlobalDataManager hasAuth:@"fms114"]){
+            NSLog(@"권한 없음");
+            return ;
+        }
+        NSString *server = [GlobalData getServerIp];
+        NSString *pageUrl = @"/beforeService.do";
+        NSString *callUrl = @"";
+        
+        callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+        
+        NSURL *url=[NSURL URLWithString:callUrl];
+        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+        [self.webView loadRequest:requestURL];
+    }
+    
+    if(     [@"AS_RES"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
+    {
+        NSString *server = [GlobalData getServerIp];
+        NSString *pageUrl = @"/afterService.do";
+        NSString *callUrl = @"";
+        
+        callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+        
+        NSURL *url=[NSURL URLWithString:callUrl];
+        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+        [self.webView loadRequest:requestURL];
+
+    }
 }
 
 @end

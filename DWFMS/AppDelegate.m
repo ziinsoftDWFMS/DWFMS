@@ -135,7 +135,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
    
     NSLog(@"gcmmessage %@ ",str);
-  
+    [[self main] rcvAspn:str];
     
 }
 
