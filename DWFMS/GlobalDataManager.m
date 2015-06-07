@@ -120,10 +120,10 @@
     NSArray* authlist = [[self getgData] auth];
     if( [authlist containsObject:auth])
     {
-        return YES;
+        return NO;gml
     }
+    return YES;
     
-    return NO;
 }
 
 
