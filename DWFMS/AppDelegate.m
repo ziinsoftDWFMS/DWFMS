@@ -43,9 +43,6 @@
         [param setValue:idForVendor forKey:@"HP_TEL"];
         [param setValue:@"ffffffff" forKey:@"GCM_ID"];
         [param setObject:@"I" forKey:@"DEVICE_FLAG"];
-        
-        //deviceId
-        
         //R 수신
         
         NSString* str = [res stringWithUrl:@"loginByPhon.do" VAL:param];
@@ -54,12 +51,7 @@
         NSError *error;
         NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
         NSLog(str);
-        
-        NSString *urlParam=@"";
-        NSString *server = @"http://211.253.9.3:8080/";
-        NSString *pageUrl = @"DWFMS";
-        NSString *callUrl = @"";
-        /*
+                /*
          자동로그인 부분
          */
         if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
@@ -75,9 +67,6 @@
             }
         }
         
-        
-        
-        
         param = [[NSMutableDictionary alloc] init];
         
         [param setValue:idForVendor forKey:@"hp_tel"];
@@ -86,8 +75,7 @@
         
         //R 수신
         
-        
-         str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
+        str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
         
         
         NSLog(@"gcmmessage %@ ",str);
@@ -191,51 +179,49 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
 
 
 - (void) rcvAspnA:(NSString*) jsonstring {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:jsonstring delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
-    [alert show];
     NSLog(@"nslog");
     NSData *jsonData = [jsonstring dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     
-    
-   
-    
     if(     [@"AS"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
     {
-        //mWebView.loadUrl(GlobalData.getServerIp()+"/DWFMSASDetail.do?JOB_CD="+gcmIntent.getStringExtra("JOB_CD")+"&GYULJAE_YN=N&sh_DEPT_CD="+ gcmIntent.getStringExtra("DEPT_CD")+"&sh_JOB_JISI_DT="+ gcmIntent.getStringExtra("JOB_JISI_DT"));
-        sleep(1000);
-        
         if([GlobalDataManager hasAuth:@"fms113"]){
             NSLog(@"권한 없음1");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"권한 없음1" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
-            [alert show];
             return ;
         }
         
         if([ [[GlobalDataManager getgData] compCd] isEqual:[jsonInfo valueForKey:@"TASK_CD"] ]){
             NSLog(@"로그인한 사업장이 다릅니다 ");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인한 사업장이 다릅니다 " delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
-            [alert show];
             return;
         }
+     
         NSString *server = [GlobalData getServerIp];
         NSString *pageUrl = @"/DWFMSASDetail.do";
         NSString *callUrl = @"";
         NSString * urlParam = [NSString stringWithFormat:@"JOB_CD=%@&sh_DEPT_CD=%@&sh_JOB_JISI_DT=%@&GYULJAE_YN=N",[jsonInfo valueForKey:@"JOB_CD"],[jsonInfo valueForKey:@"DEPT_CD"],[jsonInfo valueForKey:@"JOB_JISI_DT"]];
         
-        
-        
         callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
-        UIAlertView *alert3 = [[UIAlertView alloc] initWithTitle:nil message:@"callUrl " delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
-        [alert3 show];
+        
         NSURL *url=[NSURL URLWithString:callUrl];
         NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
         [requestURL setHTTPMethod:@"POST"];
         [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
-        [self.main.webView loadRequest:requestURL];
-        UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:nil message:@"loadRequest " delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
-        [alert1 show];
+        
+        
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 300, 550)];
+        
+        alert.title = @"A/S작업지시";
+        alert.message = [jsonInfo valueForKey:@"TITLE"];
+        alert.delegate = self;
+        
+        [alert addButtonWithTitle:@"취소"];
+        [alert addButtonWithTitle:@"확인"];
+        alert.tag=101;
+        //[alert addSubview:txtView];
+        [alert show] ;
+        
     }
     
     if(     [@"NOTIFY"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
@@ -283,6 +269,56 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         
     }
 }
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    NSLog(@";alert ?? %d",buttonIndex);
+    if(alertView.tag==101)     // check alert by tag
+    {
+        if(buttonIndex ==1)
+        {
+            CallServer *res = [CallServer alloc];
+            UIDevice *device = [UIDevice currentDevice];
+            NSString* idForVendor = [device.identifierForVendor UUIDString];
+            
+            
+            NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+            
+            [param setValue:idForVendor forKey:@"hp_tel"];
+            
+            //deviceId
+            
+            //R 수신
+            
+            NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
+            
+            NSLog(@"gcmmessage %@ ",str);
+            [[self main] rcvAspn:str];
+        }else{
+            
+        }
+    }else{
+        if(buttonIndex ==1)
+        {
+            //
+            CallServer *res = [CallServer alloc];
+            
+            
+            NSMutableDictionary* param = [GlobalDataManager getAllData];
+            
+            
+            
+            NSString* str = [res stringWithUrl:@"invInfo.do" VAL:param];
+        }else{
+            exit(0);
+        }
+    }
+    
+    
+}
+
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
