@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573278571B246ED900498B6D /* AudioToolbox.framework */; };
 		5732785B1B246EFE00498B6D /* sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5732785A1B246EFE00498B6D /* sound.wav */; };
-		5732785D1B246F0300498B6D /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5732785C1B246F0300498B6D /* 1.wav */; };
 		698E29311B0627530004DD66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29301B0627530004DD66 /* main.m */; };
 		698E29341B0627530004DD66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29331B0627530004DD66 /* AppDelegate.m */; };
 		698E29371B0627530004DD66 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29361B0627530004DD66 /* ViewController.m */; };
@@ -24,6 +23,7 @@
 		BA006A781B16C783000D939B /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A771B16C783000D939B /* CameraViewController.m */; };
 		BA006A7B1B16D4C2000D939B /* DwfmsSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */; };
 		BA8237461B1D5BF80018F868 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BA8237451B1D5BF80018F868 /* Icon.png */; };
+		BA8237631B252E260018F868 /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = BA8237621B252E260018F868 /* 1.wav */; };
 		BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */; };
 		BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */; };
 /* End PBXBuildFile section */
@@ -41,7 +41,6 @@
 /* Begin PBXFileReference section */
 		573278571B246ED900498B6D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5732785A1B246EFE00498B6D /* sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound.wav; sourceTree = "<group>"; };
-		5732785C1B246F0300498B6D /* 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 1.wav; sourceTree = "<group>"; };
 		698E292B1B0627530004DD66 /* DWFMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWFMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		698E292F1B0627530004DD66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		698E29301B0627530004DD66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -68,6 +67,7 @@
 		BA006A791B16D4BA000D939B /* DwfmsSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwfmsSegue.h; sourceTree = "<group>"; };
 		BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwfmsSegue.m; sourceTree = "<group>"; };
 		BA8237451B1D5BF80018F868 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		BA8237621B252E260018F868 /* 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 1.wav; sourceTree = "<group>"; };
 		BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QRCodeScanLine@2x.png"; sourceTree = "<group>"; };
 		BA842D7A1B0C820A00DE86A3 /* ZIINQRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZIINQRCodeReaderView.h; sourceTree = "<group>"; };
 		BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZIINQRCodeReaderView.m; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 		573278591B246EDF00498B6D /* resource */ = {
 			isa = PBXGroup;
 			children = (
-				5732785C1B246F0300498B6D /* 1.wav */,
+				BA8237621B252E260018F868 /* 1.wav */,
 				5732785A1B246EFE00498B6D /* sound.wav */,
 			);
 			name = resource;
@@ -276,8 +276,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				698E293A1B0627530004DD66 /* Main.storyboard in Resources */,
-				5732785D1B246F0300498B6D /* 1.wav in Resources */,
 				BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */,
+				BA8237631B252E260018F868 /* 1.wav in Resources */,
 				BA8237461B1D5BF80018F868 /* Icon.png in Resources */,
 				698E293F1B0627530004DD66 /* LaunchScreen.xib in Resources */,
 				5732785B1B246EFE00498B6D /* sound.wav in Resources */,
