@@ -33,11 +33,6 @@
     {
         NSLog(@" launchOptions %@ ",launchOptions);
         
-       
-        [[self main] viewDidLoad];
-        
-        sleep(1);
-        
         CallServer *res = [CallServer alloc];
         UIDevice *device = [UIDevice currentDevice];
         NSString* idForVendor = [device.identifierForVendor UUIDString];
@@ -45,14 +40,54 @@
         
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
         
-        [param setValue:idForVendor forKey:@"hp_tel"];
+        [param setValue:idForVendor forKey:@"HP_TEL"];
+        [param setValue:@"ffffffff" forKey:@"GCM_ID"];
+        [param setObject:@"I" forKey:@"DEVICE_FLAG"];
         
         //deviceId
         
         //R 수신
         
+        NSString* str = [res stringWithUrl:@"loginByPhon.do" VAL:param];
         
-        NSString* str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
+        NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+        NSLog(str);
+        
+        NSString *urlParam=@"";
+        NSString *server = @"http://211.253.9.3:8080/";
+        NSString *pageUrl = @"DWFMS";
+        NSString *callUrl = @"";
+        /*
+         자동로그인 부분
+         */
+        if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
+        {
+            if(     [@"Y"isEqual:[jsonInfo valueForKey:@"result"] ] )
+            {
+                NSDictionary *data = [jsonInfo valueForKey:(@"data")];
+                [GlobalDataManager initgData:(data)];
+                NSArray * timelist = [jsonInfo objectForKey:@"inout"];
+                [GlobalDataManager setTime:[timelist objectAtIndex:0]];
+                NSArray * authlist = [jsonInfo objectForKey:@"auth"];
+                [GlobalDataManager initAuth:authlist];
+            }
+        }
+        
+        
+        
+        
+        param = [[NSMutableDictionary alloc] init];
+        
+        [param setValue:idForVendor forKey:@"hp_tel"];
+        
+        //deviceIdb
+        
+        //R 수신
+        
+        
+         str = [res stringWithUrl:@"searchPushMsg.do" VAL:param];
         
         
         NSLog(@"gcmmessage %@ ",str);
@@ -152,6 +187,9 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     [[self main] rcvAspn:str];
     
 }
+
+
+
 - (void) rcvAspnA:(NSString*) jsonstring {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:jsonstring delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
     [alert show];
