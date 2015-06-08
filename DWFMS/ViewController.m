@@ -689,7 +689,6 @@ NSString *viewType =@"LOGOUT";
 }
 
 - (void) rcvAspn:(NSString*) jsonstring {
-    
     NSLog(@"nslog");
     NSData *jsonData = [jsonstring dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
@@ -702,8 +701,12 @@ NSString *viewType =@"LOGOUT";
     {
         //mWebView.loadUrl(GlobalData.getServerIp()+"/DWFMSASDetail.do?JOB_CD="+gcmIntent.getStringExtra("JOB_CD")+"&GYULJAE_YN=N&sh_DEPT_CD="+ gcmIntent.getStringExtra("DEPT_CD")+"&sh_JOB_JISI_DT="+ gcmIntent.getStringExtra("JOB_JISI_DT"));
         
+        
+
         if([GlobalDataManager hasAuth:@"fms113"]){
             NSLog(@"권한 없음");
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"권한 없음" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
+            [alert show];
             return ;
         }
         
