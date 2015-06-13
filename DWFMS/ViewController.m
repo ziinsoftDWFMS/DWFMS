@@ -13,6 +13,7 @@
 #import "Commonutil.h"
 #import "ZIINQRCodeReaderView.h"
 #import "AppDelegate.h"
+#import "ToastAlertView.h"
 
 @interface ViewController ()
 
@@ -312,6 +313,11 @@ NSString *viewType =@"LOGOUT";
                         [self.webView loadRequest:requestURL];
             
         }else{
+   
+            
+          [ToastAlertView showToastInParentView:self.view withText:@"아이디와 패스워드를 확인해주세요." withDuaration:5.0];
+
+
             
         }
     }else{

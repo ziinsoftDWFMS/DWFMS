@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573278571B246ED900498B6D /* AudioToolbox.framework */; };
 		5732785B1B246EFE00498B6D /* sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5732785A1B246EFE00498B6D /* sound.wav */; };
+		57B0E29C1B2C4FDF00AA41F6 /* ToastAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */; };
 		698E29311B0627530004DD66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29301B0627530004DD66 /* main.m */; };
 		698E29341B0627530004DD66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29331B0627530004DD66 /* AppDelegate.m */; };
 		698E29371B0627530004DD66 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29361B0627530004DD66 /* ViewController.m */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		573278571B246ED900498B6D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5732785A1B246EFE00498B6D /* sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound.wav; sourceTree = "<group>"; };
+		57B0E29A1B2C4FA100AA41F6 /* ToastAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastAlertView.h; sourceTree = "<group>"; };
+		57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastAlertView.m; sourceTree = "<group>"; };
 		698E292B1B0627530004DD66 /* DWFMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWFMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		698E292F1B0627530004DD66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		698E29301B0627530004DD66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 				69E0554D1B096F140024287C /* GlobalDataManager.m */,
 				69E547ED1B0C3FB5002F7A9C /* Commonutil.h */,
 				69E547EE1B0C3FB5002F7A9C /* Commonutil.m */,
+				57B0E29A1B2C4FA100AA41F6 /* ToastAlertView.h */,
+				57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */,
 			);
 			path = DWFMS;
 			sourceTree = "<group>";
@@ -306,6 +311,7 @@
 				69EBCF531B06ECA60057F530 /* CallServer.m in Sources */,
 				69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */,
 				BA006A781B16C783000D939B /* CameraViewController.m in Sources */,
+				57B0E29C1B2C4FDF00AA41F6 /* ToastAlertView.m in Sources */,
 				69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */,
 				698E29311B0627530004DD66 /* main.m in Sources */,
 				BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */,
