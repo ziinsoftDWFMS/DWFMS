@@ -16,15 +16,24 @@
 
 @property (nonatomic, strong) NSString         *scannedValue;
 
+@property (nonatomic, strong) AVCaptureDevice *vDevice;
+
 @end
 
 
 @implementation ZIINQRCodeReaderView
 
+
+
+
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
+        
         [self addOverlay];
         [self setUp];
+        
+        
+        
     }
     
     return self;
@@ -99,6 +108,7 @@
     
     _overlay.path = [UIBezierPath bezierPathWithRect:offsetRect].CGPath;
     
+    
     [self addOtherLay:offsetRect];
     [self addRightAngleLay:offsetRect];
 }
@@ -115,7 +125,9 @@
 }
 
 - (UIImageView *)imgLine {
+    NSLog(@"imgline!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     if (_imgLine == nil) {
+         NSLog(@"imgline!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         _imgLine = [[UIImageView alloc] init];
         _imgLine.image = [UIImage imageNamed:@"QRCodeScanLine"];
         _imgLine.frame = CGRectMake(self.innerViewRect.origin.x, self.innerViewRect.origin.y, CGRectGetWidth(self.innerViewRect), 10);
@@ -196,15 +208,19 @@
     
     self.autoStart = YES;
     
+    NSLog(@"aaaaaaaaaaa!!!!!!!!!!!!!$$$$$$$$$");
+    
+    
     //비디오 장치 설정
     AVCaptureDevice *videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     //입력 값
+    
     NSError *error = nil;
     AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoCaptureDevice error:&error];
-    
+    _vDevice = videoCaptureDevice;
     //출력 값
     AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
-    
+
     //
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     
@@ -222,7 +238,26 @@
     
     previewLayer.frame = self.layer.bounds;
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    
+    
     [self.layer addSublayer:previewLayer];
+    
+    UIButton *overlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [overlayButton setFrame:CGRectMake(100.0, 0.0, 100, 100)];
+    [overlayButton setTitle:@"플래쉬 OFF" forState:UIControlStateNormal];
+    //선택된상태에서 타이틀지정
+    [overlayButton setTitle:@"플래쉬 ON" forState:UIControlStateSelected];
+    [overlayButton addTarget:self action:@selector(scanButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:overlayButton];
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton setFrame:CGRectMake(0.0, 0.0, 100, 100)];
+    //선택된상태에서 타이틀지정
+    [cancelButton setTitle:@"취소" forState:UIControlStateSelected];
+    [cancelButton setTitle:@"취소" forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:cancelButton];
+
     
     if ([videoCaptureDevice respondsToSelector:@selector(setVideoZoomFactor:)]) {
         NSLog(@"Error: %@", @"1");
@@ -230,16 +265,79 @@
             NSLog(@"Error: %@", @"2");
             float zoomFactor = videoCaptureDevice.activeFormat.videoZoomFactorUpscaleThreshold;
             [videoCaptureDevice setVideoZoomFactor:1.0];
+            [videoCaptureDevice setTorchMode:AVCaptureTorchModeOn];
+            [videoCaptureDevice setFlashMode:AVCaptureFlashModeOn];
             [videoCaptureDevice unlockForConfiguration];
+            
         }
     }
-    
+
     if (self.isAutoStartEnabled){
         [self startScanning];
     }
 
 }
 
+-(void)scanButtonPressed:(id)sender{
+    //이벤트 발생버튼 지정
+    UIButton *button = sender;
+    //선택값을 반전 시켜줌
+    button.selected=!button.selected;
+    if (_vDevice.torchMode == AVCaptureTorchModeOff){
+        AVCaptureSession *session = self.session;
+        
+        
+        
+        [session beginConfiguration];
+        
+        [_vDevice lockForConfiguration:nil];
+        
+        
+        
+        [_vDevice setTorchMode:AVCaptureTorchModeOn];
+        
+        [_vDevice setFlashMode:AVCaptureFlashModeOn];
+        
+        
+        
+        [_vDevice unlockForConfiguration];
+        
+        
+        [session commitConfiguration];
+        
+        [session startRunning];
+    }else{
+        AVCaptureSession *session = self.session;
+        
+        
+        
+        [session beginConfiguration];
+        
+        [_vDevice lockForConfiguration:nil];
+        
+        
+        
+        [_vDevice setTorchMode:AVCaptureTorchModeOff];
+        
+        [_vDevice setFlashMode:AVCaptureFlashModeOff];
+        
+        
+        
+        [_vDevice unlockForConfiguration];
+        
+        
+        [session commitConfiguration];
+        
+        [session startRunning];
+    }
+    
+}
+
+-(void)cancelButtonPressed:(id)sender{
+    //이벤트 발생버튼 지정
+    [self stopScanning];
+    self.hidden = YES;
+}
 
 //SCAN 레이어 내부 설정
 - (void)addOverlay

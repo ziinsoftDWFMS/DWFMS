@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573278571B246ED900498B6D /* AudioToolbox.framework */; };
 		5732785B1B246EFE00498B6D /* sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5732785A1B246EFE00498B6D /* sound.wav */; };
+		5746FFF81B2D4B710079C385 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5746FFF71B2D4B710079C385 /* AVFoundation.framework */; };
 		57B0E29C1B2C4FDF00AA41F6 /* ToastAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */; };
 		698E29311B0627530004DD66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29301B0627530004DD66 /* main.m */; };
 		698E29341B0627530004DD66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29331B0627530004DD66 /* AppDelegate.m */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		573278571B246ED900498B6D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5732785A1B246EFE00498B6D /* sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound.wav; sourceTree = "<group>"; };
+		5746FFF71B2D4B710079C385 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		57B0E29A1B2C4FA100AA41F6 /* ToastAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastAlertView.h; sourceTree = "<group>"; };
 		57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastAlertView.m; sourceTree = "<group>"; };
 		698E292B1B0627530004DD66 /* DWFMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWFMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5746FFF81B2D4B710079C385 /* AVFoundation.framework in Frameworks */,
 				573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +110,7 @@
 		698E29221B0627530004DD66 = {
 			isa = PBXGroup;
 			children = (
+				5746FFF71B2D4B710079C385 /* AVFoundation.framework */,
 				573278571B246ED900498B6D /* AudioToolbox.framework */,
 				698E292D1B0627530004DD66 /* DWFMS */,
 				698E29471B0627530004DD66 /* DWFMSTests */,
