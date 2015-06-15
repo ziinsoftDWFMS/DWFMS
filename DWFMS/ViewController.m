@@ -57,8 +57,8 @@ NSString *viewType =@"LOGOUT";
     NSLog(str);
     
     NSString *urlParam=@"";
-    NSString *server = @"http://211.253.9.3:8080/";
-    NSString *pageUrl = @"DWFMS";
+    NSString *server = [GlobalData getServerIp];
+    NSString *pageUrl = @"/DWFMS";
     NSString *callUrl = @"";
     /*
      자동로그인 부분
@@ -300,8 +300,8 @@ NSString *viewType =@"LOGOUT";
             
             NSString* str = [res stringWithUrl:@"registGCM.do" VAL:param];
             
-            NSString *server = @"http://211.253.9.3:8080/";
-            NSString *pageUrl = @"DWFMS";
+            NSString *server = [GlobalData getServerIp];
+            NSString *pageUrl = @"/DWFMS";
             NSString *callUrl = @"";
             
             
@@ -315,7 +315,7 @@ NSString *viewType =@"LOGOUT";
         }else{
    
             
-          [ToastAlertView showToastInParentView:self.view withText:@"아이디와 패스워드를 확인해주세요." withDuaration:5.0];
+          [ToastAlertView showToastInParentView:self.view withText:@"아이디와 패스워드를 확인해주세요." withDuaration:3.0];
 
 
             
@@ -390,17 +390,20 @@ NSString *viewType =@"LOGOUT";
             if(  !   [[[GlobalDataManager getgData] compCd ]isEqual:[resdata valueForKey:@"COMP_CD"] ] )
             {
                 //다른 사업장 업무입니다.
-                NSLog(@"다른사업장의 업무 입니다.");
+                //NSLog(@"다른사업장의 업무 입니다.");
+                [ToastAlertView showToastInParentView:self.view withText:@"다른사업장의 업무 입니다." withDuaration:3.0];
                 return;
             }
             
             if(     [@"01"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
+                [ToastAlertView showToastInParentView:self.view withText:@"보안순찰업무로 이동합니다." withDuaration:3.0];
                  [self callPatrol:resdata];
             }
             
             if( [@"02"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
+                
                 [self setInOutCommitInfo:resdata];
                 
             }
@@ -412,7 +415,7 @@ NSString *viewType =@"LOGOUT";
             }
             if( [@"04"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
-                
+                [ToastAlertView showToastInParentView:self.view withText:@"시설점검업무로 이동합니다." withDuaration:3.0];
                 [self callChkWork:resdata];
             }
             
@@ -490,9 +493,9 @@ NSString *viewType =@"LOGOUT";
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     NSLog(@"?? %@",str);
-    
-    NSString *server = @"http://211.253.9.3:8080/";
-    NSString *pageUrl = @"DWFMS";
+    [ToastAlertView showToastInParentView:self.view withText:@"출/퇴근이 정상적으로 등록되었습니다." withDuaration:3.0];
+    NSString *server = [GlobalData getServerIp];
+    NSString *pageUrl = @"/DWFMS";
     NSString *callUrl = @"";
     
     
@@ -619,8 +622,8 @@ NSString *viewType =@"LOGOUT";
     viewType = @"LOGOUT";
     UIDevice *device = [UIDevice currentDevice];
     NSString* idForVendor = [device.identifierForVendor UUIDString];
-    NSString *server = @"http://211.253.9.3:8080/";
-    NSString *pageUrl = @"DWFMS";
+    NSString *server = [GlobalData getServerIp];
+    NSString *pageUrl = @"/DWFMS";
     NSString *callUrl = @"";
     NSString * urlParam = [NSString stringWithFormat:@"HP_TEL=%@&GCM_ID=%@&DEVICE_FLAG=I",idForVendor,@"22222222"];
     
