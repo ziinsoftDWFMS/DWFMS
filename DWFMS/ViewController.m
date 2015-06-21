@@ -34,6 +34,11 @@ NSString *viewType =@"LOGOUT";
     NSLog(@" appdeligate %@",ad);
     [self.webView setDelegate:self];
     
+    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    
     CallServer *res = [CallServer alloc];
     UIDevice *device = [UIDevice currentDevice];
     NSString* idForVendor = [device.identifierForVendor UUIDString];
@@ -398,6 +403,7 @@ NSString *viewType =@"LOGOUT";
             if(     [@"01"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
                 [ToastAlertView showToastInParentView:self.view withText:@"보안순찰업무로 이동합니다." withDuaration:3.0];
+                
                  [self callPatrol:resdata];
             }
             
@@ -446,6 +452,9 @@ NSString *viewType =@"LOGOUT";
     }
     if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
     {
+        NSString *server = [GlobalData getServerIp];
+
+        
         NSArray * temparray = [jsonInfo valueForKey:(@"data")];
         NSDictionary *resdata = [temparray objectAtIndex:0];
 
@@ -460,15 +469,44 @@ NSString *viewType =@"LOGOUT";
                 
         NSString *urlParam=[Commonutil serializeJson:tempParam];
         NSLog(@"??????? %@",urlParam);
-        NSString *server = [GlobalData getServerIp];
+        //NSString *server = [GlobalData getServerIp];
         NSString *pageUrl = @"/patrolService.do#detail";
         NSString *callurl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+//        NSString *pageUrl = @"/patrolService.do?";
+//        NSString *callurl = [NSString stringWithFormat:@"%@%@%@#detail",server,pageUrl,urlParam];
+        NSLog(@"???????%@",callurl);
         NSURL *url=[NSURL URLWithString:callurl];
+        
         NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
         [requestURL setHTTPMethod:@"POST"];
         [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
-        [self.webView loadRequest:requestURL];
-         NSLog(@"???????");
+        [requestURL setHTTPShouldHandleCookies:NO];
+        
+        //"/patrolService.do?LOC_ID="+psdata.getString("PAT_LOC_ID")+"&PAT_CHECK_DT="+psdata.getString("sh_PAT_CHECK_DT")+"#detail"
+        // /patrolService.do?PAT_CHECK_DT=2015-06-21 19:43:39.357&LOC_ID=85#detail
+//        http://211.253.9.3:8080/patrolService.do?PAT_CHECK_DT=2015-06-21 19:56:05.453&LOC_ID=85#detail
+    //    [self.webView loadRequest:homeRequestURL];
+        requestURL.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+        NSString *currentURL = [[[self.webView request] URL] absoluteString];
+        NSLog(@"???currentURL???%@",currentURL);
+        
+        if ([currentURL rangeOfString:@"patrolService"].location == NSNotFound) {
+            [self.webView loadRequest:requestURL];
+            NSLog(@"string does not contain bla");
+            
+        } else {
+            NSString *scriptParameter = [NSString stringWithFormat:
+                                         @"viewDetailIos('%@','%@');",
+                                         [resdata valueForKey:@"PAT_LOC_ID"] ,
+                                         [resdata valueForKey:@"sh_PAT_CHECK_DT"]];
+            NSLog(@"scriptString => %@", scriptParameter);
+            
+            [self.webView stringByEvaluatingJavaScriptFromString:scriptParameter];
+            NSLog(@"string does contain bla");
+
+        }
+        //[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:testURL] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10.0]];
+         NSLog(@"???????%@",requestURL);
 
         
       
@@ -477,6 +515,9 @@ NSString *viewType =@"LOGOUT";
     
     //
 }
+
+
+
 -(void) setInOutCommitInfo :(NSMutableDictionary * ) param{
  //
     CallServer *res = [CallServer alloc];
@@ -547,10 +588,28 @@ NSString *viewType =@"LOGOUT";
         NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
         [requestURL setHTTPMethod:@"POST"];
         [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
-        [self.webView loadRequest:requestURL];
+        //[self.webView loadRequest:requestURL];
         NSLog(@"???????");
+        //
         
+        NSString *currentURL = [[[self.webView request] URL] absoluteString];
+        NSLog(@"???currentURL???%@",currentURL);
         
+        if ([currentURL rangeOfString:@"chkWorkService"].location == NSNotFound) {
+            [self.webView loadRequest:requestURL];
+            NSLog(@"string does not contain bla");
+            
+        } else {
+            NSString *scriptParameter = [NSString stringWithFormat:
+                                         @"viewDetailIos('%@','%@', '');",
+                                         [resdata valueForKey:@"PAT_LOC_ID"] ,
+                                         [resdata valueForKey:@"sh_PAT_CHECK_DT"]];
+            NSLog(@"scriptString => %@", scriptParameter);
+            
+            [self.webView stringByEvaluatingJavaScriptFromString:scriptParameter];
+            NSLog(@"string does contain bla");
+            
+        }
         
         
     }
