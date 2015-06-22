@@ -82,6 +82,9 @@
         
         [self  rcvAspnA:str];
         
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }
         
     return YES;
@@ -173,6 +176,10 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
    
     NSLog(@"gcmmessage %@ ",str);
     [[self main] rcvAspn:str];
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
 }
 
