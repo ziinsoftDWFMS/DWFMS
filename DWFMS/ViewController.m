@@ -579,8 +579,16 @@ NSString *viewType =@"LOGOUT";
     NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
-    NSLog(@"?? %@",str);
-    [ToastAlertView showToastInParentView:self.view withText:@"출/퇴근이 정상적으로 등록되었습니다." withDuaration:3.0];
+    
+
+    if(     [@"02"isEqual:[sessiondata valueForKey:@"JOB_TPY"] ] ) {
+        [ToastAlertView showToastInParentView:self.view withText:@"출근이 정상적으로 등록되었습니다." withDuaration:3.0];
+    } else if(     [@"03"isEqual:[sessiondata valueForKey:@"JOB_TPY"] ] ) {
+        [ToastAlertView showToastInParentView:self.view withText:@"퇴근이 정상적으로 등록되었습니다." withDuaration:3.0];
+    } else {
+        [ToastAlertView showToastInParentView:self.view withText:@"출/퇴근이 정상적으로 등록되었습니다." withDuaration:3.0];
+    }
+    
     NSString *server = [GlobalData getServerIp];
     NSString *pageUrl = @"/DWFMS";
     NSString *callUrl = @"";
