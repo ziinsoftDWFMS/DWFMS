@@ -213,7 +213,7 @@
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     
     // set URL
-    NSString *makeUrl = [NSString stringWithFormat:@"http://211.253.9.3:8080/resources/filedown.jsp?path=%@",filepath];
+    NSString *makeUrl = [NSString stringWithFormat:@"%@/resources/filedown.jsp?path=%@",ServerIp, filepath];
     NSLog(@"make url = %@",makeUrl);
     [request setURL:[NSURL URLWithString:makeUrl]];
                      //@"http://211.253.9.3:8080/resources/filedown.jsp"]];
