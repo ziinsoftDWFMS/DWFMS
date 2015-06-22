@@ -751,7 +751,8 @@ NSString *viewType =@"LOGOUT";
             
         }
         else{
-            NSLog(@"다른폰에서 로그인");
+            [ToastAlertView showToastInParentView:self.view withText:@"다른폰에서 로그인 되었습니다.." withDuaration:3.0];
+            [self logout];
         }
     }
 }
