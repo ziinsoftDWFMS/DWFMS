@@ -82,7 +82,7 @@
             [self presentModalViewController:imagepickerController animated:YES];
         }
         else if(buttonIndex == 1){
-            getImage =YES;
+            //getImage =YES;
             [imagepickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
             
             [self presentModalViewController:imagepickerController animated:YES];
