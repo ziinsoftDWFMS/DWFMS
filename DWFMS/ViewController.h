@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet ZIINQRCodeReaderView *qrView;
+@property  bool isUpdateQr;
 
 - (void) setimage:(NSString*) path num:(NSString*)num;
 - (void) setQRcode:(NSString*) data ;

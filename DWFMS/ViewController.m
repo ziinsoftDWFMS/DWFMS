@@ -27,7 +27,7 @@ NSString *viewType =@"LOGOUT";
     // Do any additional setup after loading the view, typically from a nib.
     
 
-    
+    [self setIsUpdateQr:NO];
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
     
@@ -179,13 +179,21 @@ NSString *viewType =@"LOGOUT";
             
         } else if ([@"QRun" isEqual:type]) {
             NSLog(@"QR START");
-            
+            [self setIsUpdateQr:NO];
             
             _qrView.hidden = NO;
             _qrView.isHiddenCam;
             NSLog(@"QR end");
             //[self performSegueWithIdentifier:@"callQRScan" sender:self];
-        } else if([@"callImge" isEqual:type]){
+        } else if ([@"updateQRun" isEqual:type]) {
+            NSLog(@"updateQRun START");
+            [self setIsUpdateQr:YES];
+            
+            _qrView.hidden = NO;
+            _qrView.isHiddenCam;
+            NSLog(@"updateQRun end");
+            //[self performSegueWithIdentifier:@"callQRScan" sender:self];
+        }else if([@"callImge" isEqual:type]){
             [self callImge:[decoded substringFromIndex:([type length]+7)]];
         } else if([@"logout" isEqual:type]){
             [self logout];
@@ -400,6 +408,44 @@ NSString *viewType =@"LOGOUT";
                 return;
             }
             
+            if(     [@"00"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
+            {
+                [ToastAlertView showToastInParentView:self.view withText:@"QR업무를 등록해 주세요." withDuaration:3.0];
+                NSString *pageUrl = @"/registrationQR.do";
+                NSString *callurl = [NSString stringWithFormat:@"%@%@?SERIAL_NO=%@",ServerIp,pageUrl,data];
+             
+                NSLog(@"???????%@",callurl);
+                NSURL *url=[NSURL URLWithString:callurl];
+                
+                NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+
+                
+                [self.webView loadRequest:requestURL];
+                
+                
+                return;
+                
+            }
+            
+            if(     [self isUpdateQr] )
+            {
+                [ToastAlertView showToastInParentView:self.view withText:@"QR업무를 수정합니다." withDuaration:3.0];
+                
+                NSString *pageUrl = @"/registrationQR.do";
+                NSString *callurl = [NSString stringWithFormat:@"%@%@?SERIAL_NO=%@",ServerIp,pageUrl,data];
+                
+                NSLog(@"???????%@",callurl);
+                NSURL *url=[NSURL URLWithString:callurl];
+                
+                NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+                
+                
+                [self.webView loadRequest:requestURL];
+                
+                return;
+                
+            }
+
             if(     [@"01"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
                 [ToastAlertView showToastInParentView:self.view withText:@"보안순찰업무로 이동합니다." withDuaration:3.0];
