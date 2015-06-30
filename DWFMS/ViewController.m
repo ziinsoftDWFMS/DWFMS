@@ -13,6 +13,7 @@
 #import "Commonutil.h"
 #import "ZIINQRCodeReaderView.h"
 #import "AppDelegate.h"
+#import "beaconScan.h"
 
 @interface ViewController ()
 
@@ -20,13 +21,13 @@
 
 @implementation ViewController
 NSString *viewType =@"LOGOUT";
+beaconScan *butill;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-
-    
+    butill = [beaconScan alloc];
+   
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
     
@@ -122,7 +123,7 @@ NSString *viewType =@"LOGOUT";
     [self.webView loadRequest:requestURL];
     NSLog(@"??????? urlParam %@",urlParam);
 
-
+    [butill startScan:ad];
 
 }
 
@@ -684,6 +685,7 @@ NSString *viewType =@"LOGOUT";
         }
         else{
             NSLog(@"다른폰에서 로그인");
+            [self logout];
         }
     }
 }

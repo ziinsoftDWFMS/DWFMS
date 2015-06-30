@@ -17,7 +17,15 @@
 		698E293F1B0627530004DD66 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 698E293D1B0627530004DD66 /* LaunchScreen.xib */; };
 		698E294B1B0627530004DD66 /* DWFMSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E294A1B0627530004DD66 /* DWFMSTests.m */; };
 		69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E0554D1B096F140024287C /* GlobalDataManager.m */; };
+		69E3286C1B31BCC200B56E11 /* iOS-Kibeacon-SDK in Resources */ = {isa = PBXBuildFile; fileRef = 69E3286B1B31BCC200B56E11 /* iOS-Kibeacon-SDK */; };
+		69E328701B31BE1000B56E11 /* beaconScan.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E3286F1B31BE1000B56E11 /* beaconScan.m */; };
 		69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E547EE1B0C3FB5002F7A9C /* Commonutil.m */; };
+		69E5BF501B32D97700D2F557 /* Characterics.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E5BF4A1B32D97700D2F557 /* Characterics.h */; };
+		69E5BF511B32D97700D2F557 /* KBCentralManager.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E5BF4B1B32D97700D2F557 /* KBCentralManager.h */; };
+		69E5BF521B32D97700D2F557 /* KBPeripheral.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E5BF4C1B32D97700D2F557 /* KBPeripheral.h */; };
+		69E5BF531B32D97700D2F557 /* KibeaconBlocks.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E5BF4D1B32D97700D2F557 /* KibeaconBlocks.h */; };
+		69E5BF541B32D97700D2F557 /* KibeaconManager.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E5BF4E1B32D97700D2F557 /* KibeaconManager.h */; };
+		69E5BF551B32D97700D2F557 /* libiOS-Kibeacon-SDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E5BF4F1B32D97700D2F557 /* libiOS-Kibeacon-SDK.a */; };
 		69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6DB401B08BCBF002CF1E6 /* GlobalData.m */; };
 		69EBCF531B06ECA60057F530 /* CallServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EBCF521B06ECA60057F530 /* CallServer.m */; };
 		BA006A781B16C783000D939B /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A771B16C783000D939B /* CameraViewController.m */; };
@@ -56,8 +64,17 @@
 		698E294A1B0627530004DD66 /* DWFMSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DWFMSTests.m; sourceTree = "<group>"; };
 		69E0554C1B096F140024287C /* GlobalDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalDataManager.h; sourceTree = "<group>"; };
 		69E0554D1B096F140024287C /* GlobalDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalDataManager.m; sourceTree = "<group>"; };
+		69E3286B1B31BCC200B56E11 /* iOS-Kibeacon-SDK */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "iOS-Kibeacon-SDK"; sourceTree = "<group>"; };
+		69E3286E1B31BE1000B56E11 /* beaconScan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = beaconScan.h; sourceTree = "<group>"; };
+		69E3286F1B31BE1000B56E11 /* beaconScan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = beaconScan.m; sourceTree = "<group>"; };
 		69E547ED1B0C3FB5002F7A9C /* Commonutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Commonutil.h; sourceTree = "<group>"; };
 		69E547EE1B0C3FB5002F7A9C /* Commonutil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Commonutil.m; sourceTree = "<group>"; };
+		69E5BF4A1B32D97700D2F557 /* Characterics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Characterics.h; path = "DWFMS/iOS-Kibeacon-SDK/Characterics.h"; sourceTree = "<group>"; };
+		69E5BF4B1B32D97700D2F557 /* KBCentralManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KBCentralManager.h; path = "DWFMS/iOS-Kibeacon-SDK/KBCentralManager.h"; sourceTree = "<group>"; };
+		69E5BF4C1B32D97700D2F557 /* KBPeripheral.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KBPeripheral.h; path = "DWFMS/iOS-Kibeacon-SDK/KBPeripheral.h"; sourceTree = "<group>"; };
+		69E5BF4D1B32D97700D2F557 /* KibeaconBlocks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KibeaconBlocks.h; path = "DWFMS/iOS-Kibeacon-SDK/KibeaconBlocks.h"; sourceTree = "<group>"; };
+		69E5BF4E1B32D97700D2F557 /* KibeaconManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KibeaconManager.h; path = "DWFMS/iOS-Kibeacon-SDK/KibeaconManager.h"; sourceTree = "<group>"; };
+		69E5BF4F1B32D97700D2F557 /* libiOS-Kibeacon-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libiOS-Kibeacon-SDK.a"; path = "DWFMS/iOS-Kibeacon-SDK/libiOS-Kibeacon-SDK.a"; sourceTree = "<group>"; };
 		69E6DB3F1B08BCBF002CF1E6 /* GlobalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalData.h; sourceTree = "<group>"; };
 		69E6DB401B08BCBF002CF1E6 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
 		69EBCF511B06ECA60057F530 /* CallServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallServer.h; sourceTree = "<group>"; };
@@ -78,6 +95,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69E5BF501B32D97700D2F557 /* Characterics.h in Frameworks */,
+				69E5BF511B32D97700D2F557 /* KBCentralManager.h in Frameworks */,
+				69E5BF521B32D97700D2F557 /* KBPeripheral.h in Frameworks */,
+				69E5BF531B32D97700D2F557 /* KibeaconBlocks.h in Frameworks */,
+				69E5BF541B32D97700D2F557 /* KibeaconManager.h in Frameworks */,
+				69E5BF551B32D97700D2F557 /* libiOS-Kibeacon-SDK.a in Frameworks */,
 				573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,6 +127,12 @@
 		698E29221B0627530004DD66 = {
 			isa = PBXGroup;
 			children = (
+				69E5BF4A1B32D97700D2F557 /* Characterics.h */,
+				69E5BF4B1B32D97700D2F557 /* KBCentralManager.h */,
+				69E5BF4C1B32D97700D2F557 /* KBPeripheral.h */,
+				69E5BF4D1B32D97700D2F557 /* KibeaconBlocks.h */,
+				69E5BF4E1B32D97700D2F557 /* KibeaconManager.h */,
+				69E5BF4F1B32D97700D2F557 /* libiOS-Kibeacon-SDK.a */,
 				573278571B246ED900498B6D /* AudioToolbox.framework */,
 				698E292D1B0627530004DD66 /* DWFMS */,
 				698E29471B0627530004DD66 /* DWFMSTests */,
@@ -123,6 +152,7 @@
 		698E292D1B0627530004DD66 /* DWFMS */ = {
 			isa = PBXGroup;
 			children = (
+				69E3286B1B31BCC200B56E11 /* iOS-Kibeacon-SDK */,
 				573278591B246EDF00498B6D /* resource */,
 				BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */,
 				BA006A791B16D4BA000D939B /* DwfmsSegue.h */,
@@ -146,6 +176,8 @@
 				69E0554D1B096F140024287C /* GlobalDataManager.m */,
 				69E547ED1B0C3FB5002F7A9C /* Commonutil.h */,
 				69E547EE1B0C3FB5002F7A9C /* Commonutil.m */,
+				69E3286E1B31BE1000B56E11 /* beaconScan.h */,
+				69E3286F1B31BE1000B56E11 /* beaconScan.m */,
 			);
 			path = DWFMS;
 			sourceTree = "<group>";
@@ -278,6 +310,7 @@
 				698E293A1B0627530004DD66 /* Main.storyboard in Resources */,
 				BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */,
 				BA8237631B252E260018F868 /* 1.wav in Resources */,
+				69E3286C1B31BCC200B56E11 /* iOS-Kibeacon-SDK in Resources */,
 				BA8237461B1D5BF80018F868 /* Icon.png in Resources */,
 				698E293F1B0627530004DD66 /* LaunchScreen.xib in Resources */,
 				5732785B1B246EFE00498B6D /* sound.wav in Resources */,
@@ -300,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				698E29371B0627530004DD66 /* ViewController.m in Sources */,
+				69E328701B31BE1000B56E11 /* beaconScan.m in Sources */,
 				698E29341B0627530004DD66 /* AppDelegate.m in Sources */,
 				BA006A7B1B16D4C2000D939B /* DwfmsSegue.m in Sources */,
 				69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */,
@@ -439,6 +473,10 @@
 				INFOPLIST_FILE = DWFMS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/DWFMS/iOS-Kibeacon-SDK",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -453,6 +491,10 @@
 				INFOPLIST_FILE = DWFMS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/DWFMS/iOS-Kibeacon-SDK",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

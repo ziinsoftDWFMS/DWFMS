@@ -22,5 +22,5 @@ static GlobalData *gData;
 + (void) setTime:(NSDictionary *)data ;
 + (NSMutableDictionary *) getAllData;
 + (NSString * ) getAuth;
-+(BOOL) hasAuth:(NSString*) auth;
++ (BOOL) hasAuth:(NSString*) auth;
 @end
