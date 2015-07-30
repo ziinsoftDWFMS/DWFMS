@@ -10,6 +10,7 @@
 #import "CallServer.h"
 #import "GlobalData.h"
 #import "GlobalDataManager.h"
+#import "Commonutil.h"
 @interface AppDelegate ()
 
 @end
@@ -339,7 +340,162 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    NSLog(@"??? onResume applicationWillEnterForeground ?? ");
+    
+    CallServer *res = [CallServer alloc];
+    UIDevice *device = [UIDevice currentDevice];
+    NSString* idForVendor = [device.identifierForVendor UUIDString];
+    
+    NSString *currentURL = self.main.webView.request.URL.absoluteString;
+    
+    
+    NSLog(@"currentURL:::::%@", currentURL);
+    
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+    [param setValue:idForVendor forKey:@"HP_TEL"];
+    [param setValue:@"ffffffff" forKey:@"GCM_ID"];
+    [param setObject:@"I" forKey:@"DEVICE_FLAG"];
+    
+    //deviceId
+    
+    //R 수신
+    
+    NSString* str = [res stringWithUrl:@"loginByPhon.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(str);
+    
+    NSString *urlParam=@"";
+    NSString *server = [GlobalData getServerIp];
+    NSString *pageUrl = @"/DWFMS";
+    NSString *callUrl = @"";
+    NSString *callWelcome = @"false";
+    /*
+     자동로그인 부분
+     */
+    if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
+    {
+        if(     [@"Y"isEqual:[jsonInfo valueForKey:@"result"] ] )
+        {
+            NSDictionary *data = [jsonInfo valueForKey:(@"data")];
+            [GlobalDataManager initgData:(data)];
+            NSArray * timelist = [jsonInfo objectForKey:@"inout"];
+            [GlobalDataManager setTime:[timelist objectAtIndex:0]];
+            NSArray * authlist = [jsonInfo objectForKey:@"auth"];
+            [GlobalDataManager initAuth:authlist];
+            
+            
+            NSMutableDictionary * session =[GlobalDataManager getAllData];
+            
+            [session setValue:[GlobalDataManager getAuth] forKey:@"auth"];
+            [session setValue:[[GlobalDataManager getgData] inTime]  forKey:@"inTime"];
+            [session setValue:[[GlobalDataManager getgData] outTime]  forKey:@"outTime"];
+            
+            urlParam = [Commonutil serializeJson:session];
+            
+            NSString * text =@"본 어플리케이션은 원할한 서비스를\n제공하기 위해 휴대전화번호등의 개인정보를 사용합니다.\n[개인정보보호법]에 의거해 개인정보 사용에 대한 \n사용자의 동의를 필요로 합니다.\n개인정보 사용에 동의하시겠습니까?\n";
+            NSLog(@"urlParam %@",urlParam);
+            callUrl = [NSString stringWithFormat:@"%@%@#home",server,pageUrl];
+            
+            
+            if(![@"Y" isEqualToString:[data valueForKey:@"INFO_YN"]])
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:text delegate:self
+                                                      cancelButtonTitle:@"취소"
+                                                      otherButtonTitles:@"동의", nil];
+                [alert show];
+            }
+            
+            //viewType = @"LOGIN";
+            callWelcome= @"true";
+            
+            
+        }else{
+            
+            urlParam = [NSString stringWithFormat:@"HP_TEL=%@&GCM_ID=%@&DEVICE_FLAG=I",idForVendor,@"22222222"];
+            callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+            
+            //self.main.webView.loadUrl(server+"#login");
+          //  Toast.makeText(context, "다른 폰에서 로그인 되었습니다  ", Toast.LENGTH_LONG).show();
+            NSURL *url=[NSURL URLWithString:callUrl];
+            NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+            [self.main.webView loadRequest:requestURL];
+            return;
+        }
+        
+    }
+    
+    if( [@"true"isEqual:callWelcome] ){
+        [self callWelcome];
+        
+    }
+    
 }
+
+-(void) callWelcome{
+    NSError *error;
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    if([@"" isEqualToString:[[GlobalDataManager getgData] inTime]])
+    {
+        [param setObject:@"-" forKey:@"INTIME"];
+    }else{
+        
+        [param setObject:[[GlobalDataManager getgData] inTime]  forKey:@"INTIME"];
+    }
+    
+    if([@"" isEqualToString:[[GlobalDataManager getgData] outTime]])
+    {
+        [param setObject:@"-" forKey:@"OUTTIME"];
+    }else{
+        [param setObject:[[GlobalDataManager getgData] outTime]  forKey:@"OUTTIME"];
+        
+    }
+    
+    
+    [param setObject:[[GlobalDataManager getgData] empNm] forKey:@"EMPNM"];
+    
+    
+    //     NSString *jsonInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"saltfactory",@"name",@"saltfactory@gmail.com",@"e-mail", nil];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:param options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    if (error) {
+        NSLog(@"error : %@", error.localizedDescription);
+        return;
+    }
+    
+    NSString* searchWord = @"\"";
+    NSString* replaceWord = @"";
+    //   jsonString =  [jsonString stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    
+    
+    
+    jsonString =  [jsonString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSLog(@"jsonString => %@", jsonString);
+    
+    NSString *escaped = [jsonString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"escaped string :\n%@", escaped);
+    
+    searchWord = @"%20";
+    replaceWord = @"";
+    escaped =  [escaped stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    searchWord = @"%0A";
+    replaceWord = @"";
+    escaped =  [escaped stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    
+    
+    NSString *decoded = [escaped stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"decoded string :\n%@", decoded);
+    
+    NSString *scriptString = [NSString stringWithFormat:@"welcome(%@);",decoded];
+    NSLog(@"scriptString => %@", scriptString);
+    [self.main.webView stringByEvaluatingJavaScriptFromString:scriptString];
+}
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
