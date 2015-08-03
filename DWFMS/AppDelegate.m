@@ -432,6 +432,10 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     if( [@"true"isEqual:callWelcome] ){
         [self callWelcome];
         
+        
+        
+        
+        
     }
     
 }
