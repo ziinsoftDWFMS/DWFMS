@@ -837,20 +837,60 @@ NSString *viewType =@"LOGOUT";
             NSLog(@"로그인한 사업장이 다릅니다 ");
             return;
         }
-        NSString *server = [GlobalData getServerIp];
-        NSString *pageUrl = @"/DWFMSASDetail.do";
-        NSString *callUrl = @"";
-        NSString * urlParam = [NSString stringWithFormat:@"JOB_CD=%@&sh_DEPT_CD=%@&sh_JOB_JISI_DT=%@&GYULJAE_YN=N",[jsonInfo valueForKey:@"JOB_CD"],[jsonInfo valueForKey:@"DEPT_CD"],[jsonInfo valueForKey:@"JOB_JISI_DT"]];
         
+        if ([[jsonInfo valueForKey:@"TASK_CD"] isEqual: @"AIR"]) {
+            NSDateFormatter *today = [[NSDateFormatter alloc] init];
+            
+            [today setDateFormat:@"yyyy-MM-dd"];
+            NSString *nowDate = [today stringFromDate:[NSDate date]];
+            
+            [today setDateFormat:@"hh:mm"];
+            NSString *time = [today stringFromDate:[NSDate date]];
+            
+            NSString *fullWccd = [jsonInfo valueForKey:@"JOB_TPY"];
+            NSString *jobTpy = [fullWccd substringWithRange:NSMakeRange(2, 4) ];
+            NSString *wccd = [fullWccd substringWithRange:NSMakeRange(0, 2) ];
+            NSString *deptWccd = [jsonInfo valueForKey:@"WORK_CLASS_CD"];
+            NSString *jobCd = [jsonInfo valueForKey:@"JOB_CD"];
+            NSString *deptCd = [jsonInfo valueForKey:@"DEPT_CD"];
+            
+            NSLog(@"@@@@@@@@@ JOB_TPY %@", jobTpy);
+            NSLog(@"@@@@@@@@@ WORK_CLASS_CD %@", deptWccd);
+            
+            NSLog(@"@@@@@@@@@@@@@@ WORK_CLASS_CD : /asManagementP1%@.do?req_JOB_CD=%@&req_GYULJAE_YN=N&req_txt_schDate=%@&req_selDEPT_CD=%@&req_selWORK_CLASS=%@&req_selWORK_CLASS1=%@&req_selWORK_CLASS2=%@&req_txt_schTime=%@", jobTpy, jobCd, nowDate, deptCd, deptWccd, wccd, fullWccd, time);
+            
+            NSString *server = [GlobalData getServerIp];
+            NSString *pageUrl =  [NSString stringWithFormat:@"/asManagementP1%@.do",jobTpy];
+            NSString *callUrl = @"";
+            NSString * urlParam = [NSString stringWithFormat:@"req_JOB_CD=%@&req_GYULJAE_YN=N&req_txt_schDate=%@&req_selDEPT_CD=%@&req_selWORK_CLASS=%@&req_selWORK_CLASS1=%@&req_selWORK_CLASS2=%@&req_txt_schTime=%@", jobCd, nowDate, deptCd, deptWccd, wccd, fullWccd, time];
+            
+            
+            callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+            
+            NSURL *url=[NSURL URLWithString:callUrl];
+            NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+            [requestURL setHTTPMethod:@"POST"];
+            [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
+            [self.webView loadRequest:requestURL];
+            
+            
+        }else{
+            NSString *server = [GlobalData getServerIp];
+            NSString *pageUrl = @"/DWFMSASDetail.do";
+            NSString *callUrl = @"";
+            NSString * urlParam = [NSString stringWithFormat:@"JOB_CD=%@&sh_DEPT_CD=%@&sh_JOB_JISI_DT=%@&GYULJAE_YN=N",[jsonInfo valueForKey:@"JOB_CD"],[jsonInfo valueForKey:@"DEPT_CD"],[jsonInfo valueForKey:@"JOB_JISI_DT"]];
+            
+            
+            
+            callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+            
+            NSURL *url=[NSURL URLWithString:callUrl];
+            NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+            [requestURL setHTTPMethod:@"POST"];
+            [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
+            [self.webView loadRequest:requestURL];
+        }
         
-        
-        callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
-        
-        NSURL *url=[NSURL URLWithString:callUrl];
-        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
-        [requestURL setHTTPMethod:@"POST"];
-        [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
-        [self.webView loadRequest:requestURL];
     }
     
     if(     [@"NOTIFY"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
