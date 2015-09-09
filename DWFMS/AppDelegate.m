@@ -193,6 +193,15 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     
+    
+    NSString *msg = [jsonInfo valueForKey:@"MESSAGE"];
+    NSString *title = [jsonInfo valueForKey:@"TITLE"];
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
+    [alert show];
+    
+    
     if(     [@"AS"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
     {
         if([GlobalDataManager hasAuth:@"fms113"]){

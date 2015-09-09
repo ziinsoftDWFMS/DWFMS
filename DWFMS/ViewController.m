@@ -25,9 +25,10 @@ NSString *viewType =@"LOGOUT";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    ///
     
 
-    [self setIsUpdateQr:NO];
+        [self setIsUpdateQr:NO];
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
     
@@ -129,7 +130,7 @@ NSString *viewType =@"LOGOUT";
     NSLog(@"??????? urlParam %@",urlParam);
 
 
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -817,7 +818,12 @@ NSString *viewType =@"LOGOUT";
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     
+    NSString *msg = [jsonInfo valueForKey:@"MESSAGE"];
+    NSString *title = [jsonInfo valueForKey:@"TITLE"];
     
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
+    [alert show];
     
     
     if(     [@"AS"isEqual:[jsonInfo valueForKey:@"TASK_CD"] ] )
