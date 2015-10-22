@@ -11,11 +11,22 @@
 #import "GlobalData.h"
 #import "GlobalDataManager.h"
 #import "Commonutil.h"
+#import <CoreLocation/CoreLocation.h>
+#import <Reco/Reco.h>
+#import "ToastAlertView.h"
 @interface AppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate{
+    NSMutableArray *_registeredRegions;
+    RECOBeaconManager *_recoManager;
+    NSArray *_uuidList;
+    
+    BOOL isInside;
+
+    
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -88,7 +99,40 @@
         //[[UIApplication sharedApplication] cancelAllLocalNotifications];
            
     }
+    
+    //beacon  start
+    [self checkPermission];
+    
+    _registeredRegions = [[NSMutableArray alloc] init];
+    _uuidList = [GlobalData sharedDefaults].supportedUUIDs;
+    
+    _recoManager = [[RECOBeaconManager alloc] init];
+    _recoManager.delegate = self;
+    
+    NSSet *monitoredRegion = [_recoManager getMonitoredRegions];
+    if ([monitoredRegion count] > 0) {
+        NSLog(@"isBackgroundMonitoringOn start ");
+        self.isBackgroundMonitoringOn = YES;
+    } else {
+        NSLog(@"isBackgroundMonitoringOn no ");
+        self.isBackgroundMonitoringOn = NO;
+    }
+    
+    for (int i = 0; i < [_uuidList count]; i++) {
+        NSLog(@"_uuidList  ");
+        NSUUID *uuid = [_uuidList objectAtIndex:i];
+        NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%d", i];
         
+        [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+    }
+    
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+            [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+        }
+    }
+    
+    
     return YES;
 }
 
@@ -517,5 +561,128 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+- (void)checkPermission {
+    if ([RECOBeaconManager isMonitoringAvailable]){
+        UIApplication *application = [UIApplication sharedApplication];
+        if (application.backgroundRefreshStatus != UIBackgroundRefreshStatusAvailable) {
+            NSString *title = @"Background App Refresh Permission Denied";
+            NSString *message = @"To re-enable, please go to Settings > General and turn on Background App Refresh for this app.";
+            [self showAlertWithTitle:title andMessage:message];
+            
+        }
+    }
+    
+    if([RECOBeaconManager locationServicesEnabled]){
+        NSLog(@"Location Services Enabled");
+        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
+            NSString *title = @"Location Service Permission Denied";
+            NSString *message = @"To re-enable, please go to Settings > Privacy and turn on Location Service for this app.";
+            [self showAlertWithTitle:title andMessage:message];
+        }
+    }
+}
 
+- (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
+- (void)registerBeaconRegionWithUUID:(NSUUID *)proximityUUID andIdentifier:(NSString*)Identifier {
+    RECOBeaconRegion *recoRegion = [[RECOBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:Identifier];
+    
+    [recoRegion setNotifyOnEntry:YES];
+    [recoRegion setNotifyOnExit:YES];
+    [_registeredRegions addObject:recoRegion];
+}
+
+
+#pragma mark notificadtion
+- (void)_sendEnterLocalNotificationWithMessage:(NSString *)message {
+    if (!isInside) {
+        UILocalNotification *notice = [[UILocalNotification alloc] init];
+        
+        notice.alertBody = message;
+        notice.alertAction = @"Open";
+        notice.soundName = UILocalNotificationDefaultSoundName;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:notice];
+    }
+    
+    isInside = YES;
+}
+
+- (void)_sendExitLocalNotificationWithMessage:(NSString *)message {
+    if (isInside) {
+        UILocalNotification *notice = [[UILocalNotification alloc] init];
+        
+        notice.alertBody = message;
+        notice.alertAction = @"Open";
+        notice.soundName = UILocalNotificationDefaultSoundName;
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:notice];
+    }
+    
+    isInside = NO;
+}
+
+- (void) startBackgroundMonitoring {
+    if (![RECOBeaconManager isMonitoringAvailable]) {
+        NSLog(@"startBackgroundMonitoring return");
+        return;
+    }
+    for (RECOBeaconRegion *recoRegion in _registeredRegions) {
+        [_recoManager startMonitoringForRegion:recoRegion];
+    }
+}
+
+- (void) stopBackgroundMonitoring {
+    NSSet *monitoredRegions = [_recoManager getMonitoredRegions];
+    for (RECOBeaconRegion *recoRegion in monitoredRegions) {
+        [_recoManager stopMonitoringForRegion:recoRegion];
+    }
+}
+
+#pragma mark RECOBeaconManager delegate methods
+- (void) recoManager:(RECOBeaconManager *)manager didDetermineState:(RECOBeaconRegionState)state forRegion:(RECOBeaconRegion *)region {
+    NSLog(@"didDetermineState(background) %@", region.identifier);
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager didEnterRegion:(RECOBeaconRegion *)region {
+    NSLog(@"appdelegate 1didEnterRegion(background) %@", region.identifier);
+    [GlobalData setbeacon:@"T"];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        // don't send any notifications
+        NSLog(@"app active: not sending notification");
+        return;
+    }
+   
+    
+  //  NSString *msg = [NSString stringWithFormat:@"didEnterRegion: %@", region.identifier];
+  //  [self _sendEnterLocalNotificationWithMessage:msg];
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager didExitRegion:(RECOBeaconRegion *)region {
+    NSLog(@"appdelegate 1didExitRegion(background) %@", region.identifier);
+    [GlobalData setbeacon:@"F"];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        // don't send any notifications
+        NSLog(@"app active: not sending notification");
+        return;
+    }
+    //NSString *msg = [NSString stringWithFormat:@"didExitRegion: %@", region.identifier];
+    //[self _sendExitLocalNotificationWithMessage:msg];
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager didStartMonitoringForRegion:(RECOBeaconRegion *)region {
+    NSLog(@"didStartMonitoringForRegion(background) %@", region.identifier);
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager monitoringDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
+    NSLog(@"monitoringDidFailForRegion(background) %@, error: %@", region.identifier, [error localizedDescription]);
+}
 @end

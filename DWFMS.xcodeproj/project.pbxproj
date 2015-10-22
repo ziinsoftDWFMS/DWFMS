@@ -10,6 +10,11 @@
 		573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573278571B246ED900498B6D /* AudioToolbox.framework */; };
 		5732785B1B246EFE00498B6D /* sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5732785A1B246EFE00498B6D /* sound.wav */; };
 		5746FFF81B2D4B710079C385 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5746FFF71B2D4B710079C385 /* AVFoundation.framework */; };
+		575A76071BD7EC730072CC34 /* Reco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 575A76061BD7EC730072CC34 /* Reco.framework */; settings = {ASSET_TAGS = (); }; };
+		575A76081BD7EC7E0072CC34 /* Reco.framework in Sources */ = {isa = PBXBuildFile; fileRef = 575A76061BD7EC730072CC34 /* Reco.framework */; };
+		5771CF291BD3F03100AFD87A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5771CF281BD3F03100AFD87A /* UIKit.framework */; };
+		5771CF2B1BD3F0BA00AFD87A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5771CF2A1BD3F0BA00AFD87A /* CoreGraphics.framework */; };
+		57946E181BD26FF0004DD131 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57946E171BD26FF0004DD131 /* CoreLocation.framework */; };
 		57B0E29C1B2C4FDF00AA41F6 /* ToastAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */; };
 		698E29311B0627530004DD66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29301B0627530004DD66 /* main.m */; };
 		698E29341B0627530004DD66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29331B0627530004DD66 /* AppDelegate.m */; };
@@ -44,6 +49,10 @@
 		573278571B246ED900498B6D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5732785A1B246EFE00498B6D /* sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound.wav; sourceTree = "<group>"; };
 		5746FFF71B2D4B710079C385 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		575A76061BD7EC730072CC34 /* Reco.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reco.framework; sourceTree = "<group>"; };
+		5771CF281BD3F03100AFD87A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		5771CF2A1BD3F0BA00AFD87A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		57946E171BD26FF0004DD131 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		57B0E29A1B2C4FA100AA41F6 /* ToastAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastAlertView.h; sourceTree = "<group>"; };
 		57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastAlertView.m; sourceTree = "<group>"; };
 		698E292B1B0627530004DD66 /* DWFMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWFMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +92,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5771CF2B1BD3F0BA00AFD87A /* CoreGraphics.framework in Frameworks */,
+				5771CF291BD3F03100AFD87A /* UIKit.framework in Frameworks */,
+				57946E181BD26FF0004DD131 /* CoreLocation.framework in Frameworks */,
+				575A76071BD7EC730072CC34 /* Reco.framework in Frameworks */,
 				5746FFF81B2D4B710079C385 /* AVFoundation.framework in Frameworks */,
 				573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */,
 			);
@@ -110,6 +123,10 @@
 		698E29221B0627530004DD66 = {
 			isa = PBXGroup;
 			children = (
+				575A76061BD7EC730072CC34 /* Reco.framework */,
+				5771CF2A1BD3F0BA00AFD87A /* CoreGraphics.framework */,
+				5771CF281BD3F03100AFD87A /* UIKit.framework */,
+				57946E171BD26FF0004DD131 /* CoreLocation.framework */,
 				5746FFF71B2D4B710079C385 /* AVFoundation.framework */,
 				573278571B246ED900498B6D /* AudioToolbox.framework */,
 				698E292D1B0627530004DD66 /* DWFMS */,
@@ -253,6 +270,11 @@
 					698E292A1B0627530004DD66 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 4P28E7RU57;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					698E29431B0627530004DD66 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -310,6 +332,7 @@
 			files = (
 				698E29371B0627530004DD66 /* ViewController.m in Sources */,
 				698E29341B0627530004DD66 /* AppDelegate.m in Sources */,
+				575A76081BD7EC7E0072CC34 /* Reco.framework in Sources */,
 				BA006A7B1B16D4C2000D939B /* DwfmsSegue.m in Sources */,
 				69E0554E1B096F140024287C /* GlobalDataManager.m in Sources */,
 				69EBCF531B06ECA60057F530 /* CallServer.m in Sources */,
@@ -377,9 +400,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -420,9 +445,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -446,9 +473,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = DWFMS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dw.ubis.UBISAir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -460,9 +493,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = DWFMS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dw.ubis.UBISAir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

@@ -12,7 +12,6 @@
 #import "CameraViewController.h"
 
 
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     NSString *DEVICE_TOK;
     NSString *GRP_CD;
@@ -28,6 +27,12 @@
 @property (strong, nonatomic) NSString *EMC_ID;
 @property (strong, nonatomic) NSString *EMC_MSG;
 @property (strong, nonatomic) NSString *CODE;
+
+
+@property (nonatomic, assign) BOOL isBackgroundMonitoringOn;
+
+- (void) startBackgroundMonitoring;
+- (void) stopBackgroundMonitoring;
 
 @property (weak, nonatomic) ViewController * main;
 @property (weak, nonatomic) CameraViewController * camera;

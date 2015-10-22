@@ -14,25 +14,60 @@
 #import "ZIINQRCodeReaderView.h"
 #import "AppDelegate.h"
 #import "ToastAlertView.h"
-
 @interface ViewController ()
 
 @end
 
-@implementation ViewController
-NSString *viewType =@"LOGOUT";
+@implementation ViewController{
+    RECOBeaconManager *_recoManager;
+    NSMutableDictionary *_rangedBeacon;
+    NSMutableDictionary *_rangedRegions;
+    NSArray *_uuidList;
+    NSArray *_stateCategory;
 
+}
+
+NSString *viewType =@"LOGOUT";
+NSString *beaconYN =@"Y";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    ///
+    /// beacon uuid :[24DDF411-8CF1-440C-87CD-E368DAF9C93E] 
+    [GlobalData setbeacon:@"F"];
     
-
-        [self setIsUpdateQr:NO];
+    [self setIsUpdateQr:NO];
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
     
-    NSLog(@" appdeligate %@",ad);
+    //beaconstart
+    _rangedBeacon = [[NSMutableDictionary alloc] init];
+    _rangedRegions = [[NSMutableDictionary alloc] init];
+
+    _recoManager = [[RECOBeaconManager alloc] init];
+    _recoManager.delegate = self;
+    [_recoManager requestAlwaysAuthorization];
+    
+    [ad startBackgroundMonitoring];
+    
+    for (RECOBeaconRegion *recoRegion in _rangedRegions) {
+        [_recoManager startMonitoringForRegion:recoRegion];
+    }
+    
+    _uuidList = [GlobalData sharedDefaults].supportedUUIDs;
+    _stateCategory = @[@(RECOProximityUnknown),
+                       @(RECOProximityImmediate),
+                       @(RECOProximityNear),
+                       @(RECOProximityFar)];
+    
+    [_uuidList enumerateObjectsUsingBlock:^(NSUUID *uuid, NSUInteger idx, BOOL *stop) {
+        NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%lu", (unsigned long)idx];
+        
+        [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+    }];
+    [self startRanging];
+    //beacon end
+    
+    
     [self.webView setDelegate:self];
     
     
@@ -80,7 +115,7 @@ NSString *viewType =@"LOGOUT";
             NSArray * authlist = [jsonInfo objectForKey:@"auth"];
             [GlobalDataManager initAuth:authlist];
             
-            
+            beaconYN = [data valueForKey:@"BEACON_YN"];
             NSMutableDictionary * session =[GlobalDataManager getAllData];
             
             [session setValue:[GlobalDataManager getAuth] forKey:@"auth"];
@@ -129,7 +164,7 @@ NSString *viewType =@"LOGOUT";
     [self.webView loadRequest:requestURL];
     NSLog(@"??????? urlParam %@",urlParam);
 
-
+    
     
 }
 
@@ -139,23 +174,13 @@ NSString *viewType =@"LOGOUT";
 }
 - (void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-    
-    
-    
-    
-    
-    
-    //callUrl=callUrl+"?HP_TEL="+PhoneNumber+"&GCM_ID="+gcmid+"&DEVICE_FLAG=A";
-    
-   
-    
-    
-   
-   
+    [self startRanging];
 }
-
-
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self stopRanging];
+    
+}
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     //javascript => document.location = "somelink://yourApp/form_Submitted:param1:param2:param3";
@@ -283,7 +308,7 @@ NSString *viewType =@"LOGOUT";
             [GlobalDataManager setTime:[timelist objectAtIndex:0]];
             NSArray * authlist = [sessionjsonInfo objectForKey:@"auth"];
             [GlobalDataManager initAuth:authlist];
-            
+            beaconYN = [sessiondata valueForKey:@"BEACON_YN"];
             NSString * text =@"본 어플리케이션은 원할한 서비스를\n제공하기 위해 휴대전화번호등의 개인정보를 사용합니다.\n[개인정보보호법]에 의거해 개인정보 사용에 대한 \n사용자의 동의를 필요로 합니다.\n개인정보 사용에 동의하시겠습니까?\n";
             if(![@"Y" isEqualToString:[sessiondata valueForKey:@"INFO_YN"]])
             {
@@ -567,6 +592,16 @@ NSString *viewType =@"LOGOUT";
 
 -(void) setInOutCommitInfo :(NSMutableDictionary * ) param{
  //
+    NSLog(@"beaconstatus ::::::: %@, %@", [GlobalData getbeacon], beaconYN);
+    
+    if ([@"Y"isEqual:beaconYN]) {
+        if([@"F"isEqual:[GlobalData getbeacon]]){
+            [ToastAlertView showToastInParentView:self.view withText:@"근무지를 벗어난 곳에서는 QR업무를 사용 하실 수 없습니다.\n\n[ 블루투스를 확인해 주세요 ]" withDuaration:3.0];
+            return;
+        }
+    }
+
+    
     CallServer *res = [CallServer alloc];
     
     
@@ -792,7 +827,7 @@ NSString *viewType =@"LOGOUT";
             [GlobalDataManager setTime:[timelist objectAtIndex:0]];
             NSArray * authlist = [jsonInfo objectForKey:@"auth"];
             [GlobalDataManager initAuth:authlist];
-            
+            beaconYN = [data valueForKey:@"BEACON_YN"];
             
             if(![oldempon isEqualToString:[[GlobalDataManager getgData] empNo] ]){
                 [self logout];
@@ -810,6 +845,61 @@ NSString *viewType =@"LOGOUT";
             [self logout];
         }
     }
+}
+
+
+- (void)registerBeaconRegionWithUUID:(NSUUID *)proximityUUID andIdentifier:(NSString*)identifier {
+    RECOBeaconRegion *recoRegion = [[RECOBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:identifier];
+    
+    _rangedRegions[recoRegion] = [NSArray array];
+}
+- (void) startRanging {
+    if (![RECOBeaconManager isRangingAvailable]) {
+        return;
+    }
+    
+    [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
+        [_recoManager startRangingBeaconsInRegion:recoRegion];
+    }];
+}
+
+- (void) stopRanging; {
+    [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
+        [_recoManager stopRangingBeaconsInRegion:recoRegion];
+    }];
+}
+
+#pragma mark - RECOBeaconManager delegate methods
+
+- (void)recoManager:(RECOBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(RECOBeaconRegion *)region {
+    NSLog(@"didRangeBeaconsInRegion: %@, ranged %lu beacons", region.identifier, (unsigned long)[beacons count]);
+    
+    if((unsigned long)[beacons count] > 0){
+        [GlobalData setbeacon:@"T"];
+    }
+
+    _rangedRegions[region] = beacons;
+    [_rangedBeacon removeAllObjects];
+    
+    NSMutableArray *allBeacons = [NSMutableArray array];
+    
+    NSArray *arrayOfBeaconsInRange = [_rangedRegions allValues];
+    [arrayOfBeaconsInRange enumerateObjectsUsingBlock:^(NSArray *beaconsInRange, NSUInteger idx, BOOL *stop){
+        [allBeacons addObjectsFromArray:beaconsInRange];
+    }];
+    
+    [_stateCategory enumerateObjectsUsingBlock:^(NSNumber *range, NSUInteger idx, BOOL *stop){
+        NSArray *beaconsInRange = [allBeacons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"proximity = %d", [range intValue]]];
+        
+        if ([beaconsInRange count]) {
+            _rangedBeacon[range] = beaconsInRange;
+        }
+    }];
+    //[self.tableView reloadData];
+}
+
+- (void)recoManager:(RECOBeaconManager *)manager rangingDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
+    NSLog(@"rangingDidFailForRegion: %@ error: %@", region.identifier, [error localizedDescription]);
 }
 
 - (void) rcvAspn:(NSString*) jsonstring {
@@ -945,6 +1035,48 @@ NSString *viewType =@"LOGOUT";
     }
 }
 
+#pragma mark RECOBeaconManager delegate methods
+- (void) recoManager:(RECOBeaconManager *)manager didDetermineState:(RECOBeaconRegionState)state forRegion:(RECOBeaconRegion *)region {
+    NSLog(@"didDetermineState(background) %@", region.identifier);
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager didEnterRegion:(RECOBeaconRegion *)region {
+    NSLog(@"viewcontroller didEnterRegion(background) %@", region.identifier);
+    [GlobalData setbeacon:@"T"];
+    
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        // don't send any notifications
+        NSLog(@"app active: not sending notification");
+        return;
+    }
+    
+    
+    //  NSString *msg = [NSString stringWithFormat:@"didEnterRegion: %@", region.identifier];
+    //  [self _sendEnterLocalNotificationWithMessage:msg];
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager didExitRegion:(RECOBeaconRegion *)region {
+    NSLog(@"viewcontroller didExitRegion(background) %@", region.identifier);
+    [GlobalData setbeacon:@"F"];
+    
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        // don't send any notifications
+        NSLog(@"app active: not sending notification");
+        return;
+    }
+    
+    //NSString *msg = [NSString stringWithFormat:@"didExitRegion: %@", region.identifier];
+    //[self _sendExitLocalNotificationWithMessage:msg];
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager didStartMonitoringForRegion:(RECOBeaconRegion *)region {
+    NSLog(@"didStartMonitoringForRegion(background) %@", region.identifier);
+}
+
+- (void) recoManager:(RECOBeaconManager *)manager monitoringDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
+    NSLog(@"monitoringDidFailForRegion(background) %@, error: %@", region.identifier, [error localizedDescription]);
+}
+
 @end
 @implementation UIWebView (JavaScriptAlert)
 - (void)webView:(UIWebView *)sender runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(id)frame {
@@ -982,4 +1114,6 @@ static NSInteger bIdx = -1;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     bIdx = buttonIndex;
 }
+
+
 @end

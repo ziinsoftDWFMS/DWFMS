@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ZIINQRCodeReaderView.h"
-
-@interface ViewController : UIViewController
+#import <Reco/Reco.h>
+@interface ViewController : UIViewController <RECOBeaconManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet ZIINQRCodeReaderView *qrView;
+@property (nonatomic, strong) RECOBeacon *beacon;
 @property  bool isUpdateQr;
 
 - (void) setimage:(NSString*) path num:(NSString*)num;
