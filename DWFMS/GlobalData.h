@@ -54,7 +54,7 @@
 @property(strong,nonatomic) NSArray *auth;
 @property(strong,nonatomic) NSArray *gcmId;
 + (GlobalData *)sharedDefaults;
-@property (nonatomic, copy, readonly) NSArray *supportedUUIDs;
+//@property (nonatomic, copy, readonly) NSArray *supportedUUIDs;
 
 @property(strong,nonatomic) NSMutableDictionary * cameraData;
 @end

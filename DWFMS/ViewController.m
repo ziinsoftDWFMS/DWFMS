@@ -29,8 +29,16 @@
 
 NSString *viewType =@"LOGOUT";
 NSString *beaconYN =@"Y";
+NSString *bluetoothYN = @"N";
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if([self detectBluetooth] == TRUE){
+        NSLog(@"bluetooth use");
+        bluetoothYN = @"Y";
+    }else{
+        NSLog(@"bluetooth unuse");
+        bluetoothYN = @"N";
+    }
     // Do any additional setup after loading the view, typically from a nib.
     /// beacon uuid :[24DDF411-8CF1-440C-87CD-E368DAF9C93E] 
     [GlobalData setbeacon:@"F"];
@@ -53,18 +61,7 @@ NSString *beaconYN =@"Y";
         [_recoManager startMonitoringForRegion:recoRegion];
     }
     
-    _uuidList = [GlobalData sharedDefaults].supportedUUIDs;
-    _stateCategory = @[@(RECOProximityUnknown),
-                       @(RECOProximityImmediate),
-                       @(RECOProximityNear),
-                       @(RECOProximityFar)];
     
-    [_uuidList enumerateObjectsUsingBlock:^(NSUUID *uuid, NSUInteger idx, BOOL *stop) {
-        NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%lu", (unsigned long)idx];
-        
-        [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
-    }];
-    [self startRanging];
     //beacon end
     
     
@@ -140,7 +137,23 @@ NSString *beaconYN =@"Y";
             
            viewType = @"LOGIN";
             
+            //_uuidList = [GlobalData sharedDefaults].supportedUUIDs;
+            _uuidList = @[
+                          [[NSUUID alloc] initWithUUIDString:[data valueForKey:@"BEACON_UUID"]]
+                          //24DDF411-8CF1-440C-87CD-E368DAF9C93E
+                          // you can add other NSUUID instance here.
+                          ];
+            _stateCategory = @[@(RECOProximityUnknown),
+                               @(RECOProximityImmediate),
+                               @(RECOProximityNear),
+                               @(RECOProximityFar)];
             
+            [_uuidList enumerateObjectsUsingBlock:^(NSUUID *uuid, NSUInteger idx, BOOL *stop) {
+                NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%lu", (unsigned long)idx];
+                
+                [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+            }];
+            [self startRanging];
             
         }else{
             
@@ -167,6 +180,41 @@ NSString *beaconYN =@"Y";
     
     
 }
+
+- (BOOL)detectBluetooth
+{
+    if(!self.blueToothManager)
+    {
+        // Put on main queue so we can call UIAlertView from delegate callbacks.
+        self.blueToothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    }
+//    [self centralManagerDidUpdateState:self.blueToothManager]; // Show initial state
+    switch(self.blueToothManager.state)
+    {
+        case CBCentralManagerStateResetting: return FALSE; break;
+        case CBCentralManagerStateUnsupported: return FALSE; break;
+        case CBCentralManagerStateUnauthorized: return FALSE; break;
+        case CBCentralManagerStatePoweredOff: return FALSE; break;
+        case CBCentralManagerStatePoweredOn: return TRUE; break;
+        default: return FALSE; break;
+    }
+}
+
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central
+{
+    NSString *stateString = nil;
+    switch(_blueToothManager.state)
+    {
+        case CBCentralManagerStateResetting: stateString = @"The connection with the system service was momentarily lost, update imminent."; break;
+        case CBCentralManagerStateUnsupported: stateString = @"The platform doesn't support Bluetooth Low Energy."; break;
+        case CBCentralManagerStateUnauthorized: stateString = @"The app is not authorized to use Bluetooth Low Energy."; break;
+        case CBCentralManagerStatePoweredOff: stateString = @"Bluetooth is currently powered off."; break;
+        case CBCentralManagerStatePoweredOn: stateString = @"Bluetooth is currently powered on and available to use."; break;
+        default: stateString = @"State unknown, update imminent."; break;
+    }
+    NSLog(@"bluetoothstate :: %@", stateString);
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -594,7 +642,7 @@ NSString *beaconYN =@"Y";
  //
     NSLog(@"beaconstatus ::::::: %@, %@", [GlobalData getbeacon], beaconYN);
     
-    if ([@"Y"isEqual:beaconYN]) {
+    if ([@"Y"isEqual:beaconYN] && [@"Y"isEqual:bluetoothYN]) {
         if([@"F"isEqual:[GlobalData getbeacon]]){
             [ToastAlertView showToastInParentView:self.view withText:@"근무지를 벗어난 곳에서는 QR업무를 사용 하실 수 없습니다.\n\n[ 블루투스를 확인해 주세요 ]" withDuaration:3.0];
             return;

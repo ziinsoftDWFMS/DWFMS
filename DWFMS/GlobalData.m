@@ -13,15 +13,15 @@
 
 - (id)init {
     self = [super init];
-    if(self) {
-        // this is RECO beacon uuid
-        _supportedUUIDs = @[
-                            [[NSUUID alloc] initWithUUIDString:@"24DDF411-8CF1-440C-87CD-E368DAF9C93E"]
-                            //24DDF411-8CF1-440C-87CD-E368DAF9C93E
-                            // you can add other NSUUID instance here.
-                            ];
-
-    }
+//    if(self) {
+//        // this is RECO beacon uuid
+//        _supportedUUIDs = @[
+//                            [[NSUUID alloc] initWithUUIDString:@"24DDF411-8CF1-440C-87CD-E368DAF9C93E"]
+//                            //24DDF411-8CF1-440C-87CD-E368DAF9C93E
+//                            // you can add other NSUUID instance here.
+//                            ];
+//
+//    }
     return self;
 }
 

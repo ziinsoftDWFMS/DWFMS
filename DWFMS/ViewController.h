@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "ZIINQRCodeReaderView.h"
 #import <Reco/Reco.h>
-@interface ViewController : UIViewController <RECOBeaconManagerDelegate>
+#import <CoreBluetooth/CoreBluetooth.h>
+@interface ViewController : UIViewController <RECOBeaconManagerDelegate, CBCentralManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet ZIINQRCodeReaderView *qrView;
 @property (nonatomic, strong) RECOBeacon *beacon;
+@property (nonatomic, strong) CBCentralManager* blueToothManager;
 @property  bool isUpdateQr;
 
 - (void) setimage:(NSString*) path num:(NSString*)num;

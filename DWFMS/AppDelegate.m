@@ -76,6 +76,35 @@
                 [GlobalDataManager setTime:[timelist objectAtIndex:0]];
                 NSArray * authlist = [jsonInfo objectForKey:@"auth"];
                 [GlobalDataManager initAuth:authlist];
+                //beacon  start
+                [self checkPermission];
+                
+                _registeredRegions = [[NSMutableArray alloc] init];
+                _uuidList = @[
+                              [[NSUUID alloc] initWithUUIDString:[data valueForKey:@"BEACON_UUID"]]
+                              //24DDF411-8CF1-440C-87CD-E368DAF9C93E
+                              // you can add other NSUUID instance here.
+                              ];
+                _recoManager = [[RECOBeaconManager alloc] init];
+                _recoManager.delegate = self;
+                
+                NSSet *monitoredRegion = [_recoManager getMonitoredRegions];
+                if ([monitoredRegion count] > 0) {
+                    NSLog(@"isBackgroundMonitoringOn start ");
+                    self.isBackgroundMonitoringOn = YES;
+                } else {
+                    NSLog(@"isBackgroundMonitoringOn no ");
+                    self.isBackgroundMonitoringOn = NO;
+                }
+                
+                for (int i = 0; i < [_uuidList count]; i++) {
+                    NSLog(@"_uuidList  ");
+                    NSUUID *uuid = [_uuidList objectAtIndex:i];
+                    NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%d", i];
+                    
+                    [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+                }
+
             }
         }
         
@@ -100,31 +129,6 @@
            
     }
     
-    //beacon  start
-    [self checkPermission];
-    
-    _registeredRegions = [[NSMutableArray alloc] init];
-    _uuidList = [GlobalData sharedDefaults].supportedUUIDs;
-    
-    _recoManager = [[RECOBeaconManager alloc] init];
-    _recoManager.delegate = self;
-    
-    NSSet *monitoredRegion = [_recoManager getMonitoredRegions];
-    if ([monitoredRegion count] > 0) {
-        NSLog(@"isBackgroundMonitoringOn start ");
-        self.isBackgroundMonitoringOn = YES;
-    } else {
-        NSLog(@"isBackgroundMonitoringOn no ");
-        self.isBackgroundMonitoringOn = NO;
-    }
-    
-    for (int i = 0; i < [_uuidList count]; i++) {
-        NSLog(@"_uuidList  ");
-        NSUUID *uuid = [_uuidList objectAtIndex:i];
-        NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%d", i];
-        
-        [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
-    }
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){

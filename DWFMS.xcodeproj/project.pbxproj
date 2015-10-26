@@ -14,7 +14,8 @@
 		5771CF2B1BD3F0BA00AFD87A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5771CF2A1BD3F0BA00AFD87A /* CoreGraphics.framework */; };
 		57946E181BD26FF0004DD131 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57946E171BD26FF0004DD131 /* CoreLocation.framework */; };
 		57B0E29C1B2C4FDF00AA41F6 /* ToastAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */; };
-		57F8D5881BDDBAD20077EB6A /* Reco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F8D5871BDDBAD20077EB6A /* Reco.framework */; };
+		57F4A7531BDE80A0008A0681 /* Reco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F4A7521BDE80A0008A0681 /* Reco.framework */; settings = {ASSET_TAGS = (); }; };
+		57F4A7551BDE830A008A0681 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F4A7541BDE830A008A0681 /* CoreBluetooth.framework */; };
 		698E29311B0627530004DD66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29301B0627530004DD66 /* main.m */; };
 		698E29341B0627530004DD66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29331B0627530004DD66 /* AppDelegate.m */; };
 		698E29371B0627530004DD66 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 698E29361B0627530004DD66 /* ViewController.m */; };
@@ -53,7 +54,8 @@
 		57946E171BD26FF0004DD131 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		57B0E29A1B2C4FA100AA41F6 /* ToastAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToastAlertView.h; sourceTree = "<group>"; };
 		57B0E29B1B2C4FDF00AA41F6 /* ToastAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToastAlertView.m; sourceTree = "<group>"; };
-		57F8D5871BDDBAD20077EB6A /* Reco.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reco.framework; path = ../../Downloads/reco_sdk_ios_v0.1.5/sdk/Reco.framework; sourceTree = "<group>"; };
+		57F4A7521BDE80A0008A0681 /* Reco.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reco.framework; sourceTree = "<group>"; };
+		57F4A7541BDE830A008A0681 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		698E292B1B0627530004DD66 /* DWFMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWFMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		698E292F1B0627530004DD66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		698E29301B0627530004DD66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -91,10 +93,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57F8D5881BDDBAD20077EB6A /* Reco.framework in Frameworks */,
+				57F4A7551BDE830A008A0681 /* CoreBluetooth.framework in Frameworks */,
 				5771CF2B1BD3F0BA00AFD87A /* CoreGraphics.framework in Frameworks */,
 				5771CF291BD3F03100AFD87A /* UIKit.framework in Frameworks */,
 				57946E181BD26FF0004DD131 /* CoreLocation.framework in Frameworks */,
+				57F4A7531BDE80A0008A0681 /* Reco.framework in Frameworks */,
 				5746FFF81B2D4B710079C385 /* AVFoundation.framework in Frameworks */,
 				573278581B246ED900498B6D /* AudioToolbox.framework in Frameworks */,
 			);
@@ -122,7 +125,8 @@
 		698E29221B0627530004DD66 = {
 			isa = PBXGroup;
 			children = (
-				57F8D5871BDDBAD20077EB6A /* Reco.framework */,
+				57F4A7541BDE830A008A0681 /* CoreBluetooth.framework */,
+				57F4A7521BDE80A0008A0681 /* Reco.framework */,
 				5771CF2A1BD3F0BA00AFD87A /* CoreGraphics.framework */,
 				5771CF281BD3F03100AFD87A /* UIKit.framework */,
 				57946E171BD26FF0004DD131 /* CoreLocation.framework */,
