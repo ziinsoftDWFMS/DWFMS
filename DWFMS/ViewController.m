@@ -188,7 +188,7 @@ NSString *bluetoothYN = @"N";
         // Put on main queue so we can call UIAlertView from delegate callbacks.
         self.blueToothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     }
-//    [self centralManagerDidUpdateState:self.blueToothManager]; // Show initial state
+    [self centralManagerDidUpdateState:self.blueToothManager]; // Show initial state
     switch(self.blueToothManager.state)
     {
         case CBCentralManagerStateResetting: return FALSE; break;
@@ -641,6 +641,14 @@ NSString *bluetoothYN = @"N";
 -(void) setInOutCommitInfo :(NSMutableDictionary * ) param{
  //
     NSLog(@"beaconstatus ::::::: %@, %@", [GlobalData getbeacon], beaconYN);
+    
+    if([self detectBluetooth] == TRUE){
+        NSLog(@"bluetooth use");
+        bluetoothYN = @"Y";
+    }else{
+        NSLog(@"bluetooth unuse");
+        bluetoothYN = @"N";
+    }
     
     if ([@"Y"isEqual:beaconYN] && [@"Y"isEqual:bluetoothYN]) {
         if([@"F"isEqual:[GlobalData getbeacon]]){
