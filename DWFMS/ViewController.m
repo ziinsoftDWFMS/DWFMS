@@ -32,13 +32,13 @@ NSString *beaconYN =@"Y";
 NSString *bluetoothYN = @"N";
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if([self detectBluetooth] == TRUE){
-        NSLog(@"bluetooth use");
-        bluetoothYN = @"Y";
-    }else{
-        NSLog(@"bluetooth unuse");
-        bluetoothYN = @"N";
-    }
+    //if([self detectBluetooth] == TRUE){
+    //    NSLog(@"bluetooth use");
+    //    bluetoothYN = @"Y";
+    //}else{
+    //    NSLog(@"bluetooth unuse");
+    //    bluetoothYN = @"N";
+    //}
     // Do any additional setup after loading the view, typically from a nib.
     /// beacon uuid :[24DDF411-8CF1-440C-87CD-E368DAF9C93E] 
     [GlobalData setbeacon:@"F"];
@@ -642,15 +642,16 @@ NSString *bluetoothYN = @"N";
  //
     NSLog(@"beaconstatus ::::::: %@, %@", [GlobalData getbeacon], beaconYN);
     
-    if([self detectBluetooth] == TRUE){
-        NSLog(@"bluetooth use");
-        bluetoothYN = @"Y";
-    }else{
-        NSLog(@"bluetooth unuse");
-        bluetoothYN = @"N";
-    }
+    //if([self detectBluetooth] == TRUE){
+    //    NSLog(@"bluetooth use");
+    //    bluetoothYN = @"Y";
+    //}else{
+    //    NSLog(@"bluetooth unuse");
+    //    bluetoothYN = @"N";
+    //}
     
-    if ([@"Y"isEqual:beaconYN] && [@"Y"isEqual:bluetoothYN]) {
+    //if ([@"Y"isEqual:beaconYN] && [@"Y"isEqual:bluetoothYN]) {
+    if ([@"Y"isEqual:beaconYN]) {
         if([@"F"isEqual:[GlobalData getbeacon]]){
             [ToastAlertView showToastInParentView:self.view withText:@"근무지를 벗어난 곳에서는 QR업무를 사용 하실 수 없습니다.\n\n[ 블루투스를 확인해 주세요 ]" withDuaration:3.0];
             return;
