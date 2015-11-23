@@ -24,7 +24,7 @@
     NSMutableDictionary *_rangedRegions;
     NSArray *_uuidList;
     NSArray *_stateCategory;
-
+    
 }
 
 NSString *viewType =@"LOGOUT";
@@ -32,6 +32,7 @@ NSString *beaconYN =@"Y";
 NSString *bluetoothYN = @"N";
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     //if([self detectBluetooth] == TRUE){
     //    NSLog(@"bluetooth use");
     //    bluetoothYN = @"Y";
@@ -40,7 +41,7 @@ NSString *bluetoothYN = @"N";
     //    bluetoothYN = @"N";
     //}
     // Do any additional setup after loading the view, typically from a nib.
-    /// beacon uuid :[24DDF411-8CF1-440C-87CD-E368DAF9C93E] 
+    /// beacon uuid :[24DDF411-8CF1-440C-87CD-E368DAF9C93E]
     [GlobalData setbeacon:@"F"];
     
     [self setIsUpdateQr:NO];
@@ -50,7 +51,7 @@ NSString *bluetoothYN = @"N";
     //beaconstart
     _rangedBeacon = [[NSMutableDictionary alloc] init];
     _rangedRegions = [[NSMutableDictionary alloc] init];
-
+    
     _recoManager = [[RECOBeaconManager alloc] init];
     _recoManager.delegate = self;
     [_recoManager requestAlwaysAuthorization];
@@ -59,6 +60,7 @@ NSString *bluetoothYN = @"N";
     
     for (RECOBeaconRegion *recoRegion in _rangedRegions) {
         [_recoManager startMonitoringForRegion:recoRegion];
+        //[_recoManager startRangingBeaconsInRegion:recoRegion];
     }
     
     
@@ -75,7 +77,7 @@ NSString *bluetoothYN = @"N";
     CallServer *res = [CallServer alloc];
     UIDevice *device = [UIDevice currentDevice];
     NSString* idForVendor = [device.identifierForVendor UUIDString];
-
+    
     
     NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
     
@@ -135,7 +137,7 @@ NSString *bluetoothYN = @"N";
                 [alert show];
             }
             
-           viewType = @"LOGIN";
+            viewType = @"LOGIN";
             
             //_uuidList = [GlobalData sharedDefaults].supportedUUIDs;
             _uuidList = @[
@@ -153,18 +155,19 @@ NSString *bluetoothYN = @"N";
                 
                 [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
             }];
+            NSLog(@"@@@@!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@");
             [self startRanging];
             
         }else{
             
             urlParam = [NSString stringWithFormat:@"HP_TEL=%@&GCM_ID=%@&DEVICE_FLAG=I",idForVendor,@"22222222"];
-             callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
+            callUrl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
             
         }
         
     }
     
-   
+    
     
     
     
@@ -176,19 +179,24 @@ NSString *bluetoothYN = @"N";
     [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
     [self.webView loadRequest:requestURL];
     NSLog(@"??????? urlParam %@",urlParam);
-
+    
     
     
 }
 
 - (BOOL)detectBluetooth
 {
+    if ([@"N"isEqual:beaconYN]) {
+        return FALSE;
+    }
     if(!self.blueToothManager)
     {
         // Put on main queue so we can call UIAlertView from delegate callbacks.
         self.blueToothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     }
+    
     [self centralManagerDidUpdateState:self.blueToothManager]; // Show initial state
+    
     switch(self.blueToothManager.state)
     {
         case CBCentralManagerStateResetting: return FALSE; break;
@@ -203,7 +211,7 @@ NSString *bluetoothYN = @"N";
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
     NSString *stateString = nil;
-    switch(_blueToothManager.state)
+    switch(self.blueToothManager.state)
     {
         case CBCentralManagerStateResetting: stateString = @"The connection with the system service was momentarily lost, update imminent."; break;
         case CBCentralManagerStateUnsupported: stateString = @"The platform doesn't support Bluetooth Low Energy."; break;
@@ -253,6 +261,7 @@ NSString *bluetoothYN = @"N";
             
         } else if ([@"QRun" isEqual:type]) {
             NSLog(@"QR START");
+            [self detectBluetooth];
             [self setIsUpdateQr:NO];
             
             _qrView.hidden = NO;
@@ -306,14 +315,14 @@ NSString *bluetoothYN = @"N";
     NSLog(@";alert ?? %d",buttonIndex);
     if(buttonIndex ==1)
     {
-//
+        //
         CallServer *res = [CallServer alloc];
         
         
         NSMutableDictionary* param = [GlobalDataManager getAllData];
         
         
-               
+        
         NSString* str = [res stringWithUrl:@"invInfo.do" VAL:param];
     }else{
         exit(0);
@@ -328,7 +337,7 @@ NSString *bluetoothYN = @"N";
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"START LOAD");
     
-
+    
 }
 
 //WebView 종료 시행
@@ -342,7 +351,7 @@ NSString *bluetoothYN = @"N";
     
     NSLog(@"?logindata %@",data);
     NSData *sessionjsonData = [data dataUsingEncoding:NSUTF8StringEncoding];
-   
+    
     NSDictionary *sessionjsonInfo = [NSJSONSerialization JSONObjectWithData:sessionjsonData options:kNilOptions error:&error];
     
     if(     [@"s"isEqual:[sessionjsonInfo valueForKey:@"rv"] ] )
@@ -392,19 +401,19 @@ NSString *bluetoothYN = @"N";
             NSString *callUrl = @"";
             
             
-          
+            
             callUrl = [NSString stringWithFormat:@"%@%@#home",server,pageUrl];
             
             NSURL *url=[NSURL URLWithString:callUrl];
             NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
-                        [self.webView loadRequest:requestURL];
+            [self.webView loadRequest:requestURL];
             
         }else{
-   
             
-          [ToastAlertView showToastInParentView:self.view withText:@"아이디와 패스워드를 확인해주세요." withDuaration:3.0];
-
-
+            
+            [ToastAlertView showToastInParentView:self.view withText:@"아이디와 패스워드를 확인해주세요." withDuaration:3.0];
+            
+            
             
         }
     }else{
@@ -436,11 +445,11 @@ NSString *bluetoothYN = @"N";
 
 
 - (void) setimage:(NSString*) path num:(NSString*)num{
-//       NSString * searchWord = @"/";
-//    NSString * replaceWord = @"\\\\";
-//    path =  [path stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
+    //       NSString * searchWord = @"/";
+    //    NSString * replaceWord = @"\\\\";
+    //    path =  [path stringByReplacingOccurrencesOfString:searchWord withString:replaceWord];
     NSLog(@"ddd path %@ num %@",path,num);
-
+    
     NSString *scriptString = [NSString stringWithFormat:@"setimge('%@','%@');",path,num];
     NSLog(@"scriptString => %@", scriptString);
     [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
@@ -449,8 +458,8 @@ NSString *bluetoothYN = @"N";
 
 
 - (void) setQRcode:(NSString*) data {
-//    request_contents.put("SERIAL_NO", SERIAL_NO);
-//    request_contents.put("url", "getQRJobTpy.do");
+    //    request_contents.put("SERIAL_NO", SERIAL_NO);
+    //    request_contents.put("url", "getQRJobTpy.do");
     NSLog(@"????? setQRcode data: %@",data);
     
     NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
@@ -487,12 +496,12 @@ NSString *bluetoothYN = @"N";
                 [ToastAlertView showToastInParentView:self.view withText:@"QR업무를 등록해 주세요." withDuaration:3.0];
                 NSString *pageUrl = @"/registrationQR.do";
                 NSString *callurl = [NSString stringWithFormat:@"%@%@?SERIAL_NO=%@",ServerIp,pageUrl,data];
-             
+                
                 NSLog(@"???????%@",callurl);
                 NSURL *url=[NSURL URLWithString:callurl];
                 
                 NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
-
+                
                 
                 [self.webView loadRequest:requestURL];
                 
@@ -519,12 +528,12 @@ NSString *bluetoothYN = @"N";
                 return;
                 
             }
-
+            
             if(     [@"01"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
             {
                 [ToastAlertView showToastInParentView:self.view withText:@"보안순찰업무로 이동합니다." withDuaration:3.0];
                 
-                 [self callPatrol:resdata];
+                [self callPatrol:resdata];
             }
             
             if( [@"02"isEqual:[resdata valueForKey:@"JOB_TPY"] ] )
@@ -563,9 +572,9 @@ NSString *bluetoothYN = @"N";
     NSLog(@"?? %@",str);
     
     NSArray * authlist = [[GlobalDataManager getgData] auth];
-  
     
-      NSLog(@" ?? %@ ",(  [authlist containsObject:@"fms653"] ? @"YES" : @"NO"));
+    
+    NSLog(@" ?? %@ ",(  [authlist containsObject:@"fms653"] ? @"YES" : @"NO"));
     if(![authlist containsObject:@"fms653"]){
         //권한이 없습니다.
         return;
@@ -573,11 +582,11 @@ NSString *bluetoothYN = @"N";
     if(     [@"s"isEqual:[jsonInfo valueForKey:@"rv"] ] )
     {
         NSString *server = [GlobalData getServerIp];
-
+        
         
         NSArray * temparray = [jsonInfo valueForKey:(@"data")];
         NSDictionary *resdata = [temparray objectAtIndex:0];
-
+        
         //mWebView.loadUrl(GlobalData.getServerIp()+"/patrolService.do?LOC_ID="+psdata.getString("PAT_LOC_ID")+"&PAT_CHECK_DT="+psdata.getString("sh_PAT_CHECK_DT")+"#detail");
         NSLog([resdata valueForKey:@"sh_PAT_CHECK_DT"]);
         NSMutableDictionary * tempParam = [[NSMutableDictionary alloc] init];
@@ -586,14 +595,14 @@ NSString *bluetoothYN = @"N";
         
         
         
-                
+        
         NSString *urlParam=[Commonutil serializeJson:tempParam];
         NSLog(@"??????? %@",urlParam);
         //NSString *server = [GlobalData getServerIp];
         NSString *pageUrl = @"/patrolService.do#detail";
         NSString *callurl = [NSString stringWithFormat:@"%@%@",server,pageUrl];
-//        NSString *pageUrl = @"/patrolService.do?";
-//        NSString *callurl = [NSString stringWithFormat:@"%@%@%@#detail",server,pageUrl,urlParam];
+        //        NSString *pageUrl = @"/patrolService.do?";
+        //        NSString *callurl = [NSString stringWithFormat:@"%@%@%@#detail",server,pageUrl,urlParam];
         NSLog(@"???????%@",callurl);
         NSURL *url=[NSURL URLWithString:callurl];
         
@@ -604,8 +613,8 @@ NSString *bluetoothYN = @"N";
         
         //"/patrolService.do?LOC_ID="+psdata.getString("PAT_LOC_ID")+"&PAT_CHECK_DT="+psdata.getString("sh_PAT_CHECK_DT")+"#detail"
         // /patrolService.do?PAT_CHECK_DT=2015-06-21 19:43:39.357&LOC_ID=85#detail
-//        http://211.253.9.3:8080/patrolService.do?PAT_CHECK_DT=2015-06-21 19:56:05.453&LOC_ID=85#detail
-    //    [self.webView loadRequest:homeRequestURL];
+        //        http://211.253.9.3:8080/patrolService.do?PAT_CHECK_DT=2015-06-21 19:56:05.453&LOC_ID=85#detail
+        //    [self.webView loadRequest:homeRequestURL];
         requestURL.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
         NSString *currentURL = [[[self.webView request] URL] absoluteString];
         NSLog(@"???currentURL???%@",currentURL);
@@ -623,13 +632,13 @@ NSString *bluetoothYN = @"N";
             
             [self.webView stringByEvaluatingJavaScriptFromString:scriptParameter];
             NSLog(@"string does contain bla");
-
+            
         }
         //[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:testURL] cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:10.0]];
-         NSLog(@"???????%@",requestURL);
-
+        NSLog(@"???????%@",requestURL);
         
-      
+        
+        
         
     }
     
@@ -639,25 +648,30 @@ NSString *bluetoothYN = @"N";
 
 
 -(void) setInOutCommitInfo :(NSMutableDictionary * ) param{
- //
+    //
     NSLog(@"beaconstatus ::::::: %@, %@", [GlobalData getbeacon], beaconYN);
     
-    //if([self detectBluetooth] == TRUE){
-    //    NSLog(@"bluetooth use");
-    //    bluetoothYN = @"Y";
-    //}else{
-    //    NSLog(@"bluetooth unuse");
-    //    bluetoothYN = @"N";
-    //}
+    if([self detectBluetooth] == TRUE){
+        NSLog(@"bluetooth use");
+        bluetoothYN = @"Y";
+    }else{
+        
+        NSLog(@"bluetooth unuse");
+        bluetoothYN = @"N";
+    }
+    
+    NSLog(@"bluethooth YN 1 ::::%@", bluetoothYN);
+    
     
     //if ([@"Y"isEqual:beaconYN] && [@"Y"isEqual:bluetoothYN]) {
     if ([@"Y"isEqual:beaconYN]) {
-        if([@"F"isEqual:[GlobalData getbeacon]]){
+        if([@"F"isEqual:[GlobalData getbeacon]] || [@"N"isEqual:bluetoothYN]){
+            NSLog(@"beacon access Fail~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             [ToastAlertView showToastInParentView:self.view withText:@"근무지를 벗어난 곳에서는 QR업무를 사용 하실 수 없습니다.\n\n[ 블루투스를 확인해 주세요 ]" withDuaration:3.0];
             return;
         }
     }
-
+    
     
     CallServer *res = [CallServer alloc];
     
@@ -665,7 +679,7 @@ NSString *bluetoothYN = @"N";
     NSMutableDictionary *sessiondata =[GlobalDataManager getAllData];
     
     [sessiondata addEntriesFromDictionary:param];
-
+    
     NSLog(@"??? sessiondata ?? %@" ,sessiondata);
     NSString* str = [res stringWithUrl:@"setInOutCommitInfo.do" VAL:sessiondata];
     
@@ -673,7 +687,7 @@ NSString *bluetoothYN = @"N";
     NSError *error;
     NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     
-
+    
     if(     [@"02"isEqual:[sessiondata valueForKey:@"JOB_TPY"] ] ) {
         [ToastAlertView showToastInParentView:self.view withText:@"출근이 정상적으로 등록되었습니다." withDuaration:3.0];
     } else if(     [@"03"isEqual:[sessiondata valueForKey:@"JOB_TPY"] ] ) {
@@ -876,7 +890,7 @@ NSString *bluetoothYN = @"N";
     {
         if(     [@"Y"isEqual:[jsonInfo valueForKey:@"result"] ] )
         {
-           
+            
             NSString * oldempon = [[GlobalDataManager getgData]empNo];
             NSDictionary *data = [jsonInfo valueForKey:(@"data")];
             [GlobalDataManager initgData:(data)];
@@ -911,10 +925,12 @@ NSString *bluetoothYN = @"N";
     _rangedRegions[recoRegion] = [NSArray array];
 }
 - (void) startRanging {
+    NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~StartRanging~~~~~");
     if (![RECOBeaconManager isRangingAvailable]) {
+        NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~return : not not not not isRangingAvailable");
         return;
     }
-    
+    NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~");
     [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
         [_recoManager startRangingBeaconsInRegion:recoRegion];
     }];
@@ -934,7 +950,7 @@ NSString *bluetoothYN = @"N";
     if((unsigned long)[beacons count] > 0){
         [GlobalData setbeacon:@"T"];
     }
-
+    
     _rangedRegions[region] = beacons;
     [_rangedBeacon removeAllObjects];
     
@@ -978,7 +994,7 @@ NSString *bluetoothYN = @"N";
         //mWebView.loadUrl(GlobalData.getServerIp()+"/DWFMSASDetail.do?JOB_CD="+gcmIntent.getStringExtra("JOB_CD")+"&GYULJAE_YN=N&sh_DEPT_CD="+ gcmIntent.getStringExtra("DEPT_CD")+"&sh_JOB_JISI_DT="+ gcmIntent.getStringExtra("JOB_JISI_DT"));
         
         
-
+        
         if([GlobalDataManager hasAuth:@"fms113"]){
             NSLog(@"권한 없음");
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"권한 없음" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles: nil];
@@ -1088,7 +1104,7 @@ NSString *bluetoothYN = @"N";
         NSURL *url=[NSURL URLWithString:callUrl];
         NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
         [self.webView loadRequest:requestURL];
-
+        
     }
 }
 
