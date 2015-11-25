@@ -60,7 +60,7 @@ NSString *bluetoothYN = @"N";
     
     for (RECOBeaconRegion *recoRegion in _rangedRegions) {
         [_recoManager startMonitoringForRegion:recoRegion];
-        //[_recoManager startRangingBeaconsInRegion:recoRegion];
+        [_recoManager startRangingBeaconsInRegion:recoRegion];
     }
     
     
@@ -98,7 +98,7 @@ NSString *bluetoothYN = @"N";
     
     NSString *urlParam=@"";
     NSString *server = [GlobalData getServerIp];
-    NSString *pageUrl = @"/DWFMS";
+    NSString *pageUrl = @"/";
     NSString *callUrl = @"";
     /*
      자동로그인 부분
@@ -397,7 +397,7 @@ NSString *bluetoothYN = @"N";
             NSString* str = [res stringWithUrl:@"registGCM.do" VAL:param];
             
             NSString *server = [GlobalData getServerIp];
-            NSString *pageUrl = @"/DWFMS";
+            NSString *pageUrl = @"/";
             NSString *callUrl = @"";
             
             
@@ -407,6 +407,25 @@ NSString *bluetoothYN = @"N";
             NSURL *url=[NSURL URLWithString:callUrl];
             NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
             [self.webView loadRequest:requestURL];
+            
+            //_uuidList = [GlobalData sharedDefaults].supportedUUIDs;
+            _uuidList = @[
+                          [[NSUUID alloc] initWithUUIDString:[sessiondata valueForKey:@"BEACON_UUID"]]
+                          //24DDF411-8CF1-440C-87CD-E368DAF9C93E
+                          // you can add other NSUUID instance here.
+                          ];
+            _stateCategory = @[@(RECOProximityUnknown),
+                               @(RECOProximityImmediate),
+                               @(RECOProximityNear),
+                               @(RECOProximityFar)];
+            
+            [_uuidList enumerateObjectsUsingBlock:^(NSUUID *uuid, NSUInteger idx, BOOL *stop) {
+                NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%lu", (unsigned long)idx];
+                
+                [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+            }];
+            NSLog(@"@@@@!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@");
+            [self startRanging];
             
         }else{
             
@@ -667,7 +686,7 @@ NSString *bluetoothYN = @"N";
     if ([@"Y"isEqual:beaconYN]) {
         if([@"F"isEqual:[GlobalData getbeacon]] || [@"N"isEqual:bluetoothYN]){
             NSLog(@"beacon access Fail~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            [ToastAlertView showToastInParentView:self.view withText:@"근무지를 벗어난 곳에서는 QR업무를 사용 하실 수 없습니다.\n\n[ 블루투스를 확인해 주세요 ]" withDuaration:3.0];
+            [ToastAlertView showToastInParentView:self.view withText:@"근무지를 벗어난 곳에서는 QR업무를 사용 하실 수 없습니다.\n[ 블루투스를 확인해 주세요 ]" withDuaration:3.0];
             return;
         }
     }
@@ -697,7 +716,7 @@ NSString *bluetoothYN = @"N";
     }
     
     NSString *server = [GlobalData getServerIp];
-    NSString *pageUrl = @"/DWFMS";
+    NSString *pageUrl = @"/";
     NSString *callUrl = @"";
     
     
@@ -843,7 +862,7 @@ NSString *bluetoothYN = @"N";
     UIDevice *device = [UIDevice currentDevice];
     NSString* idForVendor = [device.identifierForVendor UUIDString];
     NSString *server = [GlobalData getServerIp];
-    NSString *pageUrl = @"/DWFMS";
+    NSString *pageUrl = @"/";
     NSString *callUrl = @"";
     NSString * urlParam = [NSString stringWithFormat:@"HP_TEL=%@&GCM_ID=%@&DEVICE_FLAG=I",idForVendor,@"22222222"];
     

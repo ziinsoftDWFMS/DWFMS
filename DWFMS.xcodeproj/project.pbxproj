@@ -26,13 +26,13 @@
 		69E547EF1B0C3FB5002F7A9C /* Commonutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E547EE1B0C3FB5002F7A9C /* Commonutil.m */; };
 		69E6DB411B08BCBF002CF1E6 /* GlobalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6DB401B08BCBF002CF1E6 /* GlobalData.m */; };
 		69EBCF531B06ECA60057F530 /* CallServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EBCF521B06ECA60057F530 /* CallServer.m */; };
-		97B88EFB1C03399900F85116 /* Reco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B88EFA1C03399900F85116 /* Reco.framework */; };
 		BA006A781B16C783000D939B /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A771B16C783000D939B /* CameraViewController.m */; };
 		BA006A7B1B16D4C2000D939B /* DwfmsSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = BA006A7A1B16D4C2000D939B /* DwfmsSegue.m */; };
 		BA8237461B1D5BF80018F868 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BA8237451B1D5BF80018F868 /* Icon.png */; };
 		BA8237631B252E260018F868 /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = BA8237621B252E260018F868 /* 1.wav */; };
 		BA842D7C1B0C820A00DE86A3 /* QRCodeScanLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */; };
 		BA842D7D1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */; };
+		E1D9AC191C03FD0C0051F5EE /* Reco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D9AC181C03FD0C0051F5EE /* Reco.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +76,6 @@
 		69E6DB401B08BCBF002CF1E6 /* GlobalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalData.m; sourceTree = "<group>"; };
 		69EBCF511B06ECA60057F530 /* CallServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallServer.h; sourceTree = "<group>"; };
 		69EBCF521B06ECA60057F530 /* CallServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallServer.m; sourceTree = "<group>"; };
-		97B88EFA1C03399900F85116 /* Reco.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reco.framework; sourceTree = "<group>"; };
 		BA006A761B16C779000D939B /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
 		BA006A771B16C783000D939B /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		BA006A791B16D4BA000D939B /* DwfmsSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwfmsSegue.h; sourceTree = "<group>"; };
@@ -86,6 +85,7 @@
 		BA842D791B0C820A00DE86A3 /* QRCodeScanLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QRCodeScanLine@2x.png"; sourceTree = "<group>"; };
 		BA842D7A1B0C820A00DE86A3 /* ZIINQRCodeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZIINQRCodeReaderView.h; sourceTree = "<group>"; };
 		BA842D7B1B0C820A00DE86A3 /* ZIINQRCodeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZIINQRCodeReaderView.m; sourceTree = "<group>"; };
+		E1D9AC181C03FD0C0051F5EE /* Reco.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reco.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97B88EFB1C03399900F85116 /* Reco.framework in Frameworks */,
+				E1D9AC191C03FD0C0051F5EE /* Reco.framework in Frameworks */,
 				57F4A7551BDE830A008A0681 /* CoreBluetooth.framework in Frameworks */,
 				5771CF2B1BD3F0BA00AFD87A /* CoreGraphics.framework in Frameworks */,
 				5771CF291BD3F03100AFD87A /* UIKit.framework in Frameworks */,
@@ -125,7 +125,7 @@
 		698E29221B0627530004DD66 = {
 			isa = PBXGroup;
 			children = (
-				97B88EFA1C03399900F85116 /* Reco.framework */,
+				E1D9AC181C03FD0C0051F5EE /* Reco.framework */,
 				57F4A7541BDE830A008A0681 /* CoreBluetooth.framework */,
 				5771CF2A1BD3F0BA00AFD87A /* CoreGraphics.framework */,
 				5771CF281BD3F03100AFD87A /* UIKit.framework */,

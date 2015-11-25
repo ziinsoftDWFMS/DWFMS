@@ -427,7 +427,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     
     NSString *urlParam=@"";
     NSString *server = [GlobalData getServerIp];
-    NSString *pageUrl = @"/DWFMS";
+    NSString *pageUrl = @"/";
     NSString *callUrl = @"";
     NSString *callWelcome = @"false";
     /*

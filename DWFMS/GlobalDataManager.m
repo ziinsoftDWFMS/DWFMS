@@ -93,7 +93,7 @@
     [tempData setValue:[global authInd] forKey:@"session_AUTH_IND"];
     [tempData setValue:[global deptCd] forKey:@"session_DEPT_CD"];
     [tempData setValue:idForVendor forKey:@"session_HP_TEL"];
-    [tempData setValue:@"DWFMS" forKey:@"APPTYPE"];
+    [tempData setValue:@"/" forKey:@"APPTYPE"];
     
     NSLog(@"ddd");
     NSLog(@"ddd %d",[[tempData allKeys] count]);
