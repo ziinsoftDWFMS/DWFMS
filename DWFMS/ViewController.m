@@ -992,6 +992,7 @@ NSString *bluetoothYN = @"N";
 
 - (void)recoManager:(RECOBeaconManager *)manager rangingDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
     NSLog(@"rangingDidFailForRegion: %@ error: %@", region.identifier, [error localizedDescription]);
+    [GlobalData setbeacon:@"F"];
 }
 
 - (void) rcvAspn:(NSString*) jsonstring {
