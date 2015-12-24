@@ -12,20 +12,14 @@
 #import "GlobalDataManager.h"
 #import "Commonutil.h"
 #import <CoreLocation/CoreLocation.h>
-#import <Reco/Reco.h>
 #import "ToastAlertView.h"
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate{
-    NSMutableArray *_registeredRegions;
-    RECOBeaconManager *_recoManager;
     NSArray *_uuidList;
-    
     BOOL isInside;
-
-    
 }
 
 
@@ -48,7 +42,6 @@
         CallServer *res = [CallServer alloc];
         UIDevice *device = [UIDevice currentDevice];
         NSString* idForVendor = [device.identifierForVendor UUIDString];
-        
         
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
         
@@ -76,33 +69,57 @@
                 [GlobalDataManager setTime:[timelist objectAtIndex:0]];
                 NSArray * authlist = [jsonInfo objectForKey:@"auth"];
                 [GlobalDataManager initAuth:authlist];
-                //beacon  start
-                [self checkPermission];
                 
-                _registeredRegions = [[NSMutableArray alloc] init];
+                
                 _uuidList = @[
                               [[NSUUID alloc] initWithUUIDString:[data valueForKey:@"BEACON_UUID"]]
                               //24DDF411-8CF1-440C-87CD-E368DAF9C93E
                               // you can add other NSUUID instance here.
                               ];
-                _recoManager = [[RECOBeaconManager alloc] init];
-                _recoManager.delegate = self;
                 
-                NSSet *monitoredRegion = [_recoManager getMonitoredRegions];
-                if ([monitoredRegion count] > 0) {
-                    NSLog(@"isBackgroundMonitoringOn start ");
-                    self.isBackgroundMonitoringOn = YES;
-                } else {
-                    NSLog(@"isBackgroundMonitoringOn no ");
-                    self.isBackgroundMonitoringOn = NO;
-                }
                 
                 for (int i = 0; i < [_uuidList count]; i++) {
                     NSLog(@"_uuidList  ");
-                    NSUUID *uuid = [_uuidList objectAtIndex:i];
-                    NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%d", i];
                     
-                    [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+                    
+                    /*********
+                    NSUUID *uuid = [_uuidList objectAtIndex:i];
+                    
+                    NSUUID *beaconUUID = [[NSUUID alloc] initWithUUIDString:@"24DDF411-8CF1-440C-87CD-E368DAF9C93E"];
+                    NSString *regionIdentifier = @"us.iBeaconModules";
+                    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:beaconUUID identifier:regionIdentifier];
+                    switch ([CLLocationManager authorizationStatus]) {
+                        case kCLAuthorizationStatusAuthorizedAlways:
+                            NSLog(@"Authorized Always");
+                            break;
+                        case kCLAuthorizationStatusAuthorizedWhenInUse:
+                            NSLog(@"Authorized when in use");
+                            break;
+                        case kCLAuthorizationStatusDenied:
+                            NSLog(@"Denied");
+                            break;
+                        case kCLAuthorizationStatusNotDetermined:
+                            NSLog(@"Not determined");
+                            break;
+                        case kCLAuthorizationStatusRestricted:
+                            NSLog(@"Restricted");
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    self.locationManager = [[CLLocationManager alloc] init];
+                    if([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+                        [self.locationManager requestAlwaysAuthorization];
+                    }
+                    self.locationManager.distanceFilter = YES;
+                    
+                    self.locationManager.delegate = self;
+                    self.locationManager.pausesLocationUpdatesAutomatically = NO;//pause상태에서의 스캔여부
+                    [self.locationManager startMonitoringForRegion:beaconRegion];
+                    [self.locationManager startRangingBeaconsInRegion:beaconRegion];
+                    [self.locationManager startUpdatingLocation];
+*******/
                 }
 
             }
@@ -181,6 +198,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
     [param setValue:app.DEVICE_TOK forKey:@"GCM_ID"];
     [param setObject:@"I" forKey:@"DEVICE_FLAG"];
     [param setObject:@"TEST" forKey:@"TEST"];
+    //[param setObject:[[GlobalDataManager getAllData] ] forKey:@"COMP_CD"];
+    //[param setObject:[[GlobalDataManager getgData] empNo] forKey:@"EMPNO"];
     
     //deviceId
     
@@ -565,26 +584,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-- (void)checkPermission {
-    if ([RECOBeaconManager isMonitoringAvailable]){
-        UIApplication *application = [UIApplication sharedApplication];
-        if (application.backgroundRefreshStatus != UIBackgroundRefreshStatusAvailable) {
-            NSString *title = @"Background App Refresh Permission Denied";
-            NSString *message = @"To re-enable, please go to Settings > General and turn on Background App Refresh for this app.";
-            [self showAlertWithTitle:title andMessage:message];
-            
-        }
-    }
-    
-    if([RECOBeaconManager locationServicesEnabled]){
-        NSLog(@"Location Services Enabled");
-        if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
-            NSString *title = @"Location Service Permission Denied";
-            NSString *message = @"To re-enable, please go to Settings > Privacy and turn on Location Service for this app.";
-            [self showAlertWithTitle:title andMessage:message];
-        }
-    }
-}
+
 
 - (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
@@ -596,13 +596,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
 }
 
 
-- (void)registerBeaconRegionWithUUID:(NSUUID *)proximityUUID andIdentifier:(NSString*)Identifier {
-    RECOBeaconRegion *recoRegion = [[RECOBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:Identifier];
-    
-    [recoRegion setNotifyOnEntry:YES];
-    [recoRegion setNotifyOnExit:YES];
-    [_registeredRegions addObject:recoRegion];
-}
+
 
 
 #pragma mark notificadtion
@@ -633,60 +627,61 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     
     isInside = NO;
 }
-
-- (void) startBackgroundMonitoring {
-    if (![RECOBeaconManager isMonitoringAvailable]) {
-        NSLog(@"startBackgroundMonitoring return");
-        return;
-    }
-    for (RECOBeaconRegion *recoRegion in _registeredRegions) {
-        [_recoManager startMonitoringForRegion:recoRegion];
-    }
-}
-
-- (void) stopBackgroundMonitoring {
-    NSSet *monitoredRegions = [_recoManager getMonitoredRegions];
-    for (RECOBeaconRegion *recoRegion in monitoredRegions) {
-        [_recoManager stopMonitoringForRegion:recoRegion];
-    }
-}
-
-#pragma mark RECOBeaconManager delegate methods
-- (void) recoManager:(RECOBeaconManager *)manager didDetermineState:(RECOBeaconRegionState)state forRegion:(RECOBeaconRegion *)region {
-    NSLog(@"didDetermineState(background) %@", region.identifier);
-}
-
-- (void) recoManager:(RECOBeaconManager *)manager didEnterRegion:(RECOBeaconRegion *)region {
-    NSLog(@"appdelegate 1didEnterRegion(background) %@", region.identifier);
-    [GlobalData setbeacon:@"T"];
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        // don't send any notifications
-        NSLog(@"app active: not sending notification");
-        return;
-    }
-   
+/******
+-(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
+    [manager startRangingBeaconsInRegion:(CLBeaconRegion*)region];
+    [self.locationManager startUpdatingLocation];
     
-  //  NSString *msg = [NSString stringWithFormat:@"didEnterRegion: %@", region.identifier];
-  //  [self _sendEnterLocalNotificationWithMessage:msg];
+    NSLog(@"You entered the region.");
 }
 
-- (void) recoManager:(RECOBeaconManager *)manager didExitRegion:(RECOBeaconRegion *)region {
-    NSLog(@"appdelegate 1didExitRegion(background) %@", region.identifier);
-    [GlobalData setbeacon:@"F"];
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        // don't send any notifications
-        NSLog(@"app active: not sending notification");
-        return;
+-(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
+    [manager stopRangingBeaconsInRegion:(CLBeaconRegion*)region];
+    [self.locationManager stopUpdatingLocation];
+    
+    NSLog(@"You exited the region.");
+}
+
+- (void)locationManager:(CLLocationManager *)manager rangingDidFailForRegion:(CLRegion *)region withError:(NSError *)error {
+    NSLog(@"rangingDidFailForRegion: %@ error: %@", region.identifier, [error localizedDescription]);
+}
+-(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    NSString *message = @"";
+    
+    ViewController *viewController = (ViewController*)self.window.rootViewController;
+    viewController.beacons = beacons;
+    //[viewController.tableView reloadData];
+    [viewController beaconSet];
+    //[[self main] beaconSet];
+    
+    if(beacons.count > 0) {
+        CLBeacon *nearestBeacon = beacons.firstObject;
+        if(nearestBeacon.proximity == self.lastProximity ||
+           nearestBeacon.proximity == CLProximityUnknown) {
+            return;
+        }
+        
+        self.lastProximity = nearestBeacon.proximity;
+        
+        
+        switch(nearestBeacon.proximity) {
+            case CLProximityFar:
+                message = @"Appdelegate : You are far away from the beacon";
+                break;
+            case CLProximityNear:
+                message = @"Appdelegate : You are near the beacon";
+                break;
+            case CLProximityImmediate:
+                message = @"Appdelegate : You are in the immediate proximity of the beacon";
+                break;
+            case CLProximityUnknown:
+                return;
+        }
+    } else {
+        message = @"No beacons are nearby";
     }
-    //NSString *msg = [NSString stringWithFormat:@"didExitRegion: %@", region.identifier];
-    //[self _sendExitLocalNotificationWithMessage:msg];
+    
+    NSLog(@"%@", message);
 }
-
-- (void) recoManager:(RECOBeaconManager *)manager didStartMonitoringForRegion:(RECOBeaconRegion *)region {
-    NSLog(@"didStartMonitoringForRegion(background) %@", region.identifier);
-}
-
-- (void) recoManager:(RECOBeaconManager *)manager monitoringDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
-    NSLog(@"monitoringDidFailForRegion(background) %@, error: %@", region.identifier, [error localizedDescription]);
-}
+******/
 @end

@@ -8,19 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "ZIINQRCodeReaderView.h"
-#import <Reco/Reco.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-@interface ViewController : UIViewController <RECOBeaconManagerDelegate, CBCentralManagerDelegate>
+#import <CoreLocation/CoreLocation.h>
+
+@interface ViewController : UIViewController <CBCentralManagerDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet ZIINQRCodeReaderView *qrView;
-@property (nonatomic, strong) RECOBeacon *beacon;
+@property (strong) NSArray *beacons;
 @property (nonatomic, strong) CBCentralManager* blueToothManager;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property CLProximity lastProximity;
 @property  bool isUpdateQr;
 
 - (void) setimage:(NSString*) path num:(NSString*)num;
 - (void) setQRcode:(NSString*) data ;
 - (void) rcvAspn:(NSString*) jsonstring ;
+- (void) beaconSet;
 @end
 
 @interface UIWebView(JavaScriptAlert)

@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>description always</string>
+	<string>For iBeacon ranging</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>description when in use</string>
 	<key>UIBackgroundModes</key>

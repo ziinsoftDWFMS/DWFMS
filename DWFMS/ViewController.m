@@ -14,22 +14,38 @@
 #import "ZIINQRCodeReaderView.h"
 #import "AppDelegate.h"
 #import "ToastAlertView.h"
+#import <CoreLocation/CoreLocation.h>
+
 @interface ViewController ()
 
 @end
 
 @implementation ViewController{
-    RECOBeaconManager *_recoManager;
-    NSMutableDictionary *_rangedBeacon;
-    NSMutableDictionary *_rangedRegions;
     NSArray *_uuidList;
-    NSArray *_stateCategory;
-    
+    //NSArray *_stateCategory;
 }
 
-NSString *viewType =@"LOGOUT";
-NSString *beaconYN =@"Y";
+NSString *viewType = @"LOGOUT";
+NSString *beaconYN = @"Y";
 NSString *bluetoothYN = @"N";
+
+
+NSString *senderinfo = @"";
+NSString *titleinfo = @"";
+NSString *EmcCode = @"";
+
+NSMutableArray *beaconDistanceList;//Using the Beacon Value set set set~~~
+NSMutableArray *beaconList;
+NSMutableArray *beaconBatteryLevelList;
+int seqBeacon = 0;
+int beaconSkeepCount = 0;
+int beaconSkeepMaxCount = 5;
+
+CLBeaconRegion *beaconRegion;
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -47,24 +63,6 @@ NSString *bluetoothYN = @"N";
     [self setIsUpdateQr:NO];
     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
     [ad setMain:self];
-    
-    //beaconstart
-    _rangedBeacon = [[NSMutableDictionary alloc] init];
-    _rangedRegions = [[NSMutableDictionary alloc] init];
-    
-    _recoManager = [[RECOBeaconManager alloc] init];
-    _recoManager.delegate = self;
-    [_recoManager requestAlwaysAuthorization];
-    
-    [ad startBackgroundMonitoring];
-    
-    for (RECOBeaconRegion *recoRegion in _rangedRegions) {
-        [_recoManager startMonitoringForRegion:recoRegion];
-        [_recoManager startRangingBeaconsInRegion:recoRegion];
-    }
-    
-    
-    //beacon end
     
     
     [self.webView setDelegate:self];
@@ -145,18 +143,75 @@ NSString *bluetoothYN = @"N";
                           //24DDF411-8CF1-440C-87CD-E368DAF9C93E
                           // you can add other NSUUID instance here.
                           ];
-            _stateCategory = @[@(RECOProximityUnknown),
-                               @(RECOProximityImmediate),
-                               @(RECOProximityNear),
-                               @(RECOProximityFar)];
+            //_stateCategory = @[@(RECOProximityUnknown),
+            //                   @(RECOProximityImmediate),
+            //                   @(RECOProximityNear),
+            //                   @(RECOProximityFar)];
             
             [_uuidList enumerateObjectsUsingBlock:^(NSUUID *uuid, NSUInteger idx, BOOL *stop) {
-                NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%lu", (unsigned long)idx];
+                NSString *identifier = @"us.iBeaconModules";
                 
                 [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
             }];
-            NSLog(@"@@@@!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@");
-            [self startRanging];
+            //NSLog(@"@@@@!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@");
+            //[self startRanging];
+            
+            
+            
+            
+            
+            
+            
+            //Beacon set-------------------------------------------------------------------
+            
+            
+            
+            //NSUUID *uuid = [_uuidList objectAtIndex:0];
+            
+            //NSUUID *beaconUUID = [[NSUUID alloc] initWithUUIDString:uuid];
+            ////NSString *regionIdentifier = @"us.iBeaconModules";
+            //CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:beaconUUID identifier:regionIdentifier];
+            switch ([CLLocationManager authorizationStatus]) {
+                case kCLAuthorizationStatusAuthorizedAlways:
+                    NSLog(@"Authorized Always");
+                    break;
+                case kCLAuthorizationStatusAuthorizedWhenInUse:
+                    NSLog(@"Authorized when in use");
+                    break;
+                case kCLAuthorizationStatusDenied:
+                    NSLog(@"Denied");
+                    break;
+                case kCLAuthorizationStatusNotDetermined:
+                    NSLog(@"Not determined");
+                    break;
+                case kCLAuthorizationStatusRestricted:
+                    NSLog(@"Restricted");
+                    break;
+                    
+                default:
+                    break;
+            }
+            self.locationManager = [[CLLocationManager alloc] init];
+            if([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+                [self.locationManager requestAlwaysAuthorization];
+            }
+            self.locationManager.distanceFilter = YES;
+            
+            self.locationManager.delegate = self;
+            self.locationManager.pausesLocationUpdatesAutomatically = YES;//pause상태에서의 스캔여부
+            [self.locationManager startMonitoringForRegion:beaconRegion];
+            [self.locationManager startRangingBeaconsInRegion:beaconRegion];
+            [self.locationManager startUpdatingLocation];
+            
+            
+            
+            
+            
+            //------------------------------------------------------------------------------
+            
+            
+            
+            
             
         }else{
             
@@ -230,11 +285,11 @@ NSString *bluetoothYN = @"N";
 }
 - (void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self startRanging];
+    //[self startRanging];
 }
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self stopRanging];
+    //[self stopRanging];
     
 }
 
@@ -248,9 +303,10 @@ NSString *bluetoothYN = @"N";
     {
         NSString *requesturl2 = [[request URL] absoluteString];
         NSString *decoded = [requesturl2 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"@@@@@@@@@@@@@@@@@ call web javascript : %@", decoded);
         NSArray* list = [decoded componentsSeparatedByString:@":"];
         NSString *type  = [list objectAtIndex:1];
-        NSLog(@"?? %@",type);
+        NSLog(@"######### %@ !!!!!!  %@",requesturl2, type);
         
         //Webview : web call case
         
@@ -303,12 +359,66 @@ NSString *bluetoothYN = @"N";
         }else if([@"callbackwelcome"isEqual:type]) {
             
             [self callbackwelcome];
+        }else if([@"setJobMode" isEqual:type]) {
+            NSLog(@"############### ~~~ %@", [decoded substringFromIndex:([type length]+7)]);
+            viewType = [decoded substringFromIndex:([type length]+7)];
+            
+        } else if ([@"getPageInfo" isEqual:type]) {
+            NSString *scriptString = [NSString stringWithFormat:@"%@;", [decoded substringFromIndex:([type length]+7)]];
+            NSLog(@"getPageInfo : call Script value : %@", scriptString);
+            
+            [self senderInfoText:[decoded substringFromIndex:([type length]+7)]];
+            
+            NSString *returnString = [NSString stringWithFormat:@"setSenderInfo('%@','%@');",titleinfo,senderinfo];
+            NSLog(@"scriptString => %@", returnString);
+            [webView stringByEvaluatingJavaScriptFromString:returnString];
+            
+            NSString *arg = [decoded substringFromIndex:([type length]+7)];
+            if ([@"7" isEqual:arg]) {
+                returnString = [NSString stringWithFormat:@"setLocationTitle('내용 : ');"];
+            } else {
+                returnString = [NSString stringWithFormat:@"setLocationTitle('장소 : ');"];
+            }
+            viewType = @"EMC";
+            [webView stringByEvaluatingJavaScriptFromString:returnString];
+        } else if ([@"sendEmc" isEqual:type]) {
+            [self sendEmc:[decoded substringFromIndex:([type length]+7)]];
         }
     }
     
     
     return YES;
 }
+
+-(void) senderInfoText:(NSString*) arg{
+    if ([@"1" isEqual:arg]) {
+        senderinfo = @"[화재]";
+        EmcCode = @"FR01";
+    } else if ([@"2" isEqual:arg]) {
+        senderinfo = @"[누수/동파]";
+        EmcCode = @"WT01";
+    } else if ([@"3" isEqual:arg]) {
+        senderinfo = @"[정전/누전]";
+        EmcCode = @"KW01";
+    } else if ([@"4" isEqual:arg]) {
+        senderinfo = @"[안전사고]";
+        EmcCode = @"HA01";
+    } else if ([@"5" isEqual:arg]) {
+        senderinfo = @"[가스]";
+        EmcCode = @"GS01";
+    } else if ([@"6" isEqual:arg]) {
+        senderinfo = @"[승강기고장]";
+        EmcCode = @"EV01";
+    } else if ([@"7" isEqual:arg]) {
+        senderinfo = @"[긴급공지]";
+        EmcCode = @"EM01";
+    }
+    titleinfo = [NSString stringWithFormat:@"%@%@", senderinfo, @"발신"];
+    senderinfo = [NSString stringWithFormat:@"%@%@", senderinfo, [[GlobalDataManager getgData] empNo]];
+    NSLog(@"~~~~~~~~~~~~~~~ titleinfo : %@", titleinfo);
+    NSLog(@"~~~~~~~~~~~~~~~ senderinfo : %@", senderinfo);
+}
+
 //개인정보동의 alert 창 callback
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
@@ -389,6 +499,8 @@ NSString *bluetoothYN = @"N";
             [param setValue:[[GlobalDataManager getgData] gcmId] forKey:@"GCM_ID"];
             [param setObject:@"I" forKey:@"DEVICE_FLAG"];
             [param setObject:@"TEST" forKey:@"TEST"];
+            [param setObject:[sessiondata valueForKey:@"COMP_CD"] forKey:@"COMP_CD"];
+            [param setObject:[sessiondata valueForKey:@"EMPNO"] forKey:@"EMPNO"];
             
             //deviceId
             
@@ -414,19 +526,68 @@ NSString *bluetoothYN = @"N";
                           //24DDF411-8CF1-440C-87CD-E368DAF9C93E
                           // you can add other NSUUID instance here.
                           ];
-            _stateCategory = @[@(RECOProximityUnknown),
-                               @(RECOProximityImmediate),
-                               @(RECOProximityNear),
-                               @(RECOProximityFar)];
+            //_stateCategory = @[@(RECOProximityUnknown),
+            //                   @(RECOProximityImmediate),
+            //                   @(RECOProximityNear),
+            //                   @(RECOProximityFar)];
             
             [_uuidList enumerateObjectsUsingBlock:^(NSUUID *uuid, NSUInteger idx, BOOL *stop) {
-                NSString *identifier = [NSString stringWithFormat:@"RECOBeaconRegion-%lu", (unsigned long)idx];
+                NSString *identifier = @"us.iBeaconModules";
                 
                 [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
             }];
-            NSLog(@"@@@@!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@");
-            [self startRanging];
+                
+            //    [self registerBeaconRegionWithUUID:uuid andIdentifier:identifier];
+            //}];
+            //NSLog(@"@@@@!!!!!!!!!!!!!!!!!!!!!!!!!@@@@@@@");
+            //[self startRanging];
+            //Beacon set-------------------------------------------------------------------
             
+            
+            
+            //NSUUID *uuid = [_uuidList objectAtIndex:0];
+            
+            //NSUUID *beaconUUID = [[NSUUID alloc] initWithUUIDString:uuid];
+            //NSString *regionIdentifier = @"us.iBeaconModules";
+            //CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:beaconUUID identifier:regionIdentifier];
+            switch ([CLLocationManager authorizationStatus]) {
+                case kCLAuthorizationStatusAuthorizedAlways:
+                    NSLog(@"Authorized Always");
+                    break;
+                case kCLAuthorizationStatusAuthorizedWhenInUse:
+                    NSLog(@"Authorized when in use");
+                    break;
+                case kCLAuthorizationStatusDenied:
+                    NSLog(@"Denied");
+                    break;
+                case kCLAuthorizationStatusNotDetermined:
+                    NSLog(@"Not determined");
+                    break;
+                case kCLAuthorizationStatusRestricted:
+                    NSLog(@"Restricted");
+                    break;
+                    
+                default:
+                    break;
+            }
+            self.locationManager = [[CLLocationManager alloc] init];
+            if([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+                [self.locationManager requestAlwaysAuthorization];
+            }
+            self.locationManager.distanceFilter = YES;
+            
+            self.locationManager.delegate = self;
+            self.locationManager.pausesLocationUpdatesAutomatically = YES;//pause상태에서의 스캔여부
+            [self.locationManager startMonitoringForRegion:beaconRegion];
+            [self.locationManager startRangingBeaconsInRegion:beaconRegion];
+            [self.locationManager startUpdatingLocation];
+            
+            
+            
+            
+            
+            //------------------------------------------------------------------------------
+
         }else{
             
             
@@ -439,6 +600,50 @@ NSString *bluetoothYN = @"N";
         
     }
     
+    
+    
+}
+
+//script => app funtion
+-(void) sendEmc:(NSString*) data{
+    NSLog(@"????? sendEmc data: %@",data);
+    NSArray *locationImages = [data componentsSeparatedByString:@"//"];
+    NSString *argLocation = [locationImages objectAtIndex:0];
+    NSString *argImages = [locationImages objectAtIndex:1];
+    UIDevice *device = [UIDevice currentDevice];
+    NSString* idForVendor = [device.identifierForVendor UUIDString];
+    
+    NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+    [param setValue:argLocation forKey:@"location"];
+    [param setValue:argImages forKey:@"save_IMGS"];
+    [param setValue:EmcCode forKey:@"code"];
+    [param setValue:@"S" forKey:@"gubun"];
+    [param setObject:idForVendor forKey:@"deviceId"];
+    
+    
+    
+    //deviceId
+    
+    //R 수신
+    CallServer *res = [CallServer alloc];
+    NSString* str = [res stringWithUrl:@"emcInfoPush.do" VAL:param];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSLog(@"?? %@",str);
+    
+    if(     [@"SUCCESS"isEqual:[jsonInfo valueForKey:@"RESULT"] ] )
+    {
+        //전송완료 되었음.....
+        [ToastAlertView showToastInParentView:self.view withText:@"전송이 완료되었습니다." withDuaration:3.0];
+        
+        
+        //조치가이드로 세팅하면 됨......
+        
+    }
+  
     
     
 }
@@ -939,61 +1144,226 @@ NSString *bluetoothYN = @"N";
 
 
 - (void)registerBeaconRegionWithUUID:(NSUUID *)proximityUUID andIdentifier:(NSString*)identifier {
-    RECOBeaconRegion *recoRegion = [[RECOBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:identifier];
+        beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:proximityUUID identifier:identifier];
     
-    _rangedRegions[recoRegion] = [NSArray array];
+    //_rangedRegions[_Region] = [NSArray array];
 }
-- (void) startRanging {
-    NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~StartRanging~~~~~");
-    if (![RECOBeaconManager isRangingAvailable]) {
-        NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~return : not not not not isRangingAvailable");
-        return;
-    }
-    NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~");
-    [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
-        [_recoManager startRangingBeaconsInRegion:recoRegion];
-    }];
-}
+//- (void) startRanging {
+//    NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~StartRanging~~~~~");
+//    if (![RECOBeaconManager isRangingAvailable]) {
+//        NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~return : not not not not isRangingAvailable");
+//        return;
+//    }
+//    NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~");
+//    [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
+//        [_recoManager startRangingBeaconsInRegion:recoRegion];
+//    }];
+//}
 
-- (void) stopRanging; {
-    [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
-        [_recoManager stopRangingBeaconsInRegion:recoRegion];
-    }];
-}
+//- (void) stopRanging; {
+//    [_rangedRegions enumerateKeysAndObjectsUsingBlock:^(RECOBeaconRegion *recoRegion, NSArray *beacons, BOOL *stop) {
+//        [_recoManager stopRangingBeaconsInRegion:recoRegion];
+//    }];
+//}
 
 #pragma mark - RECOBeaconManager delegate methods
 
-- (void)recoManager:(RECOBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(RECOBeaconRegion *)region {
-    NSLog(@"didRangeBeaconsInRegion: %@, ranged %lu beacons", region.identifier, (unsigned long)[beacons count]);
+//- (void)recoManager:(RECOBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(RECOBeaconRegion *)region {
+//    NSLog(@"didRangeBeaconsInRegion: %@, ranged %lu beacons", region.identifier, (unsigned long)[beacons count]);
     
-    if((unsigned long)[beacons count] > 0){
-        [GlobalData setbeacon:@"T"];
-    }
+//    if((unsigned long)[beacons count] > 0){
+//        [GlobalData setbeacon:@"T"];
+//    }
     
-    _rangedRegions[region] = beacons;
-    [_rangedBeacon removeAllObjects];
+//    _rangedRegions[region] = beacons;
+//    [_rangedBeacon removeAllObjects];
     
-    NSMutableArray *allBeacons = [NSMutableArray array];
+//    NSMutableArray *allBeacons = [NSMutableArray array];
     
-    NSArray *arrayOfBeaconsInRange = [_rangedRegions allValues];
-    [arrayOfBeaconsInRange enumerateObjectsUsingBlock:^(NSArray *beaconsInRange, NSUInteger idx, BOOL *stop){
-        [allBeacons addObjectsFromArray:beaconsInRange];
-    }];
+//    NSArray *arrayOfBeaconsInRange = [_rangedRegions allValues];
+//    [arrayOfBeaconsInRange enumerateObjectsUsingBlock:^(NSArray *beaconsInRange, NSUInteger idx, BOOL *stop){
+//        [allBeacons addObjectsFromArray:beaconsInRange];
+//    }];
     
-    [_stateCategory enumerateObjectsUsingBlock:^(NSNumber *range, NSUInteger idx, BOOL *stop){
-        NSArray *beaconsInRange = [allBeacons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"proximity = %d", [range intValue]]];
+//    [_stateCategory enumerateObjectsUsingBlock:^(NSNumber *range, NSUInteger idx, BOOL *stop){
+//        NSArray *beaconsInRange = [allBeacons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"proximity = %d", [range intValue]]];
         
-        if ([beaconsInRange count]) {
-            _rangedBeacon[range] = beaconsInRange;
-        }
-    }];
+//        if ([beaconsInRange count]) {
+//            _rangedBeacon[range] = beaconsInRange;
+//        }
+//    }];
     //[self.tableView reloadData];
+//}
+
+//- (void)locationManager:(CLLocationManager *)manager rangingDidFailForRegion:(CLRegion *)region withError:(NSError *)error {
+//    NSLog(@"rangingDidFailForRegion: %@ error: %@", region.identifier, [error localizedDescription]);
+//    [GlobalData setbeacon:@"F"];
+//}
+
+-(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
+    [manager startRangingBeaconsInRegion:(CLBeaconRegion*)region];
+    [self.locationManager startUpdatingLocation];
+    
+    NSLog(@"You entered the region.");
 }
 
-- (void)recoManager:(RECOBeaconManager *)manager rangingDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
+-(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
+    [manager stopRangingBeaconsInRegion:(CLBeaconRegion*)region];
+    [self.locationManager stopUpdatingLocation];
+    
+    NSLog(@"You exited the region.");
+}
+
+- (void)locationManager:(CLLocationManager *)manager rangingDidFailForRegion:(CLRegion *)region withError:(NSError *)error {
     NSLog(@"rangingDidFailForRegion: %@ error: %@", region.identifier, [error localizedDescription]);
     [GlobalData setbeacon:@"F"];
 }
+-(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    NSString *message = @"";
+    
+    self.beacons = beacons;
+    [self beaconSet];
+    
+    
+    
+    if(beacons.count > 0) {
+        [GlobalData setbeacon:@"T"];
+        message = @"~~~~~~Yes beacons are nearby";
+    } else {
+        [GlobalData setbeacon:@"F"];
+        message = @"~~~~~~No beacons are nearby";
+    }
+    
+    NSLog(@"%@", message);
+}
+
+
+- (void) beaconSet {
+    
+    if (beaconSkeepCount < beaconSkeepMaxCount) {
+        
+        beaconSkeepCount = beaconSkeepCount + 1;
+        NSLog(@"Beacon Access Skeep ~~~~~~~~~~~~~~~~~~~~ [%d]", beaconSkeepCount);
+        return;
+    }
+    beaconSkeepCount = 0;
+    
+    NSLog(@"beacon set ~!~~~~~~~~~");
+    beaconDistanceList = [NSMutableArray array];
+    beaconList = [NSMutableArray array];
+    beaconBatteryLevelList = [NSMutableArray array];
+    
+    for (int i = 0 ; i < self.beacons.count ; i++) {
+        CLBeacon *beacon = (CLBeacon*)[self.beacons  objectAtIndex:i];
+        //CLBeacon *beacon = self.beacons.firstObject;
+        NSString *proximityLabel = @"";
+        
+        switch (beacon.proximity) {
+            case CLProximityFar:
+                proximityLabel = @"Far";
+                break;
+            case CLProximityNear:
+                proximityLabel = @"Near";
+                break;
+            case CLProximityImmediate:
+                proximityLabel = @"Immediate";
+                break;
+            case CLProximityUnknown:
+                proximityLabel = @"Unknown";
+                break;
+        }
+        
+        //NSLog(@"proximityLabel[%lu] : %@", (unsigned long)i, proximityLabel);
+        
+        //NSString *detailLabel = [NSString stringWithFormat:@"Major: %d, Minor: %d, RSSI: %d, UUID: %@, ACC: %2fm",
+        //                         beacon.major.intValue, beacon.minor.intValue, (int)beacon.rssi, beacon.proximityUUID.UUIDString, beacon.accuracy];
+        
+        NSString *detailLabel = [NSString stringWithFormat:@"Major: %d, Minor: %d, RSSI: %d, ACC: %2fm",
+                                 beacon.major.intValue, beacon.minor.intValue, (int)beacon.rssi, beacon.accuracy];
+        
+        //NSLog(@"beacon detail contents[%lu] : %@", (unsigned long)i, detailLabel);
+        
+        [beaconDistanceList insertObject:[NSString stringWithFormat:@"%2fm", beacon.accuracy] atIndex:i];
+        [beaconList insertObject:[NSString stringWithFormat:@"%@%d%d", beacon.proximityUUID.UUIDString, beacon.major.intValue, beacon.minor.intValue] atIndex:i];
+
+        
+        
+        
+    }
+    NSLog(@"!!!!! ~~~ %@", viewType);
+    if([@"EMC" isEqual:viewType]) {
+        [self getNearBeaconLocation];
+    } else if([@"BEACON_MNG" isEqual:viewType]) {
+        [self getBeaconMng];
+    }
+        //초기화
+        beaconDistanceList = [NSMutableArray array];
+        beaconList = [NSMutableArray array];
+        beaconBatteryLevelList = [NSMutableArray array];
+    
+    self.beacons = nil;
+    //NSLog(@"Beacon count [%lu]", (unsigned long)self.beacons.count);
+}
+
+
+- (void) getNearBeaconLocation {
+    NSLog(@"!!!!! getNearBeaconLocation Exec~~~");
+    NSString *nearBeacon = [self getNearBeacon];
+    
+    if (![@"" isEqual:nearBeacon]) {
+        NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
+    
+        [param setValue:nearBeacon forKey:@"BEACON_KEY"];
+    
+        //R 수신
+        CallServer *res = [CallServer alloc];
+        NSString* str = [res stringWithUrl:@"getLocationName.do" VAL:param];
+    
+        NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        NSDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+        NSLog(@"?? %@",str);
+    
+        if (![@"EM01" isEqual:EmcCode]) {
+            
+            NSString *locationName = [NSString stringWithFormat:@"%@",[jsonInfo valueForKey:@"LOCATION_NAME"]];
+            if(![@""isEqual:locationName ])
+            {
+                NSString *scriptString = [NSString stringWithFormat:@"setLocationName('%@');",locationName];
+                NSLog(@"scriptString => %@", scriptString);
+                [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
+            }
+        }
+    } else {
+        return;
+    }
+    
+    
+    
+}
+
+- (NSString *) getNearBeacon {
+    int nearBeaconSeq = 0;
+    NSString *nearBeaconValue = @"";
+    if(beaconDistanceList.count > 0) {
+        for (int i = 1 ; i < beaconDistanceList.count ; i++) {
+            if ([beaconDistanceList objectAtIndex:nearBeaconSeq] > [beaconDistanceList objectAtIndex:i]) {
+                nearBeaconSeq = i;
+            }
+        }
+        nearBeaconValue = [beaconList objectAtIndex:nearBeaconSeq];
+    }
+    //초기화
+    beaconDistanceList = [NSMutableArray array];
+    beaconList = [NSMutableArray array];
+    beaconBatteryLevelList = [NSMutableArray array];
+    return nearBeaconValue;
+}
+
+- (void) getBeaconMng {
+    
+}
+
 
 - (void) rcvAspn:(NSString*) jsonstring {
     NSLog(@"nslog");
@@ -1127,7 +1497,7 @@ NSString *bluetoothYN = @"N";
         
     }
 }
-
+/*************************
 #pragma mark RECOBeaconManager delegate methods
 - (void) recoManager:(RECOBeaconManager *)manager didDetermineState:(RECOBeaconRegionState)state forRegion:(RECOBeaconRegion *)region {
     NSLog(@"didDetermineState(background) %@", region.identifier);
@@ -1169,7 +1539,7 @@ NSString *bluetoothYN = @"N";
 - (void) recoManager:(RECOBeaconManager *)manager monitoringDidFailForRegion:(RECOBeaconRegion *)region withError:(NSError *)error {
     NSLog(@"monitoringDidFailForRegion(background) %@, error: %@", region.identifier, [error localizedDescription]);
 }
-
+********************/
 @end
 @implementation UIWebView (JavaScriptAlert)
 - (void)webView:(UIWebView *)sender runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(id)frame {
@@ -1207,6 +1577,7 @@ static NSInteger bIdx = -1;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     bIdx = buttonIndex;
 }
+
 
 
 @end

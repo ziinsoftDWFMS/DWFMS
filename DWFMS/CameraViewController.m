@@ -231,7 +231,7 @@
 // connection 실행을 맞치고 aalert 메지시장 출력
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     NSLog(@"dd %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-     AppDelegate * ad =  [[UIApplication sharedApplication] delegate] ;
+     AppDelegate * ad =  (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
     [[ad main]setimage:[NSString stringWithFormat:@"%@%@",filepath,makeFilename] num:num];
      [self dismissViewControllerAnimated:YES completion:nil];
 }

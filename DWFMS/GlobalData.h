@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
- static NSString *homedir= @"D:/51_UBIS_MOBILE";
- static NSString *ServerIp=@"http://175.114.60.67:8090";
+ static NSString *homedir= @"E:/applcation";
+ static NSString *ServerIp=@"http://211.253.9.3:8080";
  static NSString *beaconTF = @"F";;
 @interface GlobalData : NSObject{
     

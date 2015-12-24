@@ -10,9 +10,10 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "ViewController.h"
 #import "CameraViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>{
+@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>{
     NSString *DEVICE_TOK;
     NSString *GRP_CD;
     NSString *EMC_ID;
@@ -27,15 +28,13 @@
 @property (strong, nonatomic) NSString *EMC_ID;
 @property (strong, nonatomic) NSString *EMC_MSG;
 @property (strong, nonatomic) NSString *CODE;
-
-
-@property (nonatomic, assign) BOOL isBackgroundMonitoringOn;
-
-- (void) startBackgroundMonitoring;
-- (void) stopBackgroundMonitoring;
-
 @property (weak, nonatomic) ViewController * main;
 @property (weak, nonatomic) CameraViewController * camera;
+
+
+
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property CLProximity lastProximity;
 
 
 @end

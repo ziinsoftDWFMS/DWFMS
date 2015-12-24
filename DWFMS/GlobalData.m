@@ -35,9 +35,9 @@
 }
 
 
-    +(void) setbeacon:(NSString*) tfvalue{
-        beaconTF = tfvalue;
-    }
++(void) setbeacon:(NSString*) tfvalue{
+    beaconTF = tfvalue;
+}
 
 
 +(NSString*) getbeacon{
