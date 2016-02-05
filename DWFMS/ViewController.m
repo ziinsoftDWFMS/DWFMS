@@ -33,13 +33,14 @@ NSString *bluetoothYN = @"N";
 NSString *senderinfo = @"";
 NSString *titleinfo = @"";
 NSString *EmcCode = @"";
+NSString *beaconKey = @"";
 
 NSMutableArray *beaconDistanceList;//Using the Beacon Value set set set~~~
 NSMutableArray *beaconList;
 NSMutableArray *beaconBatteryLevelList;
 int seqBeacon = 0;
 int beaconSkeepCount = 0;
-int beaconSkeepMaxCount = 5;
+int beaconSkeepMaxCount = 3;
 
 CLBeaconRegion *beaconRegion;
 
@@ -357,7 +358,7 @@ CLBeaconRegion *beaconRegion;
             
             [webView stringByEvaluatingJavaScriptFromString:scriptString];
         }else if([@"callbackwelcome"isEqual:type]) {
-            
+            NSLog(@"callbackwelcome : call Script value : ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             [self callbackwelcome];
         }else if([@"setJobMode" isEqual:type]) {
             NSLog(@"############### ~~~ %@", [decoded substringFromIndex:([type length]+7)]);
@@ -440,19 +441,19 @@ CLBeaconRegion *beaconRegion;
 }
 //Error시 실행
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"IDI FAIL");
+    NSLog(@"IDI FAIL didFailLoadWithError");
 }
 
 //WebView 시작시 실행
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"START LOAD");
+    NSLog(@"START LOAD webViewDidStartLoad");
     
     
 }
 
 //WebView 종료 시행
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"FNISH LOAD");
+    NSLog(@"FNISH LOAD webViewDidFinishLoad");
 }
 
 //script => app funtion
@@ -640,7 +641,25 @@ CLBeaconRegion *beaconRegion;
         [ToastAlertView showToastInParentView:self.view withText:@"전송이 완료되었습니다." withDuaration:3.0];
         
         
-        //조치가이드로 세팅하면 됨......
+        NSString* callActionGuide = @"";
+        
+        if (![@"EM01" isEqual:EmcCode]) {
+            NSMutableDictionary *sessiondata =[GlobalDataManager getAllData];
+            
+            callActionGuide = [NSString stringWithFormat:@"%@/emcActionGuide.do?COMP_CD=%@&CODE=%@&BEACON_KEY=%@", [GlobalData getServerIp], [sessiondata valueForKey:@"session_COMP_CD"], EmcCode, beaconKey];
+        } else {
+            callActionGuide = [NSString stringWithFormat:@"%@/#home", [GlobalData getServerIp]];
+            
+        }
+        
+        NSString *urlParam=@"";
+        NSURL *url=[NSURL URLWithString:callActionGuide];
+        NSMutableURLRequest *requestURL=[[NSMutableURLRequest alloc]initWithURL:url];
+        [requestURL setHTTPMethod:@"POST"];
+        [requestURL setHTTPBody:[urlParam dataUsingEncoding:NSUTF8StringEncoding]];
+        [self.webView loadRequest:requestURL];
+        
+        NSLog(@"??????? urlParam %@",callActionGuide);
         
     }
   
@@ -1311,10 +1330,14 @@ CLBeaconRegion *beaconRegion;
     NSString *nearBeacon = [self getNearBeacon];
     
     if (![@"" isEqual:nearBeacon]) {
+        beaconKey = [NSString stringWithFormat:@"%@", nearBeacon];;
+        
+        NSMutableDictionary *sessiondata =[GlobalDataManager getAllData];
+        
         NSMutableDictionary* param = [[NSMutableDictionary alloc] init];
     
         [param setValue:nearBeacon forKey:@"BEACON_KEY"];
-    
+        [param setValue:[sessiondata valueForKey:@"session_COMP_CD"] forKey:@"COMP_CD"];
         //R 수신
         CallServer *res = [CallServer alloc];
         NSString* str = [res stringWithUrl:@"getLocationName.do" VAL:param];
