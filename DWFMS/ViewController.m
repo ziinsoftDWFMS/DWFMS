@@ -646,7 +646,7 @@ CLBeaconRegion *beaconRegion;
         if (![@"EM01" isEqual:EmcCode]) {
             NSMutableDictionary *sessiondata =[GlobalDataManager getAllData];
             
-            callActionGuide = [NSString stringWithFormat:@"%@/emcActionGuide.do?COMP_CD=%@&CODE=%@&BEACON_KEY=%@", [GlobalData getServerIp], [sessiondata valueForKey:@"session_COMP_CD"], EmcCode, beaconKey];
+            callActionGuide = [NSString stringWithFormat:@"%@/emcActionGuide_master.do?COMP_CD=%@&CODE=%@&BEACON_KEY=%@", [GlobalData getServerIp], [sessiondata valueForKey:@"session_COMP_CD"], EmcCode, beaconKey];
         } else {
             callActionGuide = [NSString stringWithFormat:@"%@/#home", [GlobalData getServerIp]];
             
