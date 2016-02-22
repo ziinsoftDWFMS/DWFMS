@@ -40,7 +40,7 @@ NSMutableArray *beaconList;
 NSMutableArray *beaconBatteryLevelList;
 int seqBeacon = 0;
 int beaconSkeepCount = 0;
-int beaconSkeepMaxCount = 3;
+int beaconSkeepMaxCount = 1;
 
 CLBeaconRegion *beaconRegion;
 
